@@ -146,8 +146,14 @@ async function main() {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
-  const full = loadJson<BundlePayload>("contract/COPS-29.mock.json");
-  const nowrist = loadJson<BundlePayload>("contract/COPS-29_nowrist.mock.json");
+  // The REAL emitted bundles, never the mocks. The mocks carry invented
+  // posteriors and an ordinal_mae of 0.33 against a 0.594 baseline — a number no
+  // model produced, for a target that in fact loses. Seeding those would mean
+  // that flipping NEXT_PUBLIC_DEMO_MODE to `supabase` silently swaps the honest
+  // numbers for flattering ones, which is the single worst thing this project
+  // could do to itself. Fail loudly if they are missing rather than falling back.
+  const full = loadJson<BundlePayload>("contract/COPS-29.json");
+  const nowrist = loadJson<BundlePayload>("contract/COPS-29_nowrist.json");
   const demos = loadDemographics();
 
   const participantId = full.participant;

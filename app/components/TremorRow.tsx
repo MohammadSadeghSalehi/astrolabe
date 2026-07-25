@@ -340,7 +340,25 @@ export function TremorRow({
               stroke="none"
             />
           )}
+          {/* Draws itself left to right on load. The state row above is busy
+              declining every step; this is the one trajectory the model will
+              commit to, and drawing it makes that contrast a sequence rather
+              than two things that were simply already on screen.
+
+              pathLength={1} renormalises the path to unit length, so the dash
+              and offset are exact without measuring the DOM — guessing an upper
+              bound makes the stroke clear its dash early and the reveal finishes
+              before the line does. */}
           <path
+            key={pathP}
+            className="astro-draw"
+            pathLength={1}
+            style={
+              {
+                "--astro-draw-len": "1",
+                strokeDasharray: 1,
+              } as React.CSSProperties
+            }
             d={pathP}
             fill="none"
             stroke="var(--seq-4)"

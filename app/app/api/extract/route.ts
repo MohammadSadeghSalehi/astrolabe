@@ -99,7 +99,7 @@ export async function POST(req: Request) {
       typeof body.dayISO === "string" ? body.dayISO : "unknown day";
 
     const model =
-      process.env.ANTHROPIC_MODEL || "claude-sonnet-4-20250514";
+      process.env.ANTHROPIC_MODEL || "claude-sonnet-5";
 
     const client = new Anthropic({ apiKey });
     const message = await client.messages.create({

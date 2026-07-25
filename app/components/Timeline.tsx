@@ -245,6 +245,14 @@ export function Timeline({
   const wristDropped = !mask.left || !mask.right;
   const empty = !loading && series.length === 0;
 
+  /** When the refusal cascade finishes: one 34ms step per hour mark, plus the
+   *  420ms each tick takes to draw. Capped so a long recording cannot make the
+   *  verdict arrive after the viewer has stopped waiting for it. */
+  const refusalCascadeMs = useMemo(() => {
+    const hours = series.filter((p) => p.t.endsWith(":00")).length;
+    return Math.min(hours * 34 + 420, 1400);
+  }, [series]);
+
   const totalRefusal =
     series.length > 0 && series.every((s) => s.abstain);
   /**
@@ -405,24 +413,33 @@ export function Timeline({
           */}
           {!loading && layers.reconstructed && totalRefusal && (
             <g pointerEvents="none" aria-hidden>
-              {series.map((p, i) => {
-                // 10-min steps → tick every hour (:00)
-                if (!p.t.endsWith(":00")) return null;
-                const x = xScale(parseTime(p.t));
-                return (
-                  <line
-                    key={`abs-tick-${p.t}-${i}`}
-                    x1={x}
-                    y1={4}
-                    x2={x}
-                    y2={plotH - 4}
-                    stroke="var(--ink-2)"
-                    strokeWidth={1.4}
-                    strokeDasharray="5 6"
-                    strokeOpacity={0.55}
-                  />
-                );
-              })}
+              {(() => {
+                // Stagger by position in the day rather than by array index, so
+                // the cascade tracks the clock and not how many 10-minute rows
+                // happen to sit between two hour marks.
+                let hourOrdinal = 0;
+                return series.map((p, i) => {
+                  // 10-min steps → tick every hour (:00)
+                  if (!p.t.endsWith(":00")) return null;
+                  const x = xScale(parseTime(p.t));
+                  const delay = hourOrdinal * 34;
+                  hourOrdinal += 1;
+                  return (
+                    <line
+                      key={`abs-tick-${p.t}-${i}`}
+                      className="astro-refusal-tick"
+                      style={{ animationDelay: `${delay}ms` }}
+                      x1={x}
+                      y1={4}
+                      x2={x}
+                      y2={plotH - 4}
+                      stroke="var(--ink-2)"
+                      strokeWidth={1.4}
+                      strokeDasharray="5 6"
+                    />
+                  );
+                });
+              })()}
             </g>
           )}
           {!loading &&
@@ -636,7 +653,14 @@ export function Timeline({
             tuned until the sentence read well.
           */}
           {!loading && totalRefusal && (
-            <g pointerEvents="none">
+            /* Held back until the hour-by-hour cascade has finished, so the
+               verdict reads as the conclusion of what just happened rather than
+               a caption that was always there. */
+            <g
+              pointerEvents="none"
+              className="astro-fade-up"
+              style={{ animationDelay: `${refusalCascadeMs}ms` }}
+            >
               <rect
                 x={plotW / 2 - 224}
                 y={plotH / 2 - 36}

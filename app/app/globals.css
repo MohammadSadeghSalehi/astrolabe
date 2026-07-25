@@ -160,6 +160,12 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+    /* Delay matters as much as duration. Zeroing only the duration still leaves
+       every staggered element sitting at its start state for the length of its
+       delay — so the refusal cascade's verdict, which waits for the cascade,
+       would arrive a second late for exactly the users who asked for no motion. */
+    animation-delay: 0ms !important;
+    transition-delay: 0ms !important;
   }
 }
 
@@ -167,6 +173,91 @@ body {
 .rule {
   height: 1px;
   background: var(--axis);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Motion.
+
+   All of it is CSS so it costs no React renders, and all of it is switched off
+   by the prefers-reduced-motion block above — which sets duration to 0.01ms
+   rather than removing the animation, so every rule here must resolve to its
+   FINAL state. Nothing may depend on the animation actually playing.
+
+   The rule these follow: motion earns its place by carrying meaning. The
+   refusal cascade exists because watching the model decline hour after hour
+   says something a static field of dashes does not. Nothing here moves purely
+   to look alive.
+   ────────────────────────────────────────────────────────────────────────── */
+
+@keyframes astro-refuse-in {
+  from {
+    opacity: 0;
+    transform: scaleY(0.25);
+  }
+  to {
+    opacity: 0.55;
+    transform: scaleY(1);
+  }
+}
+
+/* One dashed hour-mark of a refused day. Staggered by inline animation-delay so
+   the day is declined left to right, at reading speed. */
+.astro-refusal-tick {
+  opacity: 0.55;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: astro-refuse-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes astro-draw {
+  from {
+    stroke-dashoffset: var(--astro-draw-len, 1200);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Stroke draw-on. The element must set --astro-draw-len and stroke-dasharray to
+   the same value — pathLength="1" on the path makes that value simply 1.
+   Near-linear easing on purpose: a hard ease-out puts three quarters of the line
+   on screen in the first fifth of the duration, which reads as a glitch rather
+   than as drawing. */
+.astro-draw {
+  animation: astro-draw 1100ms cubic-bezier(0.4, 0.1, 0.5, 1) both;
+}
+
+@keyframes astro-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.astro-fade-up {
+  opacity: 1;
+  animation: astro-fade-up 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes astro-pulse-edge {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* The leading edge of the reveal. Loops, so it must read correctly at BOTH
+   ends of the cycle — hence 0.35 rather than 0. */
+.astro-reveal-edge {
+  opacity: 0.6;
+  animation: astro-pulse-edge 1800ms ease-in-out infinite;
 }
 
 /* Clinician handoff — print-friendly */
