@@ -8,6 +8,7 @@ import { PosteriorInspector } from "./PosteriorInspector";
 import { SensorToggles } from "./SensorToggles";
 import { MetricsPanel } from "./MetricsPanel";
 import { EvidenceLayers } from "./EvidenceLayers";
+import { VoiceNote } from "./VoiceNote";
 
 export function DayView() {
   const {
@@ -164,6 +165,9 @@ export function DayView() {
           onChange={(l) => set({ layers: l })}
         />
       </div>
+
+      {/* Track E — voice note; mounts under day chrome, does not rewrite Timeline */}
+      <VoiceNote />
 
       <footer className="pb-6 text-[13px]" style={{ color: "var(--ink-2)" }}>
         Offline demo path · bundles from{" "}
