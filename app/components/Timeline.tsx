@@ -382,12 +382,10 @@ export function Timeline({
             </>
           )}
 
-          {/* Abstention holes — dashed absence; label only when wide enough */}
+          {/* Abstention holes — dashed absence always; captions on widest runs only */}
           {!loading &&
             layers.reconstructed &&
-            runs.map(([a, b]) => {
-              const x0 = xScale(parseTime(series[a]!.t));
-              const x1 = xScale(parseTime(series[b]!.t));
+            (() => {
               const pad =
                 series.length > 1
                   ? Math.abs(
@@ -395,82 +393,115 @@ export function Timeline({
                         xScale(parseTime(series[0]!.t)),
                     ) / 2
                   : 8;
-              const left = x0 - pad;
-              const w = Math.max(12, x1 - x0 + pad * 2);
-              const reason = series[a]!.reason ?? "";
-              const nPts = b - a + 1;
-              const showTitle = w >= ABSTAIN_LABEL_MIN_W || nPts >= 2;
-              const showReason =
-                (w >= ABSTAIN_REASON_MIN_W || nPts >= 4) && reason.length > 0;
-              const maxChars = Math.max(8, Math.floor(w / 6.5));
-              const reasonLabel =
-                reason.length > maxChars
-                  ? `${reason.slice(0, maxChars - 1)}…`
-                  : reason;
-              // Caption sits above the hole so it never clips inside a narrow gap.
-              const title =
-                nPts >= 2 || w >= 48 ? "ABSTAINED" : w >= 28 ? "ABS" : "";
-              const cx = left + w / 2;
-              const pillW = title === "ABSTAINED" ? 78 : 36;
-              const pillX = Math.min(
-                Math.max(cx - pillW / 2, 0),
-                Math.max(0, plotW - pillW),
+              const enriched = runs.map(([a, b], idx) => {
+                const x0 = xScale(parseTime(series[a]!.t));
+                const x1 = xScale(parseTime(series[b]!.t));
+                const left = x0 - pad;
+                const w = Math.max(12, x1 - x0 + pad * 2);
+                return {
+                  a,
+                  b,
+                  idx,
+                  left,
+                  w,
+                  nPts: b - a + 1,
+                  reason: series[a]!.reason ?? "",
+                };
+              });
+              // Label at most 3 widest runs; drop a label if its pill would collide
+              const pillW = 86;
+              const labelSet = new Set<number>();
+              const ranked = [...enriched].sort(
+                (u, v) => v.w - u.w || v.nPts - u.nPts,
               );
-              return (
-                <g key={`abs-${a}-${b}`}>
-                  <rect
-                    x={left}
-                    y={0}
-                    width={w}
-                    height={plotH}
-                    fill="none"
-                    stroke="var(--ink-2)"
-                    strokeWidth={1.6}
-                    strokeDasharray="6 5"
-                  />
-                  {showTitle && title && (
-                    <g transform={`translate(${pillX}, 4)`}>
-                      <rect
-                        width={pillW}
-                        height={16}
-                        rx={3}
-                        fill="var(--page)"
-                        stroke="var(--ink-2)"
-                        strokeWidth={1}
-                        strokeDasharray="4 3"
-                      />
+              for (const r of ranked) {
+                if (labelSet.size >= 3) break;
+                if (r.w < ABSTAIN_LABEL_MIN_W && r.nPts < 2) continue;
+                const cx = r.left + r.w / 2;
+                const collides = [...labelSet].some((id) => {
+                  const o = enriched[id]!;
+                  const ocx = o.left + o.w / 2;
+                  return Math.abs(cx - ocx) < pillW + 8;
+                });
+                if (!collides) labelSet.add(r.idx);
+              }
+              const soleLabeled = labelSet.size === 1;
+
+              return enriched.map((r) => {
+                const showTitle =
+                  labelSet.has(r.idx) &&
+                  (r.w >= ABSTAIN_LABEL_MIN_W || r.nPts >= 2);
+                const showReason =
+                  soleLabeled &&
+                  showTitle &&
+                  r.reason.length > 0 &&
+                  (r.w >= ABSTAIN_REASON_MIN_W || r.nPts >= 3);
+                const reasonLabel =
+                  r.reason.length > 36
+                    ? `${r.reason.slice(0, 34)}…`
+                    : r.reason;
+                const cx = r.left + r.w / 2;
+                const pillX = Math.min(
+                  Math.max(cx - pillW / 2, 0),
+                  Math.max(0, plotW - pillW),
+                );
+                return (
+                  <g key={`abs-${r.a}-${r.b}`}>
+                    <rect
+                      x={r.left}
+                      y={0}
+                      width={r.w}
+                      height={plotH}
+                      fill="none"
+                      stroke="var(--ink-2)"
+                      strokeWidth={1.6}
+                      strokeDasharray="6 5"
+                    />
+                    {showTitle && (
+                      <g transform={`translate(${pillX}, 4)`}>
+                        <rect
+                          width={pillW}
+                          height={16}
+                          rx={3}
+                          fill="var(--page)"
+                          stroke="var(--ink-2)"
+                          strokeWidth={1}
+                          strokeDasharray="4 3"
+                        />
+                        <text
+                          x={pillW / 2}
+                          y={12}
+                          textAnchor="middle"
+                          fill="var(--ink)"
+                          style={{
+                            fontFamily:
+                              "var(--font-mono), ui-monospace, monospace",
+                            fontSize: 10,
+                            letterSpacing: "0.08em",
+                          }}
+                        >
+                          ABSTAINED
+                        </text>
+                      </g>
+                    )}
+                    {showReason && (
                       <text
-                        x={pillW / 2}
-                        y={12}
+                        x={Math.min(Math.max(cx, 48), plotW - 48)}
+                        y={34}
                         textAnchor="middle"
-                        fill="var(--ink)"
+                        fill="var(--ink-2)"
                         style={{
-                          fontFamily: "var(--font-mono), ui-monospace, monospace",
-                          fontSize: 10,
-                          letterSpacing: "0.06em",
+                          fontFamily: "var(--font-sans), system-ui, sans-serif",
+                          fontSize: 11,
                         }}
                       >
-                        {title}
+                        {reasonLabel}
                       </text>
-                    </g>
-                  )}
-                  {showReason && (
-                    <text
-                      x={Math.min(Math.max(cx, 40), plotW - 40)}
-                      y={34}
-                      textAnchor="middle"
-                      fill="var(--ink-2)"
-                      style={{
-                        fontFamily: "var(--font-sans), system-ui, sans-serif",
-                        fontSize: 11,
-                      }}
-                    >
-                      {reasonLabel}
-                    </text>
-                  )}
-                </g>
-              );
-            })}
+                    )}
+                  </g>
+                );
+              });
+            })()}
 
           {/* Medication events — diamonds always; times when they fit */}
           {!loading &&
