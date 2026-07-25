@@ -8,6 +8,7 @@ import type { Bundle, SelectivePoint } from "@/lib/contract";
  * Fallback only when the bundle omits selective_curve. Real COPS-29 ships the
  * curve; these numbers mirror the published hold-out operating points so a
  * missing field still draws a legible story rather than a blank card.
+ * Labelled on screen as fixture when used.
  */
 const FALLBACK_CURVE: SelectivePoint[] = [
   {
@@ -47,7 +48,8 @@ const FALLBACK_CURVE: SelectivePoint[] = [
   },
 ];
 
-const MARGIN = { top: 28, right: 52, bottom: 40, left: 44 };
+// Room for horizontal "accuracy" title above the plot + 14px ticks
+const MARGIN = { top: 36, right: 56, bottom: 48, left: 52 };
 
 export function SelectivePredictionChart({
   bundle,
@@ -73,14 +75,12 @@ export function SelectivePredictionChart({
   const usingFallback = !fromBundle || fromBundle.length === 0;
   const curve = useMemo(() => {
     const src = usingFallback ? FALLBACK_CURVE : fromBundle!;
-    // Left → right: answer more → answer fewer (or the reverse of fraction
-    // order). Sort descending so 1.0 is on the left and 0.25 on the right.
     return [...src].sort(
       (a, b) => b.answered_fraction - a.answered_fraction,
     );
   }, [fromBundle, usingFallback]);
 
-  const height = 220;
+  const height = 240;
   const innerW = Math.max(1, width - MARGIN.left - MARGIN.right);
   const innerH = Math.max(1, height - MARGIN.top - MARGIN.bottom);
 
@@ -88,7 +88,6 @@ export function SelectivePredictionChart({
     const xs = curve.map((p) => p.answered_fraction);
     const lo = Math.min(...xs);
     const hi = Math.max(...xs);
-    // Domain high→low so answered_fraction 1.0 is left, 0.25 is right.
     return scaleLinear().domain([hi, lo]).range([0, innerW]).nice();
   }, [curve, innerW]);
 
@@ -124,15 +123,17 @@ export function SelectivePredictionChart({
       style={{ background: "var(--surface)", borderColor: "var(--axis)" }}
     >
       <h2
-        className="mb-1 text-[13px] font-medium uppercase tracking-[0.08em]"
+        className="mb-1 text-[14px] font-medium uppercase tracking-[0.08em]"
         style={{ color: "var(--brass)" }}
       >
         Selective prediction
       </h2>
-      <p className="mb-3 text-[13px] leading-snug" style={{ color: "var(--ink-2)" }}>
+      <p className="mb-3 text-[15px] leading-snug" style={{ color: "var(--ink-2)" }}>
         Hold-out accuracy vs fraction of hours answered
         {usingFallback && (
-          <span className="ml-1 opacity-80">(fixture — curve missing from bundle)</span>
+          <span className="ml-1 opacity-80">
+            (fixture — curve missing from bundle)
+          </span>
         )}
       </p>
 
@@ -145,7 +146,18 @@ export function SelectivePredictionChart({
           aria-label="Selective prediction: accuracy rises as answered fraction falls"
         >
           <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
-            {/* Grid */}
+            {/* Horizontal axis title — clearer than a rotated label */}
+            <text
+              x={0}
+              y={-14}
+              textAnchor="start"
+              fill="var(--ink-2)"
+              fontSize={14}
+              fontFamily="var(--font-sans)"
+            >
+              accuracy
+            </text>
+
             {yTicks.map((t) => (
               <g key={`y-${t}`}>
                 <line
@@ -157,12 +169,12 @@ export function SelectivePredictionChart({
                   strokeWidth={1}
                 />
                 <text
-                  x={-8}
+                  x={-10}
                   y={y(t)}
                   textAnchor="end"
                   dominantBaseline="middle"
                   fill="var(--ink-2)"
-                  fontSize={11}
+                  fontSize={14}
                   fontFamily="var(--font-mono)"
                 >
                   {t.toFixed(2)}
@@ -173,10 +185,10 @@ export function SelectivePredictionChart({
               <g key={`x-${t}`}>
                 <text
                   x={x(t)}
-                  y={innerH + 18}
+                  y={innerH + 22}
                   textAnchor="middle"
                   fill="var(--ink-2)"
-                  fontSize={11}
+                  fontSize={14}
                   fontFamily="var(--font-mono)"
                 >
                   {(t * 100).toFixed(0)}%
@@ -184,26 +196,17 @@ export function SelectivePredictionChart({
               </g>
             ))}
 
-            {/* Axis labels */}
             <text
               x={innerW / 2}
-              y={innerH + 34}
+              y={innerH + 42}
               textAnchor="middle"
               fill="var(--ink-2)"
-              fontSize={11}
+              fontSize={14}
+              fontFamily="var(--font-sans)"
             >
               answered fraction → fewer hours
             </text>
-            <text
-              transform={`translate(${-34},${innerH / 2}) rotate(-90)`}
-              textAnchor="middle"
-              fill="var(--ink-2)"
-              fontSize={11}
-            >
-              accuracy
-            </text>
 
-            {/* Series */}
             <path
               d={pathD}
               fill="none"
@@ -217,80 +220,52 @@ export function SelectivePredictionChart({
                 key={p.answered_fraction}
                 cx={p.cx}
                 cy={p.cy}
-                r={3.5}
+                r={4}
                 fill="var(--s2-truth)"
               />
             ))}
 
-            {/* Direct labels on both endpoints */}
-            {first && (
-              <EndpointLabel
-                x={first.cx}
-                y={first.cy}
-                accuracy={first.accuracy}
-                fraction={first.answered_fraction}
-                side="start"
-                innerW={innerW}
-              />
+            {/*
+              Only direct-label the right endpoint (fewest hours answered) —
+              the left is already the x-axis "100%" and a second label collided
+              with the line at 1440.
+            */}
+            {last && (
+              <text
+                x={Math.min(innerW - 4, last.cx - 8)}
+                y={last.cy - 14}
+                textAnchor="end"
+                fill="var(--ink)"
+                fontSize={14}
+                fontFamily="var(--font-mono)"
+              >
+                {`${(last.accuracy * 100).toFixed(0)}% @ ${(last.answered_fraction * 100).toFixed(0)}%`}
+              </text>
             )}
-            {last && last !== first && (
-              <EndpointLabel
-                x={last.cx}
-                y={last.cy}
-                accuracy={last.accuracy}
-                fraction={last.answered_fraction}
-                side="end"
-                innerW={innerW}
-              />
+            {/* Quiet left point marker only — no colliding label */}
+            {first && (
+              <text
+                x={Math.max(4, first.cx + 8)}
+                y={first.cy + 20}
+                textAnchor="start"
+                fill="var(--ink-2)"
+                fontSize={14}
+                fontFamily="var(--font-mono)"
+              >
+                {`${(first.accuracy * 100).toFixed(0)}%`}
+              </text>
             )}
           </g>
         </svg>
       </div>
 
       <p
-        className="mt-2 text-[13px] leading-snug"
+        className="mt-2 text-[15px] leading-snug"
         style={{ color: "var(--ink-2)" }}
       >
         the fewer hours it answers, the more often it is right — so the refusals
         are real.
       </p>
     </section>
-  );
-}
-
-function EndpointLabel({
-  x,
-  y,
-  accuracy,
-  fraction,
-  side,
-  innerW,
-}: {
-  x: number;
-  y: number;
-  accuracy: number;
-  fraction: number;
-  side: "start" | "end";
-  innerW: number;
-}) {
-  const text = `${(accuracy * 100).toFixed(0)}% @ ${(fraction * 100).toFixed(0)}%`;
-  // Keep labels inside the plot: start left of point (or above), end right.
-  const anchor = side === "start" ? "start" : "end";
-  const dx = side === "start" ? 8 : -8;
-  const ty = y - 12;
-  // Clamp horizontal so labels do not clip the card edges hard.
-  const tx = Math.min(innerW - 4, Math.max(4, x + dx));
-
-  return (
-    <text
-      x={tx}
-      y={ty}
-      textAnchor={anchor}
-      fill="var(--ink)"
-      fontSize={12}
-      fontFamily="var(--font-mono)"
-    >
-      {text}
-    </text>
   );
 }

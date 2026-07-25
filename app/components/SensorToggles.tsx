@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { animate } from "motion";
 import type { SensorMask } from "@/lib/store";
 import { useStore } from "@/lib/store";
+import { usePrefersReducedMotion } from "@/lib/prefers-reduced-motion";
 
 /**
  * Sensor mask is the live beat of the demo: both day bundles abstain 100% on
@@ -21,17 +22,15 @@ export function SensorToggles({
   const m = bundle?.metrics;
   const holdout = m?.holdout_abstain_rate;
   const intervalMass = m?.interval_mass;
+  const reducedMotion = usePrefersReducedMotion();
 
   const [displayHoldout, setDisplayHoldout] = useState(holdout ?? 0);
   const displayRef = useRef(holdout ?? 0);
 
   useEffect(() => {
-    if (holdout == null) return;
+    if (holdout == null || reducedMotion) return;
     const from = displayRef.current;
-    if (from === holdout) {
-      setDisplayHoldout(holdout);
-      return;
-    }
+    if (from === holdout) return;
     const controls = animate(from, holdout, {
       duration: 0.55,
       ease: [0.22, 1, 0.36, 1],
@@ -41,10 +40,15 @@ export function SensorToggles({
       },
     });
     return () => controls.stop();
-  }, [holdout]);
+  }, [holdout, reducedMotion]);
+
+  // Instant cut under prefers-reduced-motion — no tween.
+  const shownHoldout = reducedMotion
+    ? (holdout ?? 0)
+    : displayHoldout;
 
   const holdoutLabel =
-    holdout != null ? `${(displayHoldout * 100).toFixed(1)}%` : "—";
+    holdout != null ? `${(shownHoldout * 100).toFixed(1)}%` : "—";
 
   return (
     <section
@@ -52,7 +56,7 @@ export function SensorToggles({
       style={{ background: "var(--surface)", borderColor: "var(--axis)" }}
     >
       <h2
-        className="mb-3 text-[13px] font-medium uppercase tracking-[0.08em]"
+        className="mb-3 text-[15px] font-medium uppercase tracking-[0.08em]"
         style={{ color: "var(--brass)" }}
       >
         Sensors
@@ -61,7 +65,7 @@ export function SensorToggles({
       {/* Held-out abstain — the number that moves when a wrist drops */}
       <div className="mb-3">
         <p
-          className="text-[12px] uppercase tracking-wide"
+          className="text-[14px] uppercase tracking-wide"
           style={{ color: "var(--ink-2)" }}
         >
           Hold-out abstain
@@ -75,7 +79,7 @@ export function SensorToggles({
         </p>
         {intervalMass != null && (
           <p
-            className="mt-1 font-mono text-[13px] tabular-nums"
+            className="mt-1 font-mono text-[15px] tabular-nums"
             style={{ color: "var(--ink-2)" }}
           >
             interval mass{" "}
@@ -100,7 +104,7 @@ export function SensorToggles({
       </div>
 
       <p
-        className="mt-3 text-[13px] italic leading-snug"
+        className="mt-3 text-[15px] italic leading-snug"
         style={{ color: "var(--ink-2)" }}
       >
         same error budget — with one wrist it can only meet it by answering less.
@@ -139,7 +143,7 @@ function Toggle({
       />
       <span className="truncate">{label}</span>
       <span
-        className="shrink-0 font-mono text-[12px]"
+        className="shrink-0 font-mono text-[14px]"
         style={{ color: "var(--ink-2)" }}
       >
         {on ? "ON" : "OFF"}

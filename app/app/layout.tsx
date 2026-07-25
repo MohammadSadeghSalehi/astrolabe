@@ -24,9 +24,29 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  // Relative OG/icon URLs resolve against this when a public host is set.
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  ),
   title: "Astrolabe — read the hours you couldn't record",
   description:
-    "Reconstruct Parkinson's motor diary from wrist accelerometry with calibrated uncertainty.",
+    "Reconstruct Parkinson's motor diary from wrist accelerometry with calibrated uncertainty. Coverage 0.904; declines 77.3% when one wrist is dropped.",
+  icons: {
+    icon: "/brand/astrolabe-mark-brass.svg",
+  },
+  openGraph: {
+    title: "Astrolabe",
+    description:
+      "Read the hours you couldn't record. Coverage 0.904 · declines 77.3% on one wrist.",
+    images: [{ url: "/brand/og-image.svg", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Astrolabe",
+    description:
+      "Read the hours you couldn't record. Coverage 0.904 · declines 77.3% on one wrist.",
+    images: ["/brand/og-image.svg"],
+  },
 };
 
 export default function RootLayout({

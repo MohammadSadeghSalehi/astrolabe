@@ -84,12 +84,25 @@ export function DayView() {
     <div className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col gap-6 px-6 py-8">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p
-            className="text-[12px] uppercase tracking-[0.14em]"
-            style={{ color: "var(--brass)" }}
-          >
-            Astrolabe
-          </p>
+          <div className="flex items-center gap-2.5">
+            {/* Monoline mark (inline so no next/image domain config) */}
+            <span
+              className="inline-block h-7 w-7 shrink-0"
+              style={{
+                backgroundColor: "var(--brass)",
+                mask: "url(/brand/astrolabe-mark.svg) center / contain no-repeat",
+                WebkitMask:
+                  "url(/brand/astrolabe-mark.svg) center / contain no-repeat",
+              }}
+              aria-hidden
+            />
+            <p
+              className="text-[14px] font-medium uppercase tracking-[0.14em]"
+              style={{ color: "var(--brass)" }}
+            >
+              Astrolabe
+            </p>
+          </div>
           <h1
             className="font-display mt-1 text-[32px] font-light leading-tight"
             style={{ color: "var(--ink)" }}
@@ -106,11 +119,11 @@ export function DayView() {
             reconstruction with calibrated uncertainty
           </p>
         </div>
-        <div className="text-right text-[13px]" style={{ color: "var(--ink-2)" }}>
+        <div className="text-right text-[15px]" style={{ color: "var(--ink-2)" }}>
           <p>
             Drag the handle to reveal the diary · press{" "}
             <kbd
-              className="rounded border px-1.5 py-0.5 font-mono text-[12px]"
+              className="rounded border px-1.5 py-0.5 font-mono text-[14px]"
               style={{ borderColor: "var(--axis)", color: "var(--ink)" }}
             >
               R
@@ -119,13 +132,13 @@ export function DayView() {
           </p>
           <p className="mt-1">
             <kbd
-              className="rounded border px-1.5 py-0.5 font-mono text-[12px]"
+              className="rounded border px-1.5 py-0.5 font-mono text-[14px]"
               style={{ borderColor: "var(--axis)", color: "var(--ink)" }}
             >
               ←
             </kbd>{" "}
             <kbd
-              className="rounded border px-1.5 py-0.5 font-mono text-[12px]"
+              className="rounded border px-1.5 py-0.5 font-mono text-[14px]"
               style={{ borderColor: "var(--axis)", color: "var(--ink)" }}
             >
               →
@@ -193,7 +206,7 @@ export function DayView() {
       {/* Track E — voice note; mounts under day chrome, does not rewrite Timeline */}
       <VoiceNote />
 
-      <footer className="pb-6 text-[13px]" style={{ color: "var(--ink-2)" }}>
+      <footer className="pb-6 text-[15px]" style={{ color: "var(--ink-2)" }}>
         Offline demo path · bundles from{" "}
         <span className="font-mono">/public/bundles</span>
         {" · "}

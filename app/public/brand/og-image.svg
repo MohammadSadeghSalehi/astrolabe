@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none" role="img" aria-label="Astrolabe Open Graph image">
+  <rect width="1200" height="630" fill="#080B11"/>
+  <rect x="40" y="40" width="1120" height="550" rx="8" fill="#10151F" stroke="#2A3244" stroke-width="1"/>
+  <!-- mark -->
+  <g transform="translate(88 90) scale(3.2)" stroke="#C8963E" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M6.5 20.5 A9.5 9.5 0 1 1 22.5 23.2"/>
+    <path d="M10.2 18.8 A5.8 5.8 0 1 1 19.5 20.6"/>
+    <line x1="7.2" y1="22.8" x2="24.8" y2="9.2"/>
+    <circle cx="16" cy="16" r="1.1" fill="#C8963E" stroke="none"/>
+  </g>
+  <text
+    x="220"
+    y="145"
+    fill="#ECE7DB"
+    font-family="IBM Plex Sans, system-ui, sans-serif"
+    font-size="42"
+    font-weight="500"
+    letter-spacing="0.14em"
+  >ASTROLABE</text>
+  <text
+    x="220"
+    y="195"
+    fill="#8D97AB"
+    font-family="Fraunces, Georgia, serif"
+    font-size="28"
+    font-weight="300"
+    font-style="italic"
+  >Read the hours you couldn’t record</text>
+
+  <!-- claim numbers -->
+  <g font-family="IBM Plex Mono, ui-monospace, monospace">
+    <text x="88" y="340" fill="#8D97AB" font-size="18" letter-spacing="0.08em">HELD-OUT COVERAGE</text>
+    <text x="88" y="400" fill="#16A897" font-size="72" font-weight="500">0.904</text>
+    <text x="88" y="445" fill="#8D97AB" font-size="20">90% interval, achieved</text>
+
+    <text x="520" y="340" fill="#8D97AB" font-size="18" letter-spacing="0.08em">ONE WRIST DROPPED</text>
+    <text x="520" y="400" fill="#A86ED1" font-size="72" font-weight="500">77.3%</text>
+    <text x="520" y="445" fill="#8D97AB" font-size="20">declines to keep the same error</text>
+  </g>
+
+  <line x1="88" y1="500" x2="1112" y2="500" stroke="#2A3244" stroke-width="1"/>
+  <text
+    x="88"
+    y="545"
+    fill="#ECE7DB"
+    font-family="IBM Plex Sans, system-ui, sans-serif"
+    font-size="22"
+  >Parkinson’s diary reconstruction with calibrated uncertainty</text>
+  <text
+    x="1112"
+    y="545"
+    text-anchor="end"
+    fill="#C8963E"
+    font-family="IBM Plex Mono, ui-monospace, monospace"
+    font-size="18"
+  >github.com/MohammadSadeghSalehi/astrolabe</text>
+</svg>

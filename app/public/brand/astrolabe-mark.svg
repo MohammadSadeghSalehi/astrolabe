@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+  <!--
+    Astrolabe mark: 2 concentric arcs + one sight line.
+    Monoline, single colour (currentColor). Reads at 24px.
+  -->
+  <g stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <!-- outer arc (rete rim), open at bottom-right -->
+    <path d="M6.5 20.5 A9.5 9.5 0 1 1 22.5 23.2"/>
+    <!-- inner arc -->
+    <path d="M10.2 18.8 A5.8 5.8 0 1 1 19.5 20.6"/>
+    <!-- sight / alidade: diameter through centre, with tip -->
+    <line x1="7.2" y1="22.8" x2="24.8" y2="9.2"/>
+    <!-- small pivot at centre -->
+    <circle cx="16" cy="16" r="1.1" fill="currentColor" stroke="none"/>
+  </g>
+</svg>

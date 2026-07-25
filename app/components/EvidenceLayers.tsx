@@ -21,7 +21,7 @@ export function EvidenceLayers({
       style={{ background: "var(--surface)", borderColor: "var(--axis)" }}
     >
       <h2
-        className="mb-3 text-[13px] font-medium uppercase tracking-[0.08em]"
+        className="mb-3 text-[15px] font-medium uppercase tracking-[0.08em]"
         style={{ color: "var(--brass)" }}
       >
         Evidence layers
@@ -44,18 +44,18 @@ export function EvidenceLayers({
             >
               <span>
                 {label}
-                <span className="ml-2 text-[12px]" style={{ color: "var(--ink-2)" }}>
+                <span className="ml-2 text-[14px]" style={{ color: "var(--ink-2)" }}>
                   {hint}
                 </span>
               </span>
-              <span className="font-mono text-[12px]" style={{ color: "var(--ink-2)" }}>
+              <span className="font-mono text-[14px]" style={{ color: "var(--ink-2)" }}>
                 {on ? "ON" : "OFF"}
               </span>
             </button>
           );
         })}
       </div>
-      <p className="mt-3 text-[13px]" style={{ color: "var(--ink-2)" }}>
+      <p className="mt-3 text-[15px]" style={{ color: "var(--ink-2)" }}>
         Turning inferred off should leave the chart sparse — that emptiness is the
         product.
       </p>

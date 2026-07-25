@@ -49,7 +49,7 @@ export function PosteriorInspector({
         <p className="text-[14px]" style={{ color: "var(--ink)" }}>
           Abstained
         </p>
-        <p className="mt-1 text-[13px]" style={{ color: "var(--ink-2)" }}>
+        <p className="mt-1 text-[15px]" style={{ color: "var(--ink-2)" }}>
           {point.reason ?? "insufficient evidence"}
         </p>
       </Panel>
@@ -68,7 +68,7 @@ export function PosteriorInspector({
           return (
             <div key={i} className="flex items-center gap-2">
               <span
-                className="w-16 shrink-0 font-mono text-[12px] tabular-nums"
+                className="w-16 shrink-0 font-mono text-[14px] tabular-nums"
                 style={{ color: "var(--ink-2)" }}
               >
                 {i - 3 > 0 ? `+${i - 3}` : `${i - 3}`}
@@ -86,7 +86,7 @@ export function PosteriorInspector({
                 />
               </div>
               <span
-                className="w-12 shrink-0 text-right font-mono text-[12px] tabular-nums"
+                className="w-12 shrink-0 text-right font-mono text-[14px] tabular-nums"
                 style={{ color: "var(--ink)" }}
               >
                 {p.toFixed(2)}
@@ -95,7 +95,7 @@ export function PosteriorInspector({
           );
         })}
       </div>
-      <p className="mt-3 text-[13px]" style={{ color: "var(--ink-2)" }}>
+      <p className="mt-3 text-[15px]" style={{ color: "var(--ink-2)" }}>
         MAP{" "}
         <span style={{ color: "var(--ink)" }}>
           {KINESIA_LABELS[map] ?? map}
@@ -126,13 +126,13 @@ function Panel({
     >
       <header className="mb-3 flex items-baseline justify-between gap-2">
         <h2
-          className="text-[13px] font-medium uppercase tracking-[0.08em]"
+          className="text-[15px] font-medium uppercase tracking-[0.08em]"
           style={{ color: "var(--brass)" }}
         >
           {title}
         </h2>
         {subtitle && (
-          <span className="font-mono text-[13px]" style={{ color: "var(--ink-2)" }}>
+          <span className="font-mono text-[15px]" style={{ color: "var(--ink-2)" }}>
             {subtitle}
           </span>
         )}

@@ -59,7 +59,7 @@ export function MetricsPanel({ bundle }: { bundle: Bundle | null }) {
       style={{ background: "var(--surface)", borderColor: "var(--axis)" }}
     >
       <h2
-        className="mb-4 text-[13px] font-medium uppercase tracking-[0.08em]"
+        className="mb-4 text-[15px] font-medium uppercase tracking-[0.08em]"
         style={{ color: "var(--brass)" }}
       >
         Metrics
@@ -94,7 +94,7 @@ function HeldOutBlock({ m }: { m: BundleMetrics }) {
   return (
     <div>
       <h3
-        className="mb-3 text-[13px] font-medium leading-snug"
+        className="mb-3 text-[15px] font-medium leading-snug"
         style={{ color: "var(--ink)" }}
       >
         {titleBits[0]}
@@ -177,12 +177,12 @@ function ThisDayBlock({ m }: { m: BundleMetrics }) {
   return (
     <div>
       <h3
-        className="mb-1 text-[13px] font-medium leading-snug"
+        className="mb-1 text-[15px] font-medium leading-snug"
         style={{ color: "var(--ink)" }}
       >
         This day
       </h3>
-      <p className="mb-3 text-[13px] leading-snug" style={{ color: "var(--ink-2)" }}>
+      <p className="mb-3 text-[15px] leading-snug" style={{ color: "var(--ink-2)" }}>
         Context only — one day is ~19 labelled hours, not a claim.
       </p>
 
@@ -199,7 +199,7 @@ function ThisDayBlock({ m }: { m: BundleMetrics }) {
 
       {kinesiaLoses && (
         <p
-          className="mt-2 text-[13px] leading-snug"
+          className="mt-2 text-[15px] leading-snug"
           style={{ color: "var(--ink-2)" }}
         >
           {m.ordinal_mae == null
@@ -222,7 +222,7 @@ function ThisDayBlock({ m }: { m: BundleMetrics }) {
           />
           {tremorLoses && (
             <p
-              className="mt-2 text-[13px] leading-snug"
+              className="mt-2 text-[15px] leading-snug"
               style={{ color: "var(--ink-2)" }}
             >
               Tremor does not beat the majority-class baseline on this day.
@@ -285,7 +285,7 @@ function CompareRow({
     >
       <div>
         <dt
-          className="text-[13px] leading-snug"
+          className="text-[15px] leading-snug"
           style={{ color: "var(--ink-2)" }}
         >
           {leftLabel}
@@ -304,7 +304,7 @@ function CompareRow({
       </div>
       <div>
         <dt
-          className="text-[13px] leading-snug"
+          className="text-[15px] leading-snug"
           style={{ color: "var(--ink-2)" }}
         >
           {rightLabel}
@@ -335,7 +335,7 @@ function Cell({
   return (
     <div>
       <dt
-        className="text-[13px] leading-snug"
+        className="text-[15px] leading-snug"
         style={{ color: "var(--ink-2)" }}
       >
         {label}
@@ -347,7 +347,7 @@ function Cell({
         {value}
       </dd>
       {hint && (
-        <p className="mt-0.5 text-[12px] leading-snug" style={{ color: "var(--ink-2)" }}>
+        <p className="mt-0.5 text-[14px] leading-snug" style={{ color: "var(--ink-2)" }}>
           {hint}
         </p>
       )}

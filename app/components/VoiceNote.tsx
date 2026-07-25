@@ -120,7 +120,9 @@ export function VoiceNote() {
   useEffect(() => () => {
     clearTimer();
     stopStream();
-    mediaRef.current?.state !== "inactive" && mediaRef.current?.stop();
+    if (mediaRef.current && mediaRef.current.state !== "inactive") {
+      mediaRef.current.stop();
+    }
   }, [clearTimer, stopStream]);
 
   const commitEvent = useCallback(
@@ -256,7 +258,7 @@ export function VoiceNote() {
         busyRef.current = false;
       }
     },
-    [bundle?.day],
+    [bundle],
   );
 
   const startRecording = useCallback(async () => {
@@ -367,14 +369,14 @@ export function VoiceNote() {
     >
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <h2
-          className="text-[13px] font-medium uppercase tracking-[0.08em]"
+          className="text-[15px] font-medium uppercase tracking-[0.08em]"
           style={{ color: "var(--brass)" }}
         >
           Voice note
         </h2>
         {isOfflineDemo() && (
           <span
-            className="font-mono text-[12px]"
+            className="font-mono text-[14px]"
             style={{ color: "var(--ink-2)" }}
           >
             offline demo
@@ -420,7 +422,7 @@ export function VoiceNote() {
 
           {progressLabel && (
             <p
-              className="font-mono text-[13px]"
+              className="font-mono text-[15px]"
               style={{ color: "var(--brass-hi)" }}
               aria-live="polite"
             >
@@ -456,7 +458,7 @@ export function VoiceNote() {
           )}
 
           <div className="grid gap-3 sm:grid-cols-2">
-            <label className="block text-[13px]" style={{ color: "var(--ink-2)" }}>
+            <label className="block text-[15px]" style={{ color: "var(--ink-2)" }}>
               Type
               <select
                 value={draft.type}
@@ -478,7 +480,7 @@ export function VoiceNote() {
               </select>
             </label>
 
-            <label className="block text-[13px]" style={{ color: "var(--ink-2)" }}>
+            <label className="block text-[15px]" style={{ color: "var(--ink-2)" }}>
               Time (HH:MM)
               <input
                 ref={timeInputRef}
@@ -496,7 +498,7 @@ export function VoiceNote() {
               />
             </label>
 
-            <label className="block text-[13px]" style={{ color: "var(--ink-2)" }}>
+            <label className="block text-[15px]" style={{ color: "var(--ink-2)" }}>
               Drug
               <input
                 type="text"
@@ -510,7 +512,7 @@ export function VoiceNote() {
               />
             </label>
 
-            <label className="block text-[13px]" style={{ color: "var(--ink-2)" }}>
+            <label className="block text-[15px]" style={{ color: "var(--ink-2)" }}>
               Dose (mg)
               <input
                 type="text"
@@ -526,7 +528,7 @@ export function VoiceNote() {
             </label>
           </div>
 
-          <label className="block text-[13px]" style={{ color: "var(--ink-2)" }}>
+          <label className="block text-[15px]" style={{ color: "var(--ink-2)" }}>
             Note
             <input
               type="text"
@@ -588,7 +590,7 @@ export function VoiceNote() {
         </p>
       )}
 
-      <p className="mt-3 text-[12px]" style={{ color: "var(--ink-2)" }}>
+      <p className="mt-3 text-[14px]" style={{ color: "var(--ink-2)" }}>
         Reported events appear as diamonds on the timeline. Confirm before
         commit — nothing is invented when voice fails.
       </p>

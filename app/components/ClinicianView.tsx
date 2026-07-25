@@ -113,7 +113,7 @@ export function ClinicianView() {
         <header className="print-break flex flex-wrap items-start justify-between gap-4">
           <div>
             <p
-              className="text-[12px] uppercase tracking-[0.14em]"
+              className="text-[14px] uppercase tracking-[0.14em]"
               style={{ color: "var(--brass)" }}
             >
               Astrolabe · Clinician handoff
@@ -132,7 +132,7 @@ export function ClinicianView() {
               causal claim about medication effect.
             </p>
           </div>
-          <div className="no-print flex flex-col items-end gap-2 text-[13px]">
+          <div className="no-print flex flex-col items-end gap-2 text-[15px]">
             <Link
               href="/"
               className="rounded border px-3 py-1.5 font-medium"
@@ -270,7 +270,7 @@ export function ClinicianView() {
             <dl className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <div>
                 <dt
-                  className="text-[12px] uppercase tracking-wide"
+                  className="text-[14px] uppercase tracking-wide"
                   style={{ color: "var(--ink-2)" }}
                 >
                   Abstain rate
@@ -284,7 +284,7 @@ export function ClinicianView() {
               </div>
               <div>
                 <dt
-                  className="text-[12px] uppercase tracking-wide"
+                  className="text-[14px] uppercase tracking-wide"
                   style={{ color: "var(--ink-2)" }}
                 >
                   Mean interval width
@@ -300,7 +300,7 @@ export function ClinicianView() {
               </div>
               <div>
                 <dt
-                  className="text-[12px] uppercase tracking-wide"
+                  className="text-[14px] uppercase tracking-wide"
                   style={{ color: "var(--ink-2)" }}
                 >
                   Abstained windows
@@ -364,7 +364,7 @@ export function ClinicianView() {
                 <table className="w-full min-w-[480px] border-collapse text-left text-[14px]">
                   <thead>
                     <tr
-                      className="border-b text-[12px] uppercase tracking-wide"
+                      className="border-b text-[14px] uppercase tracking-wide"
                       style={{
                         borderColor: "var(--border)",
                         color: "var(--ink-2)",
@@ -449,7 +449,7 @@ export function ClinicianView() {
               ))}
             </ul>
             <p
-              className="mt-4 text-[12px] leading-snug"
+              className="mt-4 text-[14px] leading-snug"
               style={{ color: "var(--ink-2)" }}
             >
               Scale:{" "}
@@ -461,7 +461,7 @@ export function ClinicianView() {
         </Card>
 
         <footer
-          className="pb-8 text-[12px] leading-snug"
+          className="pb-8 text-[14px] leading-snug"
           style={{ color: "var(--ink-2)" }}
         >
           Participant {bundle.participant}
@@ -490,7 +490,7 @@ function Stat({
   return (
     <div>
       <p
-        className="text-[12px] uppercase tracking-wide"
+        className="text-[14px] uppercase tracking-wide"
         style={{ color: "var(--ink-2)" }}
       >
         {label}

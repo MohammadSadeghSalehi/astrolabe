@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" fill="none" role="img" aria-label="Astrolabe end card">
+  <rect width="1920" height="1080" fill="#080B11"/>
+  <g transform="translate(920 220) scale(2.8)" stroke="#C8963E" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M6.5 20.5 A9.5 9.5 0 1 1 22.5 23.2"/>
+    <path d="M10.2 18.8 A5.8 5.8 0 1 1 19.5 20.6"/>
+    <line x1="7.2" y1="22.8" x2="24.8" y2="9.2"/>
+    <circle cx="16" cy="16" r="1.1" fill="#C8963E" stroke="none"/>
+  </g>
+  <text
+    x="960"
+    y="420"
+    text-anchor="middle"
+    fill="#ECE7DB"
+    font-family="IBM Plex Sans, system-ui, sans-serif"
+    font-size="48"
+    font-weight="500"
+    letter-spacing="0.14em"
+  >ASTROLABE</text>
+  <!-- one-line claim -->
+  <text
+    x="960"
+    y="520"
+    text-anchor="middle"
+    fill="#ECE7DB"
+    font-family="IBM Plex Sans, system-ui, sans-serif"
+    font-size="32"
+    font-weight="400"
+  >Calibrated uncertainty — and refusal when the evidence is weak</text>
+  <text
+    x="960"
+    y="590"
+    text-anchor="middle"
+    fill="#16A897"
+    font-family="IBM Plex Mono, ui-monospace, monospace"
+    font-size="28"
+  >coverage 0.904 · declines 77.3% on one wrist</text>
+  <!-- URLs -->
+  <text
+    x="960"
+    y="720"
+    text-anchor="middle"
+    fill="#8D97AB"
+    font-family="IBM Plex Mono, ui-monospace, monospace"
+    font-size="24"
+  >github.com/MohammadSadeghSalehi/astrolabe</text>
+  <text
+    x="960"
+    y="770"
+    text-anchor="middle"
+    fill="#C8963E"
+    font-family="IBM Plex Mono, ui-monospace, monospace"
+    font-size="24"
+  >Live demo: offline path · npm run dev in app/</text>
+  <text
+    x="960"
+    y="900"
+    text-anchor="middle"
+    fill="#585F6E"
+    font-family="IBM Plex Sans, system-ui, sans-serif"
+    font-size="18"
+  >Not a medical device · COPS data CC-BY 4.0</text>
+</svg>
