@@ -223,6 +223,12 @@ export function RevealWipe({
         <clipPath id={clipId}>
           <rect x={0} y={0} width={clipW} height={plotHeight} />
         </clipPath>
+        {/* Falls off to the left, so the bloom trails the edge rather than
+            haloing it symmetrically and blurring where the boundary actually is. */}
+        <linearGradient id="reveal-edge-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="var(--brass)" stopOpacity={0} />
+          <stop offset="100%" stopColor="var(--brass)" stopOpacity={0.55} />
+        </linearGradient>
       </defs>
 
       {/* Truth — clipped to swept region (uncovered, not faded) */}
@@ -236,6 +242,24 @@ export function RevealWipe({
         clipPath={`url(#${clipId})`}
         style={{ pointerEvents: "none" }}
       />
+
+      {/*
+        Leading edge. A soft brass bloom just behind the rule, so the boundary
+        between "hidden" and "revealed" is legible at projector distance where a
+        2px hairline is not. It only appears once the sweep has started —
+        parked at zero it would read as an ornament on the y-axis.
+      */}
+      {revealX > 0.001 && (
+        <rect
+          className="astro-reveal-edge"
+          x={hx - 10}
+          y={0}
+          width={10}
+          height={plotHeight}
+          fill="url(#reveal-edge-grad)"
+          style={{ pointerEvents: "none" }}
+        />
+      )}
 
       {/* Handle rule */}
       <line
@@ -290,7 +314,7 @@ export function RevealWipe({
           fill="var(--brass-hi)"
           style={{
             fontFamily: "var(--font-mono), ui-monospace, monospace",
-            fontSize: 13,
+            fontSize: 14,
             fontVariantNumeric: "tabular-nums",
           }}
         >

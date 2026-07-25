@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import type { Bundle } from "./contract";
+import type { BundleOrigin } from "./source";
 
 export type SensorMask = { left: boolean; right: boolean };
 export type EvidenceLayers = {
@@ -13,6 +14,8 @@ export type EvidenceLayers = {
 type Store = {
   participant: string;
   bundle: Bundle | null;
+  /** Where the loaded bundle actually came from, never the configured mode. */
+  origin: BundleOrigin | null;
   loading: boolean;
   hour: number | null;
   mask: SensorMask;
@@ -24,6 +27,7 @@ type Store = {
 export const useStore = create<Store>((set) => ({
   participant: "COPS-29",
   bundle: null,
+  origin: null,
   loading: true,
   hour: null,
   mask: { left: true, right: true },

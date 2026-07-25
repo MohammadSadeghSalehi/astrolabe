@@ -30,7 +30,7 @@ export function ClinicianView() {
     let cancelled = false;
     (async () => {
       try {
-        const b = await getBundle(PARTICIPANT);
+        const { bundle: b } = await getBundle(PARTICIPANT);
         if (!cancelled) {
           setBundle(b);
           setLoading(false);

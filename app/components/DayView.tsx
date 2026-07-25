@@ -22,6 +22,7 @@ export function DayView() {
   const {
     participant,
     bundle,
+    origin,
     loading,
     hour,
     mask,
@@ -39,10 +40,11 @@ export function DayView() {
       try {
         // Stress case: any wrist dropped → nowrist bundle (matches handoff)
         const nowrist = !m.left || !m.right;
-        const b = await getBundle(p, { nowrist });
+        const { bundle: b, origin } = await getBundle(p, { nowrist });
         if (seq !== loadSeq.current) return;
         set({
           bundle: b,
+          origin,
           loading: false,
           revealX: 0,
           hour: null,
@@ -50,7 +52,7 @@ export function DayView() {
       } catch (err) {
         console.error(err);
         if (seq !== loadSeq.current) return;
-        set({ bundle: null, loading: false });
+        set({ bundle: null, origin: null, loading: false });
       }
     },
     [set],
@@ -240,17 +242,28 @@ export function DayView() {
       {/* Track E — voice note; mounts under day chrome, does not rewrite Timeline */}
       <VoiceNote />
 
+      {/*
+        Reports where this bundle actually came from, not what DEMO_MODE was set
+        to. Those differ exactly when something is wrong — a bad key or a missing
+        grant drops every request onto the local fallback while the env var still
+        says `supabase` — and a footer reading the env var would sit there
+        claiming a database it never reached. Not a caption worth getting wrong
+        in a project whose whole argument is that what is displayed is checkable.
+      */}
       <footer className="pb-6 text-[16px]" style={{ color: "var(--ink-2)" }}>
-        {isOfflineDemo() ? (
+        {origin === "supabase" ? (
           <>
-            Offline demo path · bundles from{" "}
+            Online · bundles from Supabase ·{" "}
+            <span className="font-mono">realtime events</span>
+          </>
+        ) : origin === "local" ? (
+          <>
+            {isOfflineDemo() ? "Offline demo path" : "Supabase unreachable — local fallback"}
+            {" · bundles from "}
             <span className="font-mono">/public/bundles</span>
           </>
         ) : (
-          <>
-            Online · Supabase bundles + realtime events ·{" "}
-            <span className="font-mono">DEMO_MODE=supabase</span>
-          </>
+          <>Loading bundle…</>
         )}
         {" · "}
         COPS data CC-BY 4.0 · not a medical device

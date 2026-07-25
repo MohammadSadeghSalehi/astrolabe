@@ -24,6 +24,8 @@ export type TimelineProps = {
 const MARGIN = { top: 40, right: 28, bottom: 64, left: 64 };
 const MIN_TICK_GAP_PX = 56;
 const MIN_MED_LABEL_GAP_PX = 48;
+/** Clearance a medication time needs from an x-axis tick before it is dropped. */
+const MIN_AXIS_MED_GAP_PX = 44;
 const ABSTAIN_LABEL_MIN_W = 28;
 
 function formatYLabel(i: number): string {
@@ -203,7 +205,23 @@ export function Timeline({
         break;
       }
     }
-    // Recount hidden after force first/last
+    // Now drop any med time that would land on an x-axis tick.
+    //
+    // The two placers each avoid collisions within themselves and neither knew
+    // about the other, so `20:50` (a tick) and `21:30` (a dose) overprinted into
+    // an unreadable smear at every width. They sit on different baselines but
+    // only 16px apart, which at 14px type reads as one cluster. The axis wins:
+    // it is the frame, a dose time is repeated in the tooltip, and the diamond
+    // stays either way so no event is hidden.
+    const tickXs = xTicks.map((t) => t.x);
+    for (const it of items) {
+      if (!it.showLabel) continue;
+      if (tickXs.some((tx) => Math.abs(tx - it.x) < MIN_AXIS_MED_GAP_PX)) {
+        it.showLabel = false;
+      }
+    }
+
+    // Recount hidden after force first/last and the axis pass
     hidden = items.filter((it) => !it.showLabel).length;
 
     const overflow =
@@ -215,7 +233,7 @@ export function Timeline({
         : null;
 
     return { items, overflow };
-  }, [meds, xScale, plotW]);
+  }, [meds, xScale, plotW, xTicks]);
 
   const nearestIndex = (clientX: number, svg: SVGSVGElement) => {
     const pt = svg.createSVGPoint();
@@ -272,7 +290,7 @@ export function Timeline({
     <div ref={wrapRef} className="relative w-full">
       {wristDropped && (
         <p
-          className="mb-2 font-mono text-[13px] tracking-wide"
+          className="mb-2 font-mono text-[14px] tracking-wide"
           style={{ color: "var(--ink-2)" }}
         >
           {!mask.left && !mask.right
@@ -368,7 +386,7 @@ export function Timeline({
               fill="var(--ink-2)"
               style={{
                 fontFamily: "var(--font-mono), ui-monospace, monospace",
-                fontSize: 13,
+                fontSize: 14,
               }}
             >
               {t}
@@ -469,7 +487,9 @@ export function Timeline({
                 };
               });
               // Label at most 3 widest runs; drop a label if its pill would collide
-              const pillW = 86;
+              // Sized for the 14px caption below; the old 86x15 box was built
+              // around 11px type and clips the word outright at the floor size.
+              const pillW = 112;
               const labelSet = new Set<number>();
               const ranked = [...enriched].sort(
                 (u, v) => v.w - u.w || v.nPts - u.nPts,
@@ -510,7 +530,7 @@ export function Timeline({
                     />
                     {showTitle && (
                       // Sit in the top margin (negative y) so MAP/truth never cover it
-                      <g transform={`translate(${pillX}, -18)`}>
+                      <g transform={`translate(${pillX}, -22)`}>
                         <rect
                           width={pillW}
                           height={16}
@@ -528,8 +548,8 @@ export function Timeline({
                           style={{
                             fontFamily:
                               "var(--font-mono), ui-monospace, monospace",
-                            fontSize: 11,
-                            letterSpacing: "0.08em",
+                            fontSize: 14,
+                            letterSpacing: "0.06em",
                           }}
                         >
                           ABSTAINED
@@ -562,7 +582,15 @@ export function Timeline({
           {/* Medication events — diamonds always; times when they fit */}
           {!loading &&
             medLayout.items.map(({ ev, x, showLabel, label }, i) => (
-              <g key={`med-${ev.t}-${i}`}>
+              /* Doses land in clock order, ahead of the refusal cascade. These
+                 are the one thing on the chart the patient actually reported,
+                 so they arrive first and the model's silence fills in around
+                 them — which is the correct reading of the day. */
+              <g
+                key={`med-${ev.t}-${i}`}
+                className="astro-fade-up"
+                style={{ animationDelay: `${i * 45}ms` }}
+              >
                 <line
                   x1={x}
                   y1={10}
@@ -584,7 +612,7 @@ export function Timeline({
                     fill="var(--ink-2)"
                     style={{
                       fontFamily: "var(--font-mono), ui-monospace, monospace",
-                      fontSize: 13,
+                      fontSize: 14,
                     }}
                   >
                     {label}
@@ -600,7 +628,7 @@ export function Timeline({
               fill="var(--ink-2)"
               style={{
                 fontFamily: "var(--font-mono), ui-monospace, monospace",
-                fontSize: 13,
+                fontSize: 14,
               }}
             >
               {medLayout.overflow.text}
@@ -758,8 +786,9 @@ function Tooltip({
   const abstained = point.abstain || !point.state;
   const reason = point.reason ?? "insufficient evidence";
   // Wide enough for peak-probability reasons; never truncate the specific string
-  const tw = abstained ? Math.min(320, Math.max(200, reason.length * 7 + 24)) : 168;
-  const th = abstained ? 78 : 64;
+  // Sized for 14px text: ~7.6px per character at this mono size, plus padding.
+  const tw = abstained ? Math.min(360, Math.max(224, reason.length * 7.6 + 28)) : 190;
+  const th = abstained ? 92 : 72;
   const flip = x > plotW - tw - 12;
   const tx = flip ? x - tw - 8 : x + 8;
   const name = abstained
@@ -779,19 +808,19 @@ function Tooltip({
         strokeWidth={1}
       />
       <text
-        x={10}
-        y={18}
+        x={11}
+        y={20}
         fill="var(--ink)"
         style={{
           fontFamily: "var(--font-mono), ui-monospace, monospace",
-          fontSize: 13,
+          fontSize: 14,
         }}
       >
         {point.t}
       </text>
       <text
-        x={10}
-        y={36}
+        x={11}
+        y={41}
         fill="var(--ink)"
         style={{
           fontFamily: "var(--font-sans), system-ui, sans-serif",
@@ -803,23 +832,23 @@ function Tooltip({
       {abstained ? (
         <>
           <text
-            x={10}
-            y={54}
+            x={11}
+            y={62}
             fill="var(--ink-2)"
             style={{
               fontFamily: "var(--font-sans), system-ui, sans-serif",
-              fontSize: 12,
+              fontSize: 14,
             }}
           >
             {reason}
           </text>
           <text
-            x={10}
-            y={70}
+            x={11}
+            y={81}
             fill="var(--ink-2)"
             style={{
               fontFamily: "var(--font-mono), ui-monospace, monospace",
-              fontSize: 12,
+              fontSize: 14,
             }}
           >
             {conf}
@@ -827,12 +856,12 @@ function Tooltip({
         </>
       ) : (
         <text
-          x={10}
-          y={52}
+          x={11}
+          y={60}
           fill="var(--ink-2)"
           style={{
             fontFamily: "var(--font-sans), system-ui, sans-serif",
-            fontSize: 12,
+            fontSize: 14,
           }}
         >
           {evidence}

@@ -34,7 +34,7 @@ export function CardTitle({
   return (
     <h2
       className={cn(
-        "text-[13px] font-medium uppercase tracking-[0.08em]",
+        "text-[14px] font-medium uppercase tracking-[0.08em]",
         className,
       )}
       style={{ color: "var(--brass)" }}

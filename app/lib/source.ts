@@ -1,6 +1,11 @@
 import type { Bundle } from "./contract";
 import { createBrowserClient } from "./db";
 
+/** Where a bundle actually came from — not where it was configured to come from. */
+export type BundleOrigin = "supabase" | "local";
+
+export type LoadedBundle = { bundle: Bundle; origin: BundleOrigin };
+
 /**
  * Single place that knows where bundles come from.
  *
@@ -9,11 +14,19 @@ import { createBrowserClient } from "./db";
  *
  * Online failures fall back to local JSON so wifi-off and misconfig never crash
  * the pitch path.
+ *
+ * The origin is RETURNED rather than inferred from the env var by the caller,
+ * because those two things come apart precisely when it matters. A misconfigured
+ * key or a missing grant sends every request down the local fallback while
+ * `DEMO_MODE` still says `supabase`, and an interface that reads the env var
+ * would stand there claiming a live database it is not talking to. This app
+ * argues that displayed claims should be checkable; its own footer is not
+ * exempt.
  */
 export async function getBundle(
   participant: string,
   opts?: { nowrist?: boolean },
-): Promise<Bundle> {
+): Promise<LoadedBundle> {
   const mode = (process.env.NEXT_PUBLIC_DEMO_MODE ?? "offline").toLowerCase();
   const online = mode === "online" || mode === "supabase";
   const variant = opts?.nowrist ? "nowrist" : "full";
@@ -21,7 +34,7 @@ export async function getBundle(
   if (online) {
     try {
       const bundle = await fetchBundleFromSupabase(participant, variant);
-      if (bundle) return bundle;
+      if (bundle) return { bundle, origin: "supabase" };
       console.warn(
         "[source] online path returned no row; falling back to local bundles",
       );
@@ -33,7 +46,10 @@ export async function getBundle(
     }
   }
 
-  return fetchBundleLocal(participant, opts?.nowrist === true);
+  return {
+    bundle: await fetchBundleLocal(participant, opts?.nowrist === true),
+    origin: "local",
+  };
 }
 
 async function fetchBundleLocal(
