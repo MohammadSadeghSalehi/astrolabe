@@ -53,16 +53,18 @@ pass(`URL ${url}`);
 
 const GRANT_SQL = `  Run this in the Supabase SQL editor:
 
-    grant usage  on schema public       to anon, authenticated;
+    grant usage  on schema public       to anon, authenticated, service_role;
+    grant all    on public.participants to service_role;
+    grant all    on public.bundles      to service_role;
+    grant all    on public.events       to service_role;
     grant select on public.participants to anon, authenticated;
     grant select on public.bundles      to anon, authenticated;
     grant select on public.events       to anon, authenticated;
     grant insert on public.events       to authenticated;`;
 
-const SEED_SQL = `  Seed it (service role, shell only — never in app/):
+const SEED_SQL = `  Put the service role in app/.env.local, then seed:
 
-    export SUPABASE_URL=${url}
-    export SUPABASE_SERVICE_ROLE_KEY=<Settings → API → service_role>
+    SUPABASE_SERVICE_ROLE_KEY=<Settings → API → service_role>
     npx --yes tsx supabase/seed.ts`;
 
 let ok = true;
@@ -96,6 +98,36 @@ for (const table of ["participants", "bundles", "events"]) {
   } else {
     pass(`${table}: readable, has rows`);
   }
+}
+
+/*
+ * The service role's WRITE access, checked separately.
+ *
+ * service_role bypassing RLS is not the same as service_role holding table
+ * privileges, and a dashboard-created table grants both automatically while a
+ * raw migration grants neither. So the read side can be perfectly healthy while
+ * the seed cannot insert a row — which is exactly how this failed, with the one
+ * key that is supposed to be able to do anything.
+ */
+const svc = env.SUPABASE_SERVICE_ROLE_KEY;
+if (svc) {
+  const res = await fetch(`${url}/rest/v1/participants?select=id&limit=1`, {
+    headers: { apikey: svc, Authorization: `Bearer ${svc}` },
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    if (/42501/.test(body)) {
+      fail("service_role cannot access the tables (GRANT missing for it too)", GRANT_SQL);
+      ok = false;
+    } else {
+      fail(`service_role check: HTTP ${res.status} ${body.slice(0, 120)}`);
+      ok = false;
+    }
+  } else {
+    pass("service_role can reach the tables (seed will work)");
+  }
+} else {
+  console.log("  · service_role not set — seeding will not be possible");
 }
 
 // The bundle the app will actually request, and whether it is the honest one.

@@ -53,11 +53,29 @@ create policy "insert own events" on events       for insert
 -- the anon key gets `42501 permission denied for table bundles` — an error that
 -- looks like a policy problem and is not one. The app falls back to local JSON
 -- and the online path silently never runs.
-grant usage on schema public to anon, authenticated;
+-- service_role must be granted explicitly too. It bypasses RLS, which is a
+-- different thing from having table privileges, and the distinction is easy to
+-- miss because a dashboard-created table gets both automatically. A table
+-- created by a raw migration gets neither, so the seed fails with the same
+-- `permission denied` as the browser did — from the key that is supposed to be
+-- able to do anything.
+grant usage on schema public to anon, authenticated, service_role;
+
+grant all    on public.participants to service_role;
+grant all    on public.bundles      to service_role;
+grant all    on public.events       to service_role;
+
 grant select on public.participants to anon, authenticated;
 grant select on public.bundles      to anon, authenticated;
 grant select on public.events       to anon, authenticated;
 grant insert on public.events       to authenticated;
+
+-- Anything added to this schema later inherits the same grants, so a second
+-- table does not reintroduce the bug a migration at a time.
+alter default privileges in schema public
+  grant all on tables to service_role;
+alter default privileges in schema public
+  grant select on tables to anon, authenticated;
 
 -- Realtime for voice-track event inserts (subscribeEvents helper).
 -- Enable replication on events in the dashboard, or:
