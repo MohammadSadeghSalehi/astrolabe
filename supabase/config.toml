@@ -1,0 +1,30 @@
+# Minimal Supabase CLI config for Astrolabe.
+# Full init via `npx supabase init` expands this; migration SQL is authoritative.
+
+project_id = "astrolabe"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+major_version = 15
+
+[db.seed]
+enabled = false
+# Seed via `npx tsx supabase/seed.ts` (service role), not SQL dump.
+
+[realtime]
+enabled = true
+
+[studio]
+enabled = true
+port = 54323
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
