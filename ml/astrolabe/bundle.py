@@ -34,6 +34,39 @@ STATE_NAMES = [
 ]
 
 
+def infer_posterior(
+    features: pd.DataFrame,
+    emissions: OrdinalEmissions,
+    transitions: TransitionModel,
+    feature_cols: list[str],
+    temperature: float,
+    group_cols: tuple[str, ...] = ("participant", "day"),
+) -> tuple[np.ndarray, np.ndarray]:
+    """The inference chain, in one place: emissions -> temper -> smooth.
+
+    Calibration MUST be fitted on the output of this function, not on the raw
+    emission posterior. Fitting an interval mass on one representation and
+    applying it to another is how coverage silently lands at 0.54 against a 0.90
+    target — the two distributions have completely different sharpness.
+
+    Returns (posterior, missing_mask).
+    """
+    features = features.reset_index(drop=True)
+    log_lik = emissions.log_likelihood(features[feature_cols]) / max(temperature, 1e-3)
+    missing = (features["coverage"] < 0.6).to_numpy()
+    log_lik = uniform_where_missing(log_lik, missing)
+
+    posterior = np.zeros_like(log_lik)
+    for _, g in features.groupby(list(group_cols), sort=False):
+        pos = g.index.to_numpy()
+        order = np.argsort(g["t_min"].to_numpy())
+        gamma, _ = forward_backward(log_lik[pos][order], transitions)
+        out = np.empty_like(gamma)
+        out[order] = gamma
+        posterior[pos] = out
+    return posterior, missing
+
+
 def drop_wrist(X: pd.DataFrame, side: str) -> pd.DataFrame:
     """Blank one wrist's features, and every asymmetry that depended on it.
 
@@ -56,6 +89,8 @@ def build_series(
     transitions: TransitionModel,
     abstention: AbstentionRule,
     feature_cols: list[str],
+    tremor_detector=None,
+    tremor_cols: list[str] | None = None,
 ) -> tuple[list[dict], np.ndarray, np.ndarray]:
     """Run the full inference chain for one participant-day.
 
@@ -63,17 +98,22 @@ def build_series(
     """
     features = features.sort_values("t_min").reset_index(drop=True)
 
-    # emissions -> LIKELIHOODS (prior divided out) -> temperature
-    log_lik = emissions.log_likelihood(features[feature_cols])
-    log_lik = log_lik / max(calibrator.temperature, 1e-3)
-
-    # a window with too little coverage carries no information
-    missing = (features["coverage"] < 0.6).to_numpy()
-    log_lik = uniform_where_missing(log_lik, missing)
-
-    posterior, _ = forward_backward(log_lik, transitions)
+    posterior, missing = infer_posterior(
+        features, emissions, transitions, feature_cols, calibrator.temperature
+    )
     intervals = credible_interval(posterior, mass=calibrator.mass)
     abstain = abstention.should_abstain(posterior, intervals) | missing
+
+    # Tremor is a genuine model output — the one target that generalises across
+    # people (AUC 0.722 held-out). It is computed independently of the kinesia
+    # chain because it does NOT go through the HMM: tremor is intermittent
+    # within an hour, so smoothing it over a trajectory would erase the thing
+    # being measured.
+    if tremor_detector is not None and tremor_cols:
+        tremor_p = tremor_detector.predict_proba(features[tremor_cols])
+        tremor_conf = tremor_detector.confidence(features[tremor_cols])
+    else:
+        tremor_p = tremor_conf = None
 
     by_hour = {(h.day, h.hour_end): h for h in hours}
     series: list[dict] = []
@@ -100,19 +140,24 @@ def build_series(
         }
         if is_abstain:
             entry["state"] = None
-            entry["tremor_p"] = None
         else:
             entry["state"] = {
                 "posterior": [round(float(v), 4) for v in p],
                 "map": int(p.argmax()),
                 "ci": [lo, hi],
             }
-            # tremor probability from the reported score until a dedicated head
-            # exists; flagged so it is never mistaken for a model output
-            entry["tremor_p"] = (
-                round(float(min(1.0, (hour.tremor_score or 0) / 2)), 2)
-                if hour is not None else None
-            )
+
+        # Tremor is reported even where the KINESIA chain abstains: they are
+        # separate claims with separate evidence, and refusing one is not a
+        # reason to withhold the other. It is suppressed only where the sensor
+        # itself was missing.
+        if tremor_p is None or missing[i]:
+            entry["tremor_p"] = None
+            entry["tremor_confidence"] = None
+        else:
+            entry["tremor_p"] = round(float(tremor_p[i]), 3)
+            entry["tremor_confidence"] = round(float(tremor_conf[i]), 3)
+
         series.append(entry)
 
     truth = features["state"].to_numpy(dtype=int)
