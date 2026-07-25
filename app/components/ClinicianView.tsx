@@ -70,7 +70,7 @@ export function ClinicianView() {
 
   if (loading) {
     return (
-      <div className="clinician-light min-h-full">
+      <div className="clinician-light min-h-screen">
         <div className="mx-auto max-w-[880px] px-6 py-10">
           <p className="text-[15px]" style={{ color: "var(--ink-2)" }}>
             Loading clinician handoff…
@@ -82,7 +82,7 @@ export function ClinicianView() {
 
   if (error || !bundle || !derived) {
     return (
-      <div className="clinician-light min-h-full">
+      <div className="clinician-light min-h-screen">
         <div className="mx-auto max-w-[880px] px-6 py-10">
           <p className="text-[15px]" style={{ color: "var(--ink)" }}>
             {error ?? "No bundle"}
@@ -107,7 +107,7 @@ export function ClinicianView() {
       : "—";
 
   return (
-    <div className="clinician-light min-h-full">
+    <div className="clinician-light min-h-screen">
       <div className="mx-auto flex w-full max-w-[880px] flex-col gap-6 px-6 py-8 md:py-10">
         {/* Header */}
         <header className="print-break flex flex-wrap items-start justify-between gap-4">
