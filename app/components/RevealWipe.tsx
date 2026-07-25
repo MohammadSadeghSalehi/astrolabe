@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { line as d3line, curveMonotoneX } from "d3-shape";
 import { animate } from "motion";
 import type { SeriesPoint } from "@/lib/contract";
@@ -38,7 +38,9 @@ export function RevealWipe({
     svgLeft: number;
   }>({ active: false, svgLeft: 0 });
   const [sweeping, setSweeping] = useState(false);
-  const clipId = useRef(`reveal-clip-${Math.random().toString(36).slice(2, 9)}`);
+  // Stable SVG id — strip React useId colons (invalid in some SVG url(#) contexts)
+  const reactId = useId();
+  const clipId = `reveal-clip-${reactId.replace(/:/g, "")}`;
 
   const valid =
     Array.isArray(truth) &&
@@ -89,8 +91,7 @@ export function RevealWipe({
       return { label: "drag to reveal →", mae: null, hours: 0 };
     }
     const mae = sum / n;
-    const hours = (n * (series[0] ? 10 : 10)) / 60; // 10-min steps
-    // Better: count steps * resolution
+    // 10-min steps
     const stepMin = 10;
     const revealedHours = (n * stepMin) / 60;
     return {
@@ -119,17 +120,11 @@ export function RevealWipe({
 
   const onPointerDown = (e: React.PointerEvent<SVGRectElement>) => {
     e.currentTarget.setPointerCapture(e.pointerId);
-    const svg = e.currentTarget.ownerSVGElement;
-    const rect = svg?.getBoundingClientRect();
-    // plot is translated by margin — handle is in plot coords; use local client
-    const plotEl = e.currentTarget.parentElement;
-    // Use the invisible hit rect's CTM: map clientX to plot x via bounding box of plot group
     dragRef.current.active = true;
     const hitBox = e.currentTarget.getBoundingClientRect();
-    // Store offset: left edge of plot = hit center - revealX*plotWidth when centered
-    // Simpler: use data attribute parent width
-    const plotLeft =
-      hitBox.left + hitBox.width / 2 - revealX * plotWidth;
+    // Handle may be offset at rest (min hx); map clientX via hit-rect centre
+    const displayHx = Math.max(revealX * plotWidth, revealX <= 0.001 ? 12 : 0);
+    const plotLeft = hitBox.left + hitBox.width / 2 - displayHx;
     dragRef.current.svgLeft = plotLeft;
 
     const move = (clientX: number) => {
@@ -178,6 +173,7 @@ export function RevealWipe({
         return;
       }
 
+      // prefers-reduced-motion: instant cut to full reveal (drag still works)
       if (prefersReducedMotion()) {
         onRevealX(1);
         return;
@@ -190,7 +186,6 @@ export function RevealWipe({
         onUpdate: (v) => onRevealX(v),
         onComplete: () => setSweeping(false),
       });
-      // store cancel on R again handled by sweeping flag + reset
       void controls;
     };
     window.addEventListener("keydown", onKey);
@@ -199,15 +194,20 @@ export function RevealWipe({
 
   if (!valid) return null;
 
-  const hx = revealX * plotWidth;
-  // Wider pill for MAE string; keep clear of left legend (~210px) at revealX≈0
+  // Clip uses true revealX; handle is nudged right at rest so it clears the y-axis labels
+  const clipW = Math.max(0, revealX * plotWidth);
+  const hx =
+    revealX <= 0.001
+      ? Math.max(clipW, 12)
+      : clipW;
+  // Wider pill for MAE string; park on right half at revealX≈0 so it never collides with left legend
   const pillW = revealX <= 0.001 ? 148 : 176;
   const legendClear = 210;
   let pillX: number;
   if (revealX <= 0.001) {
-    // Park the "drag to reveal" cue mid-right so it doesn't cover series labels
+    // Always right half when parked
     pillX = Math.min(
-      Math.max(plotWidth * 0.55 - pillW / 2, legendClear),
+      Math.max(plotWidth * 0.55 - pillW / 2, legendClear, plotWidth * 0.5),
       Math.max(0, plotWidth - pillW),
     );
   } else {
@@ -220,8 +220,8 @@ export function RevealWipe({
   return (
     <g id="reveal-wipe" style={{ pointerEvents: "all" }}>
       <defs>
-        <clipPath id={clipId.current}>
-          <rect x={0} y={0} width={Math.max(0, hx)} height={plotHeight} />
+        <clipPath id={clipId}>
+          <rect x={0} y={0} width={clipW} height={plotHeight} />
         </clipPath>
       </defs>
 
@@ -233,7 +233,7 @@ export function RevealWipe({
         strokeWidth={2.6}
         strokeLinejoin="round"
         strokeLinecap="round"
-        clipPath={`url(#${clipId.current})`}
+        clipPath={`url(#${clipId})`}
         style={{ pointerEvents: "none" }}
       />
 
@@ -273,7 +273,7 @@ export function RevealWipe({
         onPointerDown={onPointerDown}
       />
 
-      {/* MAE pill */}
+      {/* MAE pill — top caption lane, right-parked at rest */}
       <g transform={`translate(${pillX}, -28)`} style={{ pointerEvents: "none" }}>
         <rect
           width={pillW}
@@ -290,7 +290,7 @@ export function RevealWipe({
           fill="var(--brass-hi)"
           style={{
             fontFamily: "var(--font-mono), ui-monospace, monospace",
-            fontSize: 12,
+            fontSize: 13,
             fontVariantNumeric: "tabular-nums",
           }}
         >

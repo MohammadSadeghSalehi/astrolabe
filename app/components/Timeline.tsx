@@ -25,7 +25,6 @@ const MARGIN = { top: 40, right: 28, bottom: 64, left: 64 };
 const MIN_TICK_GAP_PX = 56;
 const MIN_MED_LABEL_GAP_PX = 48;
 const ABSTAIN_LABEL_MIN_W = 28;
-const ABSTAIN_REASON_MIN_W = 110;
 
 function formatYLabel(i: number): string {
   const score = i - 3;
@@ -76,7 +75,8 @@ export function Timeline({
     return () => ro.disconnect();
   }, []);
 
-  const series = bundle?.series ?? [];
+  // Stabilize empty fallback — inline `?? []` allocates a new array every render
+  const series = useMemo(() => bundle?.series ?? [], [bundle]);
   const plotW = Math.max(40, width - MARGIN.left - MARGIN.right);
   const plotH = height - MARGIN.top - MARGIN.bottom;
 
@@ -350,7 +350,7 @@ export function Timeline({
             </g>
           ))}
 
-          {/* X ticks — collision-pruned, end-anchored last tick */}
+          {/* X ticks — dense mono stays 13 */}
           {xTicks.map(({ t, x, anchor }) => (
             <text
               key={t}
@@ -397,9 +397,37 @@ export function Timeline({
             </>
           )}
 
-          {/* Abstention holes — dashed absence always; captions on widest runs only */}
+          {/*
+            Abstention holes.
+            totalRefusal: per-hour dashed vertical rhythm (not one giant empty box)
+            + no per-run ABSTAINED pills (centrepiece + reveal pill own the caption lane).
+            Partial abstain: dashed run boxes + up to 3 ABSTAINED pills.
+          */}
+          {!loading && layers.reconstructed && totalRefusal && (
+            <g pointerEvents="none" aria-hidden>
+              {series.map((p, i) => {
+                // 10-min steps → tick every hour (:00)
+                if (!p.t.endsWith(":00")) return null;
+                const x = xScale(parseTime(p.t));
+                return (
+                  <line
+                    key={`abs-tick-${p.t}-${i}`}
+                    x1={x}
+                    y1={4}
+                    x2={x}
+                    y2={plotH - 4}
+                    stroke="var(--ink-2)"
+                    strokeWidth={1.4}
+                    strokeDasharray="5 6"
+                    strokeOpacity={0.55}
+                  />
+                );
+              })}
+            </g>
+          )}
           {!loading &&
             layers.reconstructed &&
+            !totalRefusal &&
             (() => {
               const pad =
                 series.length > 1
@@ -446,7 +474,6 @@ export function Timeline({
                   labelSet.has(r.idx) &&
                   (r.w >= ABSTAIN_LABEL_MIN_W || r.nPts >= 2);
                 // Reason lives in the hover tooltip — never paint it on the chart
-                // (it collides with MAP peaks and the reveal line).
                 const cx = r.left + r.w / 2;
                 const pillX = Math.min(
                   Math.max(cx - pillW / 2, 0),
@@ -469,7 +496,7 @@ export function Timeline({
                       <g transform={`translate(${pillX}, -18)`}>
                         <rect
                           width={pillW}
-                          height={15}
+                          height={16}
                           rx={3}
                           fill="var(--page)"
                           stroke="var(--ink-2)"
@@ -478,13 +505,13 @@ export function Timeline({
                         />
                         <text
                           x={pillW / 2}
-                          y={11}
+                          y={12}
                           textAnchor="middle"
                           fill="var(--ink)"
                           style={{
                             fontFamily:
                               "var(--font-mono), ui-monospace, monospace",
-                            fontSize: 10,
+                            fontSize: 11,
                             letterSpacing: "0.08em",
                           }}
                         >
@@ -540,7 +567,7 @@ export function Timeline({
                     fill="var(--ink-2)"
                     style={{
                       fontFamily: "var(--font-mono), ui-monospace, monospace",
-                      fontSize: 11,
+                      fontSize: 13,
                     }}
                   >
                     {label}
@@ -556,7 +583,7 @@ export function Timeline({
               fill="var(--ink-2)"
               style={{
                 fontFamily: "var(--font-mono), ui-monospace, monospace",
-                fontSize: 11,
+                fontSize: 13,
               }}
             >
               {medLayout.overflow.text}
@@ -583,7 +610,7 @@ export function Timeline({
             </g>
           )}
 
-          {/* Reveal layer — last child */}
+          {/* Reveal layer — last child under centrepiece */}
           <g id="reveal-layer">
             {!loading && bundle && (
               <RevealWipe
@@ -657,7 +684,7 @@ export function Timeline({
           )}
         </g>
 
-        {/* Series identity — top-left of SVG, clear of the reveal pill */}
+        {/* Series identity — top-left of SVG, clear of the right-parked reveal pill */}
         {!loading && series.length > 0 && layers.reconstructed && (
           <g transform={`translate(${MARGIN.left}, 14)`}>
             <circle cx={4} cy={-3} r={3.5} fill="var(--s1-reconstructed)" />
@@ -667,21 +694,21 @@ export function Timeline({
               fill="var(--s1-reconstructed)"
               style={{
                 fontFamily: "var(--font-sans), system-ui, sans-serif",
-                fontSize: 12,
+                fontSize: 14,
               }}
             >
               reconstruction
             </text>
             {bundle?.truth && (
               <>
-                <circle cx={128} cy={-3} r={3.5} fill="var(--s2-truth)" />
+                <circle cx={138} cy={-3} r={3.5} fill="var(--s2-truth)" />
                 <text
-                  x={136}
+                  x={146}
                   y={0}
                   fill="var(--s2-truth)"
                   style={{
                     fontFamily: "var(--font-sans), system-ui, sans-serif",
-                    fontSize: 12,
+                    fontSize: 14,
                   }}
                 >
                   diary truth
@@ -704,23 +731,24 @@ function Tooltip({
   plotW: number;
   point: SeriesPoint;
 }) {
-  const flip = x > plotW - 140;
-  const tw = 168;
+  const abstained = point.abstain || !point.state;
+  const reason = point.reason ?? "insufficient evidence";
+  // Wide enough for peak-probability reasons; never truncate the specific string
+  const tw = abstained ? Math.min(320, Math.max(200, reason.length * 7 + 24)) : 168;
+  const th = abstained ? 78 : 64;
+  const flip = x > plotW - tw - 12;
   const tx = flip ? x - tw - 8 : x + 8;
-  const name =
-    point.abstain || !point.state
-      ? "Abstained"
-      : (KINESIA_LABELS[point.state.map] ?? `state ${point.state.map}`);
+  const name = abstained
+    ? "Abstained"
+    : (KINESIA_LABELS[point.state!.map] ?? `state ${point.state!.map}`);
   const evidence = EVIDENCE_WORDS[point.evidence] ?? point.evidence;
-  const detail = point.abstain
-    ? (point.reason ?? "insufficient evidence")
-    : `confidence ${point.confidence.toFixed(2)}`;
+  const conf = `confidence ${point.confidence.toFixed(2)}`;
 
   return (
     <g transform={`translate(${tx}, 12)`}>
       <rect
         width={tw}
-        height={64}
+        height={th}
         rx={4}
         fill="var(--surface)"
         stroke="var(--axis)"
@@ -743,24 +771,51 @@ function Tooltip({
         fill="var(--ink)"
         style={{
           fontFamily: "var(--font-sans), system-ui, sans-serif",
-          fontSize: 13,
+          fontSize: 14,
         }}
       >
         {name}
       </text>
-      <text
-        x={10}
-        y={52}
-        fill="var(--ink-2)"
-        style={{
-          fontFamily: "var(--font-sans), system-ui, sans-serif",
-          fontSize: 12,
-        }}
-      >
-        {evidence}
-        {" · "}
-        {detail.length > 28 ? `${detail.slice(0, 26)}…` : detail}
-      </text>
+      {abstained ? (
+        <>
+          <text
+            x={10}
+            y={54}
+            fill="var(--ink-2)"
+            style={{
+              fontFamily: "var(--font-sans), system-ui, sans-serif",
+              fontSize: 12,
+            }}
+          >
+            {reason}
+          </text>
+          <text
+            x={10}
+            y={70}
+            fill="var(--ink-2)"
+            style={{
+              fontFamily: "var(--font-mono), ui-monospace, monospace",
+              fontSize: 12,
+            }}
+          >
+            {conf}
+          </text>
+        </>
+      ) : (
+        <text
+          x={10}
+          y={52}
+          fill="var(--ink-2)"
+          style={{
+            fontFamily: "var(--font-sans), system-ui, sans-serif",
+            fontSize: 12,
+          }}
+        >
+          {evidence}
+          {" · "}
+          {conf}
+        </text>
+      )}
     </g>
   );
 }
