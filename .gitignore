@@ -58,3 +58,6 @@ desktop.ini
 # ── scratch ───────────────────────────────────────────────────────────────────
 scratch/
 *.log
+
+# trained model artifacts (regenerate with ml/scripts/train*.py)
+data/cops/artifacts/
