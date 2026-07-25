@@ -119,7 +119,7 @@ export function DayView() {
     bundle?.day != null ? `day ${bundle.day}` : "one day";
 
   return (
-    <div className="mx-auto flex w-full max-w-[1280px] flex-1 flex-col gap-6 px-6 py-8">
+    <div className="mx-auto flex w-full min-w-0 max-w-[1280px] flex-1 flex-col gap-6 px-5 py-8 md:px-6">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <div className="flex items-center gap-2.5">
@@ -193,7 +193,7 @@ export function DayView() {
       <div className="rule" />
 
       <section
-        className="rounded-md border p-4 md:p-5"
+        className="min-w-0 rounded-md border p-4 md:p-5"
         style={{ background: "var(--surface)", borderColor: "var(--axis)" }}
       >
         <Timeline
@@ -224,12 +224,12 @@ export function DayView() {
         Metrics need room for held-out vs day split + selective curve.
         Full-width pair under the timeline; inspector/controls stay below.
       */}
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid min-w-0 gap-4 lg:grid-cols-2 [&>*]:min-w-0">
         <MetricsPanel bundle={bundle} />
         <SelectivePredictionChart bundle={bundle} />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid min-w-0 gap-4 md:grid-cols-2 lg:grid-cols-3 [&>*]:min-w-0">
         <PosteriorInspector bundle={bundle} hour={hour} />
         <SensorToggles
           mask={mask}

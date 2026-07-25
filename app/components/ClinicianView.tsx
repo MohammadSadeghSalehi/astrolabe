@@ -88,7 +88,7 @@ export function ClinicianView() {
             {error ?? "No bundle"}
           </p>
           <Link
-            href="/"
+            href="/day"
             className="mt-4 inline-block text-[14px] underline"
             style={{ color: "var(--brass)" }}
           >
@@ -134,7 +134,7 @@ export function ClinicianView() {
           </div>
           <div className="no-print flex flex-col items-end gap-2 text-[15px]">
             <Link
-              href="/"
+              href="/day"
               className="rounded border px-3 py-1.5 font-medium"
               style={{
                 borderColor: "var(--border)",
