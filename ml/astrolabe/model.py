@@ -84,6 +84,13 @@ class OrdinalEmissions:
             if target.min() == target.max():
                 self.models.append(None)
                 continue
+            # Early stopping carves out a stratified validation split, which
+            # raises if any class has a single member. That happens routinely on
+            # small per-participant fits, so it is guarded rather than left to
+            # blow up mid-run.
+            minority = int(min(target.sum(), len(target) - target.sum()))
+            use_early_stopping = len(target) >= 300 and minority >= 20
+
             clf = HistGradientBoostingClassifier(
                 learning_rate=self.learning_rate,
                 max_iter=self.max_iter,
@@ -91,8 +98,8 @@ class OrdinalEmissions:
                 min_samples_leaf=self.min_samples_leaf,
                 l2_regularization=self.l2_regularization,
                 random_state=self.random_state,
-                early_stopping=True,
-                validation_fraction=0.12,
+                early_stopping=use_early_stopping,
+                validation_fraction=0.12 if use_early_stopping else None,
             )
             clf.fit(X, target)
             self.models.append(clf)
