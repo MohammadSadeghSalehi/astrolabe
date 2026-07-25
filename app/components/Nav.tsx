@@ -2,8 +2,11 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useState } from "react";
 
+/** Four product routes — Home is explicit so the landing is always one tap away. */
 const LINKS = [
+  { href: "/", label: "Home" },
   { href: "/day", label: "Day" },
   { href: "/profile", label: "Profile" },
   { href: "/clinician", label: "Clinician" },
@@ -12,29 +15,39 @@ const LINKS = [
 /**
  * One bar across every route.
  *
- * No hamburger: there are three links, and a drawer would hide them behind a
- * tap for no gain. They wrap onto a second line under ~380px, which is a
- * cheaper failure than a collapsed menu.
+ * Desktop: mark + wordmark left, four links right.
+ * Mobile: plain <details> disclosure — not a hamburger drawer.
  */
 export function Nav({ light = false }: { light?: boolean }) {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
+  const ink = light ? "var(--ink-light)" : "var(--ink)";
+  const ink2 = light ? "var(--ink-2-light)" : "var(--ink-2)";
+  const surface = light ? "var(--surface-light)" : "var(--surface)";
 
   return (
     <nav
       className="w-full border-b"
       style={{
         borderColor: "var(--axis)",
-        background: light ? "var(--surface-light)" : "var(--surface)",
+        background: surface,
       }}
     >
-      <div className="mx-auto flex w-full max-w-[1280px] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-3 md:px-6">
-        <Link href="/" className="flex items-center gap-2.5" aria-label="Astrolabe home">
+      <div className="mx-auto flex w-full max-w-[1280px] items-center justify-between gap-x-6 px-5 py-3 md:px-6">
+        <Link
+          href="/"
+          className="flex min-h-[44px] items-center gap-2.5"
+          aria-label="Astrolabe home"
+          onClick={() => setOpen(false)}
+        >
           <span
             className="inline-block h-7 w-7 shrink-0"
             style={{
               backgroundColor: "var(--brass)",
               mask: "url(/brand/astrolabe-mark.svg) center / contain no-repeat",
-              WebkitMask: "url(/brand/astrolabe-mark.svg) center / contain no-repeat",
+              WebkitMask:
+                "url(/brand/astrolabe-mark.svg) center / contain no-repeat",
             }}
             aria-hidden
           />
@@ -46,19 +59,21 @@ export function Nav({ light = false }: { light?: boolean }) {
           </span>
         </Link>
 
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+        {/* Desktop links */}
+        <div className="hidden items-center gap-x-1 sm:flex">
           {LINKS.map((l) => {
-            const active = pathname === l.href;
+            const active =
+              l.href === "/"
+                ? pathname === "/"
+                : pathname === l.href || pathname.startsWith(`${l.href}/`);
             return (
               <Link
                 key={l.href}
                 href={l.href}
                 aria-current={active ? "page" : undefined}
-                // 44px touch target via padding, not a fixed height that would
-                // fight the wrap on narrow screens.
-                className="py-2 text-[16px] transition-opacity hover:opacity-100"
+                className="inline-flex min-h-[44px] items-center px-3 text-[16px] transition-opacity hover:opacity-100"
                 style={{
-                  color: active ? "var(--ink)" : "var(--ink-2)",
+                  color: active ? ink : ink2,
                   borderBottom: active
                     ? "2px solid var(--brass)"
                     : "2px solid transparent",
@@ -69,6 +84,49 @@ export function Nav({ light = false }: { light?: boolean }) {
             );
           })}
         </div>
+
+        {/* Mobile: plain disclosure, four links */}
+        <details
+          className="relative sm:hidden"
+          open={open}
+          onToggle={(e) => setOpen((e.target as HTMLDetailsElement).open)}
+        >
+          <summary
+            className="flex min-h-[44px] min-w-[44px] cursor-pointer list-none items-center justify-center rounded-md border px-3 text-[16px] marker:content-none [&::-webkit-details-marker]:hidden"
+            style={{ borderColor: "var(--axis)", color: ink }}
+          >
+            Menu
+          </summary>
+          <div
+            className="absolute right-0 z-40 mt-2 min-w-[11rem] rounded-md border py-1 shadow-lg"
+            style={{
+              borderColor: "var(--axis)",
+              background: surface,
+            }}
+          >
+            {LINKS.map((l) => {
+              const active =
+                l.href === "/"
+                  ? pathname === "/"
+                  : pathname === l.href || pathname.startsWith(`${l.href}/`);
+              return (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  aria-current={active ? "page" : undefined}
+                  onClick={() => setOpen(false)}
+                  className="flex min-h-[44px] items-center px-4 text-[16px]"
+                  style={{
+                    color: active ? ink : ink2,
+                    background: active ? "var(--page)" : "transparent",
+                  }}
+                >
+                  {l.label}
+                </Link>
+              );
+            })}
+          </div>
+        </details>
       </div>
     </nav>
   );

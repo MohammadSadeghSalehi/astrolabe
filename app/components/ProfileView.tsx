@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getBundle } from "@/lib/source";
 import type { Bundle } from "@/lib/contract";
+import { DeviceIllustration } from "@/components/icons/DeviceIllustration";
 
 /**
  * Profile: who this day belongs to, what they reported taking, and what is
@@ -144,19 +145,26 @@ export function ProfileView() {
           caption="Placeholder. Nothing is paired, and no data on this screen came from a consumer wearable."
         >
           <div
-            className="flex items-start gap-4 rounded-md border border-dashed p-4"
+            className="flex flex-col items-start gap-4 rounded-md border border-dashed p-4 sm:flex-row"
             style={{ borderColor: "var(--axis)" }}
           >
-            <span
-              className="mt-0.5 inline-block h-9 w-9 shrink-0 rounded-full border border-dashed"
-              style={{ borderColor: "var(--ink-2)" }}
-              aria-hidden
-            />
+            <div
+              className="flex h-24 w-24 shrink-0 items-center justify-center rounded-md border"
+              style={{ borderColor: "var(--axis)", color: "var(--ink-2)" }}
+            >
+              <DeviceIllustration size={88} />
+            </div>
             <div className="min-w-0">
               <p className="text-[17px]" style={{ color: "var(--ink)" }}>
                 Connect a wrist wearable
               </p>
-              <p className="mt-1 text-[15px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+              <p
+                className="mt-1 rounded border border-dashed px-2 py-1 font-mono text-[14px]"
+                style={{ borderColor: "var(--axis)", color: "var(--brass)" }}
+              >
+                Placeholder — no device is paired
+              </p>
+              <p className="mt-2 text-[16px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
                 Not implemented. Astrolabe needs bilateral 100 Hz accelerometry
                 in the 4–8 Hz band; most consumer wearables expose neither raw
                 acceleration at that rate nor a second wrist, so this is a real
@@ -165,7 +173,7 @@ export function ProfileView() {
               <button
                 type="button"
                 disabled
-                className="mt-3 cursor-not-allowed rounded-md border px-4 py-2 text-[16px]"
+                className="mt-3 min-h-[44px] cursor-not-allowed rounded-md border px-4 py-2 text-[16px]"
                 style={{ borderColor: "var(--axis)", color: "var(--ink-2)", opacity: 0.7 }}
               >
                 Pair a device — unavailable

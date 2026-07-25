@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ClinicianView } from "@/components/ClinicianView";
+import { Nav } from "@/components/Nav";
 
 export const metadata: Metadata = {
   title: "Clinician handoff — Astrolabe",
@@ -8,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function ClinicianPage() {
-  return <ClinicianView />;
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Nav light />
+      <ClinicianView />
+    </div>
+  );
 }

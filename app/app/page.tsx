@@ -1,6 +1,14 @@
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { HeroStrip } from "@/components/HeroStrip";
+import {
+  IconDegraded,
+  IconFrequency,
+  IconInterval,
+  IconNotClaimed,
+  IconRefusal,
+  IconSensor,
+} from "@/components/icons/ScienceIcons";
 
 export const metadata = {
   title: "Astrolabe — read the hours you couldn't record",
@@ -19,13 +27,15 @@ const SCIENCE = [
   {
     n: "01",
     title: "What the sensors see",
+    Icon: IconSensor,
     body:
       "Two wrist accelerometers at 100 Hz, split into a movement band (0.1–3 Hz) and a tremor band (4–8 Hz). Tremor is a mechanical oscillation an accelerometer measures directly — not something inferred from steps or heart rate.",
-    stat: null,
+    stat: null as null | { value: string; unit: string; label: string },
   },
   {
     n: "02",
     title: "What it predicts",
+    Icon: IconFrequency,
     body:
       "For every hour, the probability that tremor was present. Measured on 55 participants it never trained on.",
     stat: { value: "0.697", unit: "± 0.075 AUC", label: "held-out, across people" },
@@ -33,6 +43,7 @@ const SCIENCE = [
   {
     n: "03",
     title: "How it knows when it might be wrong",
+    Icon: IconInterval,
     body:
       "The 90% interval is not asserted, it is earned. Its width is fitted on participants held out of both training and calibration, widened until the truth genuinely falls inside it nine times in ten.",
     stat: { value: "0.903", unit: "achieved coverage", label: "against a 0.90 target" },
@@ -40,6 +51,7 @@ const SCIENCE = [
   {
     n: "04",
     title: "Why it refuses",
+    Icon: IconRefusal,
     body:
       "Answering only the most confident quarter of hours raises accuracy from 0.713 to 0.825. The hours it declines really are the hours it would have got wrong — so a refusal is information, not a gap.",
     stat: { value: "0.713 → 0.825", unit: "accuracy", label: "as it answers fewer hours" },
@@ -47,6 +59,7 @@ const SCIENCE = [
   {
     n: "05",
     title: "What happens when evidence degrades",
+    Icon: IconDegraded,
     body:
       "Both sensor configurations are held to the same error budget. Take one wrist away and the only way to stay inside that budget is to answer less — so it does, without being told to.",
     stat: { value: "12.4% → 77.3%", unit: "hours declined", label: "when a wrist is removed" },
@@ -149,13 +162,22 @@ export default function Home() {
 
           <ol className="mt-10 grid gap-x-10 gap-y-10 md:grid-cols-2">
             {SCIENCE.map((s) => (
-              <li key={s.n} className="flex gap-5">
-                <span
-                  className="shrink-0 font-mono text-[14px] leading-relaxed"
-                  style={{ color: "var(--brass)" }}
-                >
-                  {s.n}
-                </span>
+              <li key={s.n} className="flex min-w-0 gap-4 sm:gap-5">
+                <div className="flex shrink-0 flex-col items-center gap-2">
+                  <span
+                    className="flex h-11 w-11 items-center justify-center rounded-md border"
+                    style={{ borderColor: "var(--axis)", color: "var(--brass)" }}
+                    aria-hidden
+                  >
+                    <s.Icon />
+                  </span>
+                  <span
+                    className="font-mono text-[14px] leading-none"
+                    style={{ color: "var(--brass)" }}
+                  >
+                    {s.n}
+                  </span>
+                </div>
                 <div className="min-w-0">
                   <h3 className="text-[19px] font-medium" style={{ color: "var(--ink)" }}>
                     {s.title}
@@ -174,7 +196,7 @@ export default function Home() {
                       >
                         {s.stat.value}
                       </span>{" "}
-                      <span className="text-[15px]" style={{ color: "var(--ink-2)" }}>
+                      <span className="text-[16px]" style={{ color: "var(--ink-2)" }}>
                         {s.stat.unit} · {s.stat.label}
                       </span>
                     </p>
@@ -190,12 +212,21 @@ export default function Home() {
           className="mt-20 rounded-lg border p-6 md:mt-28 md:p-10"
           style={{ borderColor: "var(--axis)", background: "var(--surface)" }}
         >
-          <p
-            className="font-mono text-[14px] uppercase tracking-[0.12em]"
-            style={{ color: "var(--brass)" }}
-          >
-            06 · What it will not claim
-          </p>
+          <div className="flex items-center gap-3">
+            <span
+              className="flex h-11 w-11 items-center justify-center rounded-md border"
+              style={{ borderColor: "var(--axis)", color: "var(--brass)" }}
+              aria-hidden
+            >
+              <IconNotClaimed />
+            </span>
+            <p
+              className="font-mono text-[14px] uppercase tracking-[0.12em]"
+              style={{ color: "var(--brass)" }}
+            >
+              06 · What it will not claim
+            </p>
+          </div>
           <h2
             className="font-display mt-3 max-w-[52ch] text-[24px] font-light leading-snug md:text-[30px]"
             style={{ color: "var(--ink)" }}
