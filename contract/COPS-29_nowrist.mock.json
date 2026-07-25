@@ -1,0 +1,2513 @@
+{
+ "participant": "COPS-29",
+ "day": 6,
+ "resolution_min": 10,
+ "generated": "MOCK - real diary structure and truth, invented posteriors; abstention gap synthesised to exercise the render path; LEFT WRIST DROPPED variant",
+ "series": [
+  {
+   "t": "02:00",
+   "state": {
+    "posterior": [
+     0.4503,
+     0.3348,
+     0.0814,
+     0.0334,
+     0.0334,
+     0.0334,
+     0.0334
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.61,
+   "confidence": 0.45,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "02:10",
+   "state": {
+    "posterior": [
+     0.5003,
+     0.2955,
+     0.0621,
+     0.0361,
+     0.0354,
+     0.0354,
+     0.0354
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.54,
+   "confidence": 0.5,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "02:20",
+   "state": {
+    "posterior": [
+     0.6198,
+     0.1256,
+     0.0509,
+     0.0509,
+     0.0509,
+     0.0509,
+     0.0509
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     5
+    ]
+   },
+   "tremor_p": 0.45,
+   "confidence": 0.62,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "02:30",
+   "state": {
+    "posterior": [
+     0.6019,
+     0.1781,
+     0.0445,
+     0.0439,
+     0.0439,
+     0.0439,
+     0.0439
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.34,
+   "confidence": 0.6,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "02:40",
+   "state": {
+    "posterior": [
+     0.5506,
+     0.2389,
+     0.0493,
+     0.0403,
+     0.0403,
+     0.0403,
+     0.0403
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.41,
+   "confidence": 0.55,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "02:50",
+   "state": {
+    "posterior": [
+     0.5288,
+     0.2669,
+     0.0539,
+     0.0376,
+     0.0376,
+     0.0376,
+     0.0376
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.25,
+   "confidence": 0.53,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "03:00",
+   "state": {
+    "posterior": [
+     0.3938,
+     0.3697,
+     0.1094,
+     0.0323,
+     0.0316,
+     0.0316,
+     0.0316
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.51,
+   "confidence": 0.39,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "03:10",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.29,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "03:20",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.17,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "03:30",
+   "state": {
+    "posterior": [
+     0.5592,
+     0.2271,
+     0.0485,
+     0.0413,
+     0.0413,
+     0.0413,
+     0.0413
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.4,
+   "confidence": 0.56,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "03:40",
+   "state": {
+    "posterior": [
+     0.311,
+     0.2716,
+     0.1941,
+     0.1141,
+     0.057,
+     0.0295,
+     0.0226
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.36,
+   "confidence": 0.31,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "03:50",
+   "state": {
+    "posterior": [
+     0.5642,
+     0.2168,
+     0.0481,
+     0.0427,
+     0.0427,
+     0.0427,
+     0.0427
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.48,
+   "confidence": 0.56,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "04:00",
+   "state": {
+    "posterior": [
+     0.4302,
+     0.349,
+     0.0909,
+     0.033,
+     0.0323,
+     0.0323,
+     0.0323
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.43,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "04:10",
+   "state": {
+    "posterior": [
+     0.5208,
+     0.2742,
+     0.0557,
+     0.0373,
+     0.0373,
+     0.0373,
+     0.0373
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.1,
+   "confidence": 0.52,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "04:20",
+   "state": {
+    "posterior": [
+     0.5477,
+     0.2418,
+     0.0497,
+     0.0402,
+     0.0402,
+     0.0402,
+     0.0402
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.16,
+   "confidence": 0.55,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "04:30",
+   "state": {
+    "posterior": [
+     0.115,
+     0.4508,
+     0.2882,
+     0.0432,
+     0.0343,
+     0.0343,
+     0.0343
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.45,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "04:40",
+   "state": {
+    "posterior": [
+     0.5474,
+     0.2442,
+     0.0502,
+     0.0395,
+     0.0395,
+     0.0395,
+     0.0395
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.55,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "04:50",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.29,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "05:00",
+   "state": {
+    "posterior": [
+     0.0312,
+     0.1323,
+     0.3692,
+     0.3208,
+     0.0887,
+     0.0293,
+     0.0286
+    ],
+    "map": 2,
+    "ci": [
+     1,
+     4
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.37,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "05:10",
+   "state": {
+    "posterior": [
+     0.0449,
+     0.2197,
+     0.4028,
+     0.228,
+     0.0472,
+     0.0287,
+     0.0287
+    ],
+    "map": 2,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.4,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "05:20",
+   "state": {
+    "posterior": [
+     0.0336,
+     0.1566,
+     0.3855,
+     0.2941,
+     0.073,
+     0.0286,
+     0.0286
+    ],
+    "map": 2,
+    "ci": [
+     1,
+     4
+    ]
+   },
+   "tremor_p": 0.1,
+   "confidence": 0.39,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "05:30",
+   "state": {
+    "posterior": [
+     0.0407,
+     0.2009,
+     0.4009,
+     0.2471,
+     0.0532,
+     0.0287,
+     0.0287
+    ],
+    "map": 2,
+    "ci": [
+     1,
+     4
+    ]
+   },
+   "tremor_p": 0.17,
+   "confidence": 0.4,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "05:40",
+   "state": {
+    "posterior": [
+     0.1089,
+     0.3474,
+     0.3475,
+     0.109,
+     0.03,
+     0.0286,
+     0.0286
+    ],
+    "map": 2,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.35,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "05:50",
+   "state": {
+    "posterior": [
+     0.0947,
+     0.1486,
+     0.191,
+     0.2009,
+     0.1727,
+     0.1216,
+     0.0705
+    ],
+    "map": 3,
+    "ci": [
+     0,
+     5
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.2,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "06:00",
+   "state": {
+    "posterior": [
+     0.0299,
+     0.1154,
+     0.354,
+     0.3396,
+     0.1025,
+     0.0299,
+     0.0286
+    ],
+    "map": 2,
+    "ci": [
+     1,
+     4
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.35,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "06:10",
+   "state": {
+    "posterior": [
+     0.0342,
+     0.1624,
+     0.3885,
+     0.2878,
+     0.0698,
+     0.0286,
+     0.0286
+    ],
+    "map": 2,
+    "ci": [
+     1,
+     4
+    ]
+   },
+   "tremor_p": 0.1,
+   "confidence": 0.39,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "06:20",
+   "state": {
+    "posterior": [
+     0.1158,
+     0.3547,
+     0.3399,
+     0.1024,
+     0.03,
+     0.0286,
+     0.0286
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.35,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "06:30",
+   "state": {
+    "posterior": [
+     0.0347,
+     0.1668,
+     0.3906,
+     0.2831,
+     0.0675,
+     0.0286,
+     0.0286
+    ],
+    "map": 2,
+    "ci": [
+     1,
+     4
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.39,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "06:40",
+   "state": {
+    "posterior": [
+     0.1964,
+     0.2279,
+     0.2164,
+     0.1679,
+     0.1069,
+     0.0567,
+     0.0278
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.19,
+   "confidence": 0.23,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "06:50",
+   "state": {
+    "posterior": [
+     0.0779,
+     0.3034,
+     0.3808,
+     0.1482,
+     0.0324,
+     0.0286,
+     0.0286
+    ],
+    "map": 2,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.11,
+   "confidence": 0.38,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "07:00",
+   "state": {
+    "posterior": [
+     0.0287,
+     0.0402,
+     0.1998,
+     0.4008,
+     0.2483,
+     0.0535,
+     0.0287
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     5
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.4,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "07:10",
+   "state": {
+    "posterior": [
+     0.0287,
+     0.0505,
+     0.2387,
+     0.402,
+     0.2091,
+     0.0424,
+     0.0287
+    ],
+    "map": 3,
+    "ci": [
+     1,
+     4
+    ]
+   },
+   "tremor_p": 0.06,
+   "confidence": 0.4,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "07:20",
+   "state": {
+    "posterior": [
+     0.0465,
+     0.0898,
+     0.1449,
+     0.1921,
+     0.2082,
+     0.1846,
+     0.1339
+    ],
+    "map": 4,
+    "ci": [
+     1,
+     6
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.21,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "07:30",
+   "state": {
+    "posterior": [
+     0.0287,
+     0.0538,
+     0.2492,
+     0.4006,
+     0.1988,
+     0.0402,
+     0.0287
+    ],
+    "map": 3,
+    "ci": [
+     1,
+     4
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.4,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "07:40",
+   "state": {
+    "posterior": [
+     0.0811,
+     0.1339,
+     0.1817,
+     0.2016,
+     0.183,
+     0.1358,
+     0.0828
+    ],
+    "map": 3,
+    "ci": [
+     0,
+     5
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.2,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "07:50",
+   "state": {
+    "posterior": [
+     0.0544,
+     0.1009,
+     0.1555,
+     0.1964,
+     0.2029,
+     0.1714,
+     0.1185
+    ],
+    "map": 4,
+    "ci": [
+     1,
+     6
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.2,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "08:00",
+   "state": {
+    "posterior": [
+     0.0287,
+     0.0453,
+     0.2213,
+     0.4028,
+     0.2263,
+     0.0469,
+     0.0287
+    ],
+    "map": 3,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.13,
+   "confidence": 0.4,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "08:10",
+   "state": {
+    "posterior": [
+     0.0286,
+     0.0299,
+     0.114,
+     0.3525,
+     0.3413,
+     0.1038,
+     0.0299
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     5
+    ]
+   },
+   "tremor_p": 0.12,
+   "confidence": 0.35,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "08:20",
+   "state": {
+    "posterior": [
+     0.0287,
+     0.0476,
+     0.23,
+     0.4028,
+     0.2177,
+     0.0445,
+     0.0287
+    ],
+    "map": 3,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.07,
+   "confidence": 0.4,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "08:30",
+   "state": {
+    "posterior": [
+     0.0293,
+     0.0906,
+     0.3235,
+     0.3672,
+     0.1297,
+     0.0312,
+     0.0286
+    ],
+    "map": 3,
+    "ci": [
+     1,
+     4
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.37,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "08:40",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.16,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "08:50",
+   "state": {
+    "posterior": [
+     0.0336,
+     0.1559,
+     0.3852,
+     0.2949,
+     0.0732,
+     0.0286,
+     0.0286
+    ],
+    "map": 2,
+    "ci": [
+     1,
+     4
+    ]
+   },
+   "tremor_p": 0.02,
+   "confidence": 0.39,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "09:00",
+   "state": {
+    "posterior": [
+     0.0245,
+     0.0289,
+     0.0518,
+     0.1055,
+     0.1871,
+     0.2739,
+     0.3283
+    ],
+    "map": 6,
+    "ci": [
+     2,
+     6
+    ]
+   },
+   "tremor_p": 0.97,
+   "confidence": 0.33,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "09:10",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.18,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "09:20",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.24,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "09:30",
+   "state": {
+    "posterior": [
+     0.0364,
+     0.0364,
+     0.0364,
+     0.0364,
+     0.058,
+     0.2827,
+     0.5136
+    ],
+    "map": 6,
+    "ci": [
+     2,
+     6
+    ]
+   },
+   "tremor_p": 0.97,
+   "confidence": 0.51,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "09:40",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.16,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "09:50",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.17,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "non-wear on left wrist > 8 min; activity pattern ambiguous"
+  },
+  {
+   "t": "10:00",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.22,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "non-wear on left wrist > 8 min; activity pattern ambiguous"
+  },
+  {
+   "t": "10:10",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.15,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "non-wear on left wrist > 8 min; activity pattern ambiguous"
+  },
+  {
+   "t": "10:20",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.26,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "non-wear on left wrist > 8 min; activity pattern ambiguous"
+  },
+  {
+   "t": "10:30",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.15,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "non-wear on left wrist > 8 min; activity pattern ambiguous"
+  },
+  {
+   "t": "10:40",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.29,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "10:50",
+   "state": {
+    "posterior": [
+     0.0286,
+     0.0293,
+     0.0795,
+     0.3062,
+     0.3787,
+     0.1454,
+     0.0324
+    ],
+    "map": 4,
+    "ci": [
+     2,
+     5
+    ]
+   },
+   "tremor_p": 0.87,
+   "confidence": 0.38,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "11:00",
+   "state": {
+    "posterior": [
+     0.1045,
+     0.1584,
+     0.1965,
+     0.1994,
+     0.1655,
+     0.1125,
+     0.0631
+    ],
+    "map": 3,
+    "ci": [
+     0,
+     5
+    ]
+   },
+   "tremor_p": 0.42,
+   "confidence": 0.2,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "11:10",
+   "state": {
+    "posterior": [
+     0.0286,
+     0.0286,
+     0.0712,
+     0.291,
+     0.3872,
+     0.1596,
+     0.0336
+    ],
+    "map": 4,
+    "ci": [
+     2,
+     5
+    ]
+   },
+   "tremor_p": 0.68,
+   "confidence": 0.39,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "11:20",
+   "state": {
+    "posterior": [
+     0.0287,
+     0.0287,
+     0.0461,
+     0.2234,
+     0.4028,
+     0.2242,
+     0.0461
+    ],
+    "map": 4,
+    "ci": [
+     1,
+     5
+    ]
+   },
+   "tremor_p": 0.6,
+   "confidence": 0.4,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "11:30",
+   "state": {
+    "posterior": [
+     0.0661,
+     0.1162,
+     0.1685,
+     0.2001,
+     0.1943,
+     0.1544,
+     0.1004
+    ],
+    "map": 3,
+    "ci": [
+     1,
+     6
+    ]
+   },
+   "tremor_p": 0.47,
+   "confidence": 0.2,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "11:40",
+   "state": {
+    "posterior": [
+     0.0482,
+     0.0921,
+     0.1473,
+     0.1931,
+     0.2072,
+     0.1817,
+     0.1304
+    ],
+    "map": 4,
+    "ci": [
+     1,
+     6
+    ]
+   },
+   "tremor_p": 0.63,
+   "confidence": 0.21,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "11:50",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.15,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "12:00",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.17,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "12:10",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.27,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "12:20",
+   "state": {
+    "posterior": [
+     0.2194,
+     0.4089,
+     0.2354,
+     0.0491,
+     0.0291,
+     0.0291,
+     0.0291
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.97,
+   "confidence": 0.41,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "12:30",
+   "state": {
+    "posterior": [
+     0.2978,
+     0.4059,
+     0.1713,
+     0.036,
+     0.0297,
+     0.0297,
+     0.0297
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.97,
+   "confidence": 0.41,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "12:40",
+   "state": {
+    "posterior": [
+     0.2777,
+     0.4093,
+     0.1865,
+     0.0379,
+     0.0295,
+     0.0295,
+     0.0295
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.97,
+   "confidence": 0.41,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "12:50",
+   "state": {
+    "posterior": [
+     0.3283,
+     0.3979,
+     0.1497,
+     0.034,
+     0.03,
+     0.03,
+     0.03
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.97,
+   "confidence": 0.4,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "13:00",
+   "state": {
+    "posterior": [
+     0.0293,
+     0.0927,
+     0.3269,
+     0.365,
+     0.127,
+     0.0306,
+     0.0286
+    ],
+    "map": 3,
+    "ci": [
+     1,
+     4
+    ]
+   },
+   "tremor_p": 0.57,
+   "confidence": 0.36,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "13:10",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.15,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "13:20",
+   "state": {
+    "posterior": [
+     0.6198,
+     0.1256,
+     0.0509,
+     0.0509,
+     0.0509,
+     0.0509,
+     0.0509
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     5
+    ]
+   },
+   "tremor_p": 0.36,
+   "confidence": 0.62,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "13:30",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.29,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "13:40",
+   "state": {
+    "posterior": [
+     0.0981,
+     0.3342,
+     0.3592,
+     0.1206,
+     0.0306,
+     0.0286,
+     0.0286
+    ],
+    "map": 2,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.41,
+   "confidence": 0.36,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "13:50",
+   "state": {
+    "posterior": [
+     0.0717,
+     0.2916,
+     0.3869,
+     0.159,
+     0.0336,
+     0.0286,
+     0.0286
+    ],
+    "map": 2,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.57,
+   "confidence": 0.39,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "14:00",
+   "state": {
+    "posterior": [
+     0.1219,
+     0.3609,
+     0.3334,
+     0.0972,
+     0.0293,
+     0.0287,
+     0.0287
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.55,
+   "confidence": 0.36,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "14:10",
+   "state": {
+    "posterior": [
+     0.0398,
+     0.1971,
+     0.4003,
+     0.2511,
+     0.0545,
+     0.0287,
+     0.0287
+    ],
+    "map": 2,
+    "ci": [
+     1,
+     4
+    ]
+   },
+   "tremor_p": 0.47,
+   "confidence": 0.4,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "14:20",
+   "state": {
+    "posterior": [
+     0.0338,
+     0.0375,
+     0.2322,
+     0.4731,
+     0.1551,
+     0.0345,
+     0.0338
+    ],
+    "map": 3,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.44,
+   "confidence": 0.47,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "14:30",
+   "state": {
+    "posterior": [
+     0.079,
+     0.3053,
+     0.3796,
+     0.1464,
+     0.0324,
+     0.0286,
+     0.0286
+    ],
+    "map": 2,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.59,
+   "confidence": 0.38,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "14:40",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.28,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "14:50",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.21,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "15:00",
+   "state": {
+    "posterior": [
+     0.1675,
+     0.2098,
+     0.215,
+     0.1801,
+     0.1235,
+     0.0698,
+     0.0343
+    ],
+    "map": 2,
+    "ci": [
+     0,
+     5
+    ]
+   },
+   "tremor_p": 0.38,
+   "confidence": 0.21,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "15:10",
+   "state": {
+    "posterior": [
+     0.0951,
+     0.149,
+     0.1913,
+     0.2008,
+     0.1724,
+     0.1212,
+     0.0701
+    ],
+    "map": 3,
+    "ci": [
+     0,
+     5
+    ]
+   },
+   "tremor_p": 0.61,
+   "confidence": 0.2,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "15:20",
+   "state": {
+    "posterior": [
+     0.0441,
+     0.216,
+     0.4026,
+     0.2317,
+     0.0484,
+     0.0287,
+     0.0287
+    ],
+    "map": 2,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.57,
+   "confidence": 0.4,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "15:30",
+   "state": {
+    "posterior": [
+     0.103,
+     0.4397,
+     0.3081,
+     0.0465,
+     0.0342,
+     0.0342,
+     0.0342
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.53,
+   "confidence": 0.44,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "15:40",
+   "state": {
+    "posterior": [
+     0.028,
+     0.0287,
+     0.0331,
+     0.0686,
+     0.1616,
+     0.2922,
+     0.3877
+    ],
+    "map": 6,
+    "ci": [
+     3,
+     6
+    ]
+   },
+   "tremor_p": 0.47,
+   "confidence": 0.39,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "15:50",
+   "state": {
+    "posterior": [
+     0.0373,
+     0.1835,
+     0.3968,
+     0.2652,
+     0.0598,
+     0.0287,
+     0.0287
+    ],
+    "map": 2,
+    "ci": [
+     1,
+     4
+    ]
+   },
+   "tremor_p": 0.45,
+   "confidence": 0.4,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "16:00",
+   "state": {
+    "posterior": [
+     0.3757,
+     0.3783,
+     0.1194,
+     0.0327,
+     0.0313,
+     0.0313,
+     0.0313
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.52,
+   "confidence": 0.38,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "16:10",
+   "state": {
+    "posterior": [
+     0.214,
+     0.2376,
+     0.2157,
+     0.1602,
+     0.0976,
+     0.0499,
+     0.025
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.4,
+   "confidence": 0.24,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "16:20",
+   "state": {
+    "posterior": [
+     0.1628,
+     0.3905,
+     0.29,
+     0.0704,
+     0.0288,
+     0.0288,
+     0.0288
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.37,
+   "confidence": 0.39,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "16:30",
+   "state": {
+    "posterior": [
+     0.1918,
+     0.2253,
+     0.2164,
+     0.1699,
+     0.1094,
+     0.0586,
+     0.0285
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.55,
+   "confidence": 0.23,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "16:40",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.26,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "16:50",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.28,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "17:00",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.22,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "17:10",
+   "state": {
+    "posterior": [
+     0.1489,
+     0.3822,
+     0.3041,
+     0.078,
+     0.0294,
+     0.0287,
+     0.0287
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.45,
+   "confidence": 0.38,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "17:20",
+   "state": {
+    "posterior": [
+     0.2691,
+     0.4101,
+     0.1931,
+     0.0394,
+     0.0294,
+     0.0294,
+     0.0294
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.6,
+   "confidence": 0.41,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "17:30",
+   "state": {
+    "posterior": [
+     0.1035,
+     0.3411,
+     0.3535,
+     0.1146,
+     0.03,
+     0.0286,
+     0.0286
+    ],
+    "map": 2,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.53,
+   "confidence": 0.35,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "17:40",
+   "state": {
+    "posterior": [
+     0.6198,
+     0.1256,
+     0.0509,
+     0.0509,
+     0.0509,
+     0.0509,
+     0.0509
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     5
+    ]
+   },
+   "tremor_p": 0.53,
+   "confidence": 0.62,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "17:50",
+   "state": {
+    "posterior": [
+     0.6198,
+     0.1256,
+     0.0509,
+     0.0509,
+     0.0509,
+     0.0509,
+     0.0509
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     5
+    ]
+   },
+   "tremor_p": 0.52,
+   "confidence": 0.62,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "18:00",
+   "state": {
+    "posterior": [
+     0.2491,
+     0.4111,
+     0.2095,
+     0.0425,
+     0.0293,
+     0.0293,
+     0.0293
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.27,
+   "confidence": 0.41,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "18:10",
+   "state": {
+    "posterior": [
+     0.0342,
+     0.0473,
+     0.3122,
+     0.437,
+     0.1007,
+     0.0342,
+     0.0342
+    ],
+    "map": 3,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.69,
+   "confidence": 0.44,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "18:20",
+   "state": {
+    "posterior": [
+     0.1254,
+     0.3641,
+     0.3295,
+     0.0943,
+     0.0293,
+     0.0287,
+     0.0287
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.47,
+   "confidence": 0.36,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "18:30",
+   "state": {
+    "posterior": [
+     0.0343,
+     0.0432,
+     0.2886,
+     0.4506,
+     0.1147,
+     0.0343,
+     0.0343
+    ],
+    "map": 3,
+    "ci": [
+     0,
+     4
+    ]
+   },
+   "tremor_p": 0.68,
+   "confidence": 0.45,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "18:40",
+   "state": {
+    "posterior": [
+     0.2377,
+     0.4109,
+     0.2193,
+     0.0445,
+     0.0292,
+     0.0292,
+     0.0292
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.64,
+   "confidence": 0.41,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "18:50",
+   "state": {
+    "posterior": [
+     0.6198,
+     0.1256,
+     0.0509,
+     0.0509,
+     0.0509,
+     0.0509,
+     0.0509
+    ],
+    "map": 0,
+    "ci": [
+     0,
+     5
+    ]
+   },
+   "tremor_p": 0.55,
+   "confidence": 0.62,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "19:00",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.26,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "19:10",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.14,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "19:20",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.25,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "19:30",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.13,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "19:40",
+   "state": null,
+   "tremor_p": null,
+   "confidence": 0.23,
+   "abstain": true,
+   "evidence": "reconstructed",
+   "reason": "left wrist dropped; bilateral asymmetry unavailable"
+  },
+  {
+   "t": "19:50",
+   "state": {
+    "posterior": [
+     0.0519,
+     0.2437,
+     0.4016,
+     0.2044,
+     0.0411,
+     0.0287,
+     0.0287
+    ],
+    "map": 2,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.53,
+   "confidence": 0.4,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "20:00",
+   "state": {
+    "posterior": [
+     0.2455,
+     0.4112,
+     0.2126,
+     0.0429,
+     0.0293,
+     0.0293,
+     0.0293
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.78,
+   "confidence": 0.41,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "20:10",
+   "state": {
+    "posterior": [
+     0.2721,
+     0.4098,
+     0.1908,
+     0.0389,
+     0.0295,
+     0.0295,
+     0.0295
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.34,
+   "confidence": 0.41,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "20:20",
+   "state": {
+    "posterior": [
+     0.3143,
+     0.4021,
+     0.1595,
+     0.0345,
+     0.0299,
+     0.0299,
+     0.0299
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.56,
+   "confidence": 0.4,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "20:30",
+   "state": {
+    "posterior": [
+     0.159,
+     0.3884,
+     0.2938,
+     0.0725,
+     0.0288,
+     0.0288,
+     0.0288
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.61,
+   "confidence": 0.39,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "20:40",
+   "state": {
+    "posterior": [
+     0.1409,
+     0.1902,
+     0.2101,
+     0.1898,
+     0.1403,
+     0.0851,
+     0.0435
+    ],
+    "map": 2,
+    "ci": [
+     0,
+     5
+    ]
+   },
+   "tremor_p": 0.83,
+   "confidence": 0.21,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  },
+  {
+   "t": "20:50",
+   "state": {
+    "posterior": [
+     0.2251,
+     0.4097,
+     0.2303,
+     0.0476,
+     0.0291,
+     0.0291,
+     0.0291
+    ],
+    "map": 1,
+    "ci": [
+     0,
+     3
+    ]
+   },
+   "tremor_p": 0.63,
+   "confidence": 0.41,
+   "abstain": false,
+   "evidence": "reconstructed",
+   "reason": null
+  }
+ ],
+ "events": [
+  {
+   "t": "06:45",
+   "type": "medication",
+   "source": "reported",
+   "drug": "Levodopa / Benserazid FA",
+   "dose_mg": 100.0
+  },
+  {
+   "t": "07:45",
+   "type": "medication",
+   "source": "reported",
+   "drug": "Levodopa / Carbidopa / Entacapone",
+   "dose_mg": 50.0
+  },
+  {
+   "t": "09:45",
+   "type": "medication",
+   "source": "reported",
+   "drug": "Levodopa / Carbidopa / Entacapone",
+   "dose_mg": 50.0
+  },
+  {
+   "t": "11:45",
+   "type": "medication",
+   "source": "reported",
+   "drug": "Levodopa / Carbidopa / Entacapone",
+   "dose_mg": 50.0
+  },
+  {
+   "t": "14:45",
+   "type": "medication",
+   "source": "reported",
+   "drug": "Levodopa / Carbidopa / Entacapone",
+   "dose_mg": 50.0
+  },
+  {
+   "t": "16:45",
+   "type": "medication",
+   "source": "reported",
+   "drug": "Levodopa / Carbidopa / Entacapone",
+   "dose_mg": 50.0
+  },
+  {
+   "t": "18:45",
+   "type": "medication",
+   "source": "reported",
+   "drug": "Levodopa / Carbidopa / Entacapone",
+   "dose_mg": 50.0
+  },
+  {
+   "t": "20:45",
+   "type": "medication",
+   "source": "reported",
+   "drug": "Levodopa / Benserazid RE",
+   "dose_mg": 100.0
+  }
+ ],
+ "truth": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  6,
+  6,
+  6,
+  6,
+  6,
+  6,
+  4,
+  4,
+  4,
+  4,
+  4,
+  4,
+  4,
+  4,
+  4,
+  4,
+  4,
+  4,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1
+ ],
+ "metrics": {
+  "ordinal_mae": 0.337,
+  "macro_f1": 0.58,
+  "brier": 0.14,
+  "coverage_90": 0.988,
+  "mean_interval_width": 3.65,
+  "baseline_mae": 0.594,
+  "n_hours": 19,
+  "abstain_rate": 0.246
+ },
+ "next_observation": {
+  "action": "20s hand rest task",
+  "expected_uncertainty_drop": 0.34,
+  "burden": 1
+ }
+}
