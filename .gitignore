@@ -2,6 +2,9 @@
 # Working notes, build strategy, agent task briefs, pitch material.
 # Development artefacts, not part of the shipped product.
 internal/
+.grok/
+AGENTS.md
+CLAUDE.md
 
 # ── secrets ───────────────────────────────────────────────────────────────────
 .env

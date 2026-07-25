@@ -21,7 +21,7 @@ degraded evidence proves nothing.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import numpy as np
 from scipy.optimize import minimize_scalar
@@ -80,6 +80,10 @@ class Calibrator:
     mass: float = 0.90
     target_coverage: float = 0.90
     achieved_coverage: float = float("nan")
+    # What this configuration did on the calibration participants: abstention
+    # rate and error on the hours it answered. A single demo day is 19 hours and
+    # far too small to carry that claim, so the interface shows these instead.
+    holdout: dict = field(default_factory=dict)
 
     def fit(self, log_lik: np.ndarray, y: np.ndarray) -> "Calibrator":
         self.temperature = fit_temperature(log_lik, y)
@@ -174,6 +178,52 @@ def tune_abstention(
         if gap < best_gap:
             best, best_gap = rule, gap
     return best
+
+
+def risk_on_answered(p: np.ndarray, y: np.ndarray, rule: AbstentionRule,
+                     intervals: np.ndarray) -> float:
+    """Ordinal MAE over the hours a rule chooses to answer. NaN if it answers none."""
+    answered = ~rule.should_abstain(p, intervals)
+    if not answered.any():
+        return float("nan")
+    expected = p[answered] @ np.arange(N_STATES)
+    return float(np.abs(expected - np.asarray(y, int)[answered]).mean())
+
+
+def tune_abstention_at_risk(
+    p: np.ndarray,
+    intervals: np.ndarray,
+    y: np.ndarray,
+    max_risk: float,
+    max_rate: float = 0.95,
+) -> AbstentionRule:
+    """Answer as much as possible while keeping error on answered hours <= `max_risk`.
+
+    This is the fix for a subtle way of cheating at the sensor-drop demo.
+    Tuning both sensor configurations to the same abstention RATE guarantees
+    they abstain equally often — the degraded case cannot show degradation,
+    because the threshold moves to absorb it. We had exactly that: dropping a
+    wrist made the model MORE peaked (blanked features take a default branch in
+    every tree), the rate-tuner lowered the peak threshold to compensate, and
+    abstention fell from 100% to 46%. Less evidence, more answers.
+
+    Holding the error BUDGET fixed instead inverts the incentive correctly. A
+    configuration that is worse per answered hour can only stay inside the
+    budget by answering fewer of them. The refusal is then a consequence of
+    measured accuracy rather than a number chosen to look good on stage.
+    """
+    fallback = AbstentionRule(min_peak=0.65)
+    best = None
+    for peak in np.arange(0.20, 0.96, 0.01):
+        rule = AbstentionRule(min_peak=float(peak))
+        rate = rule.rate(p, intervals)
+        if rate > max_rate:
+            break
+        risk = risk_on_answered(p, y, rule, intervals)
+        if not np.isnan(risk) and risk <= max_risk:
+            best = rule       # first (lowest) threshold inside budget answers most
+            break
+    return best or fallback
 
 
 def selective_risk(p: np.ndarray, y: np.ndarray, abstain: np.ndarray) -> dict:

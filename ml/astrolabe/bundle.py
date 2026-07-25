@@ -15,6 +15,7 @@ makes.
 from __future__ import annotations
 
 import json
+import math
 from pathlib import Path
 
 import numpy as np
@@ -32,6 +33,29 @@ STATE_NAMES = [
     "Good kinesia",
     "Slight dyskinesia", "Discomforting dyskinesia", "Severe dyskinesia",
 ]
+
+
+def json_safe(obj):
+    """Replace every non-finite number with null, recursively.
+
+    NaN is not JSON. `json.dumps` writes a bare `NaN` token, and `JSON.parse`
+    rejects it outright — so a day on which the model abstains everywhere, and
+    therefore has no MAE to report, would take the interface down instead of
+    rendering as the honest refusal it is. The failure mode is the worst kind:
+    it appears only on exactly the input the product exists to handle.
+    """
+    if isinstance(obj, dict):
+        return {k: json_safe(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [json_safe(v) for v in obj]
+    if isinstance(obj, (bool, np.bool_)):       # before int — bool subclasses it
+        return bool(obj)
+    if isinstance(obj, (float, np.floating)):
+        f = float(obj)
+        return f if math.isfinite(f) else None
+    if isinstance(obj, (int, np.integer)):
+        return int(obj)
+    return obj
 
 
 def infer_posterior(
@@ -91,10 +115,10 @@ def build_series(
     feature_cols: list[str],
     tremor_detector=None,
     tremor_cols: list[str] | None = None,
-) -> tuple[list[dict], np.ndarray, np.ndarray]:
+) -> tuple[list[dict], np.ndarray, np.ndarray, list[int | None]]:
     """Run the full inference chain for one participant-day.
 
-    Returns (series, posterior, truth-per-step).
+    Returns (series, posterior, kinesia-truth-per-step, tremor-truth-per-step).
     """
     features = features.sort_values("t_min").reset_index(drop=True)
 
@@ -109,9 +133,23 @@ def build_series(
     # chain because it does NOT go through the HMM: tremor is intermittent
     # within an hour, so smoothing it over a trajectory would erase the thing
     # being measured.
+    #
+    # It is scored at HOURLY resolution because that is the resolution it was
+    # trained at (train_tremor.py aggregates before fitting) and the resolution
+    # the diary labels have. Feeding it single 10-minute windows was inference
+    # out of distribution — a 10-minute band power is a noisier draw than the
+    # mean of six of them — and it cost about 0.05 AUC on the demo participant.
+    # The value is then held flat across the hour, which is also the honest
+    # display: claiming 10-minute tremor resolution would be claiming a
+    # precision neither the model nor the labels have.
     if tremor_detector is not None and tremor_cols:
-        tremor_p = tremor_detector.predict_proba(features[tremor_cols])
-        tremor_conf = tremor_detector.confidence(features[tremor_cols])
+        hourly = features.groupby("hour_end", as_index=False)[list(tremor_cols)].mean()
+        p_by_hour = dict(zip(hourly["hour_end"],
+                             tremor_detector.predict_proba(hourly[tremor_cols])))
+        c_by_hour = dict(zip(hourly["hour_end"],
+                             tremor_detector.confidence(hourly[tremor_cols])))
+        tremor_p = features["hour_end"].map(p_by_hour).to_numpy(dtype=float)
+        tremor_conf = features["hour_end"].map(c_by_hour).to_numpy(dtype=float)
     else:
         tremor_p = tremor_conf = None
 
@@ -161,7 +199,18 @@ def build_series(
         series.append(entry)
 
     truth = features["state"].to_numpy(dtype=int)
-    return series, posterior, truth
+
+    # The tremor row is the one the model actually claims, so it is the one the
+    # reveal has to be checkable against. Without a truth array beside it the
+    # interface can uncover a trajectory but cannot score it, and an unscored
+    # reveal is decoration.
+    if "tremor_score" in features.columns:
+        raw = pd.to_numeric(features["tremor_score"], errors="coerce")
+        tremor_truth = [None if pd.isna(v) else int(v > 0) for v in raw]
+    else:
+        tremor_truth = [None] * len(features)
+
+    return series, posterior, truth, tremor_truth
 
 
 def build_events(hours: list[Hour]) -> list[dict]:
@@ -210,6 +259,61 @@ def compute_metrics(series: list[dict], posterior: np.ndarray,
     }
 
 
+def tremor_metrics(series: list[dict], tremor_truth: list[int | None]) -> dict:
+    """Score the tremor row on this day, always beside the majority-class rate.
+
+    The baseline is the honest comparator here for the same reason `baseline_mae`
+    is for kinesia: on a day that is 70% tremulous, "always say tremor" scores
+    0.70, and an accuracy of 0.72 quoted on its own would read as competence.
+    Both numbers travel together or neither is worth showing.
+    """
+    pairs = [(s["tremor_p"], t) for s, t in zip(series, tremor_truth)
+             if s.get("tremor_p") is not None and t is not None]
+    if not pairs:
+        return {"tremor_n_scored": 0}
+
+    p = np.array([a for a, _ in pairs])
+    y = np.array([b for _, b in pairs])
+    prevalence = float(y.mean())
+    # Majority class: whichever constant answer is right more often here.
+    baseline = max(prevalence, 1.0 - prevalence)
+
+    out = {
+        "tremor_n_scored": len(pairs),
+        "tremor_day_accuracy": round(float(((p > 0.5).astype(int) == y).mean()), 3),
+        "tremor_day_baseline_accuracy": round(baseline, 3),
+        "tremor_day_prevalence": round(prevalence, 3),
+        "tremor_day_brier": round(float(((p - y) ** 2).mean()), 3),
+        # Climatology: the best possible CONSTANT probability is the day's own
+        # prevalence. A trajectory that cannot beat a flat line at that height
+        # is carrying no within-day information, however good its AUC looks.
+        "tremor_day_brier_climatology": round(float(((prevalence - y) ** 2).mean()), 3),
+    }
+
+    # Threshold-free discrimination. Reported separately from accuracy because
+    # the two answer different questions: AUC asks whether the model ranks this
+    # person's tremulous hours above their calm ones, accuracy@0.5 also asks
+    # whether the operating point suits them. On a person whose prevalence is
+    # nothing like the cohort's, the ranking can be right while the threshold is
+    # wrong, and collapsing them into one number hides which failed.
+    if len(np.unique(y)) == 2:
+        order = np.argsort(p, kind="mergesort")
+        ranks = np.empty(len(p), float)
+        ranks[order] = np.arange(1, len(p) + 1)
+        # average ranks over ties, or ties inflate AUC
+        for v in np.unique(p):
+            m = p == v
+            if m.sum() > 1:
+                ranks[m] = ranks[m].mean()
+        n_pos, n_neg = int(y.sum()), int((1 - y).sum())
+        out["tremor_day_auc"] = round(
+            float((ranks[y == 1].sum() - n_pos * (n_pos + 1) / 2) / (n_pos * n_neg)), 3)
+    else:
+        out["tremor_day_auc"] = None
+
+    return out
+
+
 def write_bundle(
     path: Path,
     participant: str,
@@ -219,6 +323,7 @@ def write_bundle(
     truth: np.ndarray,
     metrics: dict,
     note: str = "",
+    tremor_truth: list[int | None] | None = None,
 ) -> Path:
     bundle = {
         "participant": participant,
@@ -228,6 +333,7 @@ def write_bundle(
         "series": series,
         "events": [e for e in events if e.get("day") == day],
         "truth": [int(t) for t in truth],
+        "tremor_truth": tremor_truth if tremor_truth is not None else [None] * len(series),
         "metrics": metrics,
         "state_names": STATE_NAMES,
         "next_observation": {
@@ -237,5 +343,7 @@ def write_bundle(
         },
     }
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(bundle, indent=1))
+    # allow_nan=False turns a stray NaN into a build-time crash here rather than
+    # a JSON.parse failure in the browser.
+    path.write_text(json.dumps(json_safe(bundle), indent=1, allow_nan=False))
     return path

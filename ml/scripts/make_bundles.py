@@ -32,10 +32,12 @@ import numpy as np
 import pandas as pd
 
 from astrolabe.bundle import (
-    build_events, build_series, compute_metrics, infer_posterior, write_bundle,
+    build_events, build_series, compute_metrics, drop_wrist, infer_posterior,
+    tremor_metrics, write_bundle,
 )
 from astrolabe.calibrate import (
-    AbstentionRule, Calibrator, fit_coverage_mass, tune_abstention,
+    AbstentionRule, Calibrator, fit_coverage_mass, risk_on_answered,
+    tune_abstention, tune_abstention_at_risk,
 )
 from astrolabe.features import band_columns, feature_columns
 from astrolabe.hmm import fit_transitions
@@ -107,33 +109,68 @@ def main() -> None:
     # the full chain on participants held out of the emission fit.
     cal_people = sorted(set(train_df.participant))[: max(6, len(set(train_df.participant)) // 5)]
     cal_df = train_df[train_df.participant.isin(cal_people)]
-    calibrator = Calibrator(temperature=25.0)   # selected on a held-out fold
 
-    cal_post, cal_missing = infer_posterior(
-        cal_df, emissions, transitions, all_cols, calibrator.temperature
-    )
-    keep = ~cal_missing
-    calibrator.mass = fit_coverage_mass(
-        cal_post[keep], cal_df["state"].to_numpy(int)[keep], 0.90
-    )
-    cal_iv = credible_interval(cal_post[keep], mass=calibrator.mass)
-    ycal = cal_df["state"].to_numpy(int)[keep]
-    calibrator.achieved_coverage = float(
-        ((cal_iv[:, 0] <= ycal) & (ycal <= cal_iv[:, 1])).mean()
-    )
-    print(f"calibration on {len(cal_people)} held-out participants: "
-          f"temperature {calibrator.temperature:.0f}, mass {calibrator.mass:.2f}, "
-          f"achieved coverage {calibrator.achieved_coverage:.3f}")
+    def calibrate_for(drop: str | None,
+                      risk_budget: float | None = None,
+                      ) -> tuple[Calibrator, AbstentionRule, float]:
+        """Fit coverage mass and the abstention rule FOR ONE SENSOR CONFIGURATION.
 
-    # Abstain where the calibrated posterior is genuinely uninformative. Tuned on
-    # the calibration participants so the demo participant does not set its own
-    # threshold, and so the wrist-drop case has to move it on its own.
-    abstention = tune_abstention(
-        cal_post[keep], cal_iv, ycal, target_rate=0.12
-    )
-    print(f"abstention: peak < {abstention.min_peak:.2f} or width >= "
-          f"{abstention.max_interval_width} -> "
-          f"{abstention.rate(cal_post[keep], cal_iv):.1%} on calibration set")
+        Calibrating once with both wrists and reusing it for the dropped-wrist
+        case was wrong, and wrong in the direction that flatters us: with one
+        wrist blanked the gradient-boosted trees route every missing feature down
+        a default branch and come back MORE peaked, so abstention fell from 100%
+        to 68% — the model got more confident on less evidence, and the interface
+        would have shown that as improved certainty.
+
+        Measuring coverage separately per configuration fixes it at the source.
+        The dropped-wrist bands widen because a wrist-dropped model was scored
+        against held-out truth and needed more mass to reach 90%, not because the
+        demo would look better if they did.
+        """
+        cdf = cal_df.copy()
+        if drop:
+            blanked = drop_wrist(cdf[all_cols], drop)
+            for c in all_cols:
+                cdf[c] = blanked[c]
+
+        cal = Calibrator(temperature=25.0)   # selected on a held-out fold
+        post, missing = infer_posterior(cdf, emissions, transitions, all_cols,
+                                        cal.temperature)
+        keep = ~missing
+        y = cdf["state"].to_numpy(int)[keep]
+        cal.mass = fit_coverage_mass(post[keep], y, 0.90)
+        iv = credible_interval(post[keep], mass=cal.mass)
+        cal.achieved_coverage = float(((iv[:, 0] <= y) & (y <= iv[:, 1])).mean())
+
+        # Abstain where the calibrated posterior is genuinely uninformative.
+        # Tuned on calibration participants so the demo participant never sets
+        # its own threshold.
+        if risk_budget is None:
+            # The reference configuration sets the budget: answer 88% of hours,
+            # and whatever error that buys becomes the standard every degraded
+            # configuration has to meet.
+            rule = tune_abstention(post[keep], iv, y, target_rate=0.12)
+        else:
+            rule = tune_abstention_at_risk(post[keep], iv, y, max_risk=risk_budget)
+        achieved_risk = risk_on_answered(post[keep], y, rule, iv)
+        cal.holdout = {
+            "abstain_rate": round(float(rule.rate(post[keep], iv)), 3),
+            "mae_answered": round(float(achieved_risk), 3),
+            "n_hours": int(keep.sum()),
+        }
+
+        label = f"drop {drop} wrist" if drop else "both wrists"
+        print(f"  [{label:>16}] mass {cal.mass:.2f}  coverage "
+              f"{cal.achieved_coverage:.3f}  abstain if peak < {rule.min_peak:.2f}"
+              f"  -> {rule.rate(post[keep], iv):.1%} abstained, "
+              f"MAE {achieved_risk:.3f} on the rest")
+        return cal, rule, achieved_risk
+
+    print(f"calibration on {len(cal_people)} held-out participants, "
+          f"per sensor configuration (error budget set by the reference config):")
+    cal_full, rule_full, budget = calibrate_for(None)
+    cal_drop, rule_drop, _ = calibrate_for("left", risk_budget=budget)
+    calibration = {None: (cal_full, rule_full), "left": (cal_drop, rule_drop)}
 
     # ── tremor ───────────────────────────────────────────────────────────────
     tremor_art = ARTIFACTS / "tremor.joblib"
@@ -167,19 +204,39 @@ def main() -> None:
     for variant, drop in (("", None), ("_nowrist", "left")):
         feats = day_df.copy()
         if drop:
-            from astrolabe.bundle import drop_wrist
             blanked = drop_wrist(feats[all_cols], drop)
             for c in all_cols:
                 feats[c] = blanked[c]
 
-        series, posterior, truth = build_series(
+        calibrator, abstention = calibration[drop]
+        series, posterior, truth, tremor_truth = build_series(
             hours, feats, emissions, calibrator, transitions, abstention,
             all_cols, tremor_detector=detector, tremor_cols=tremor_cols,
         )
         metrics = compute_metrics(series, posterior, truth)
+        metrics.update(tremor_metrics(series, tremor_truth))
+
+        # The calibration claim, measured on people the model never trained on
+        # and never saw at calibration time either. This is the number the
+        # product actually stands on, and unlike the day metrics it does not
+        # depend on which participant-day happens to be on screen.
+        metrics["coverage_target"] = 0.90
+        metrics["coverage_calibration"] = round(calibrator.achieved_coverage, 3)
+        metrics["coverage_calibration_n_participants"] = len(cal_people)
+        metrics["interval_mass"] = round(calibrator.mass, 3)
+        metrics["sensor_config"] = "left wrist dropped" if drop else "both wrists"
+        # The sensor-drop claim, measured on held-out people rather than on the
+        # 19 hours currently on screen. Both configurations are held to the same
+        # error budget, so the abstention rate is what has to move.
+        metrics["holdout_abstain_rate"] = calibrator.holdout.get("abstain_rate")
+        metrics["holdout_mae_answered"] = calibrator.holdout.get("mae_answered")
+        metrics["holdout_n_hours"] = calibrator.holdout.get("n_hours")
 
         # what the model can and cannot claim, in the bundle itself
         metrics["kinesia_beats_baseline"] = bool(metrics["ordinal_mae"] < BASELINE_MAE)
+        acc, base = metrics.get("tremor_day_accuracy"), metrics.get("tremor_day_baseline_accuracy")
+        metrics["tremor_day_beats_baseline"] = bool(
+            acc is not None and base is not None and acc > base)
         if tremor_summary:
             metrics["tremor_auc"] = round(tremor_summary["cv_auc_mean"], 3)
             metrics["tremor_auc_within_participant_median"] = round(
@@ -192,15 +249,19 @@ def main() -> None:
             note += "; LEFT WRIST DROPPED"
 
         name = f"{pid}{variant}.json"
-        write_bundle(OUT_CONTRACT / name, pid, day, series, events, truth, metrics, note)
-        write_bundle(OUT_APP / name, pid, day, series, events, truth, metrics, note)
+        for out in (OUT_CONTRACT, OUT_APP):
+            write_bundle(out / name, pid, day, series, events, truth, metrics,
+                         note, tremor_truth=tremor_truth)
 
         print(f"\n{name}  day {day}  {len(series)} steps")
         print(f"  kinesia MAE   {metrics['ordinal_mae']:.3f}  vs baseline "
               f"{BASELINE_MAE}  -> {'beats' if metrics['kinesia_beats_baseline'] else 'DOES NOT BEAT'}")
-        print(f"  coverage      {metrics['coverage_90']:.3f}   "
-              f"mean width {metrics['mean_interval_width']:.2f}")
         print(f"  abstained     {metrics['abstain_rate']:.1%}")
+        if metrics.get("tremor_n_scored"):
+            print(f"  tremor        accuracy {metrics['tremor_day_accuracy']:.3f} "
+                  f"vs majority-class {metrics['tremor_day_baseline_accuracy']:.3f} "
+                  f"on {metrics['tremor_n_scored']} scored steps "
+                  f"(prevalence {metrics['tremor_day_prevalence']:.2f})")
         if "tremor_auc" in metrics:
             print(f"  tremor AUC    {metrics['tremor_auc']:.3f} (cohort), "
                   f"{metrics['tremor_auc_within_participant_median']:.3f} within-participant")

@@ -11,8 +11,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.37)",
    "state": null,
-   "tremor_p": 0.421,
-   "tremor_confidence": 0.159
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "02:10",
@@ -21,8 +21,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.37)",
    "state": null,
-   "tremor_p": 0.587,
-   "tremor_confidence": 0.174
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "02:20",
@@ -41,8 +41,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.39)",
    "state": null,
-   "tremor_p": 0.636,
-   "tremor_confidence": 0.273
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "02:40",
@@ -51,8 +51,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.39)",
    "state": null,
-   "tremor_p": 0.421,
-   "tremor_confidence": 0.159
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "02:50",
@@ -61,8 +61,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.40)",
    "state": null,
-   "tremor_p": 0.636,
-   "tremor_confidence": 0.273
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "03:00",
@@ -101,8 +101,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.43)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "03:40",
@@ -111,8 +111,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.44)",
    "state": null,
-   "tremor_p": 0.587,
-   "tremor_confidence": 0.174
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "03:50",
@@ -131,8 +131,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.45)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.573,
+   "tremor_confidence": 0.145
   },
   {
    "t": "04:10",
@@ -141,8 +141,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.46)",
    "state": null,
-   "tremor_p": 0.363,
-   "tremor_confidence": 0.274
+   "tremor_p": 0.573,
+   "tremor_confidence": 0.145
   },
   {
    "t": "04:20",
@@ -151,8 +151,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.47)",
    "state": null,
-   "tremor_p": 0.587,
-   "tremor_confidence": 0.174
+   "tremor_p": 0.573,
+   "tremor_confidence": 0.145
   },
   {
    "t": "04:30",
@@ -161,8 +161,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.47)",
    "state": null,
-   "tremor_p": 0.421,
-   "tremor_confidence": 0.159
+   "tremor_p": 0.573,
+   "tremor_confidence": 0.145
   },
   {
    "t": "04:40",
@@ -171,8 +171,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.47)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.573,
+   "tremor_confidence": 0.145
   },
   {
    "t": "04:50",
@@ -181,8 +181,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.47)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.573,
+   "tremor_confidence": 0.145
   },
   {
    "t": "05:00",
@@ -191,8 +191,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.47)",
    "state": null,
-   "tremor_p": 0.388,
-   "tremor_confidence": 0.225
+   "tremor_p": 0.52,
+   "tremor_confidence": 0.041
   },
   {
    "t": "05:10",
@@ -201,8 +201,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.46)",
    "state": null,
-   "tremor_p": 0.767,
-   "tremor_confidence": 0.534
+   "tremor_p": 0.52,
+   "tremor_confidence": 0.041
   },
   {
    "t": "05:20",
@@ -211,8 +211,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.46)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.52,
+   "tremor_confidence": 0.041
   },
   {
    "t": "05:30",
@@ -231,8 +231,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.46)",
    "state": null,
-   "tremor_p": 0.25,
-   "tremor_confidence": 0.5
+   "tremor_p": 0.52,
+   "tremor_confidence": 0.041
   },
   {
    "t": "05:50",
@@ -251,8 +251,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.45)",
    "state": null,
-   "tremor_p": 0.767,
-   "tremor_confidence": 0.534
+   "tremor_p": 0.52,
+   "tremor_confidence": 0.041
   },
   {
    "t": "06:10",
@@ -261,8 +261,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.45)",
    "state": null,
-   "tremor_p": 0.421,
-   "tremor_confidence": 0.159
+   "tremor_p": 0.52,
+   "tremor_confidence": 0.041
   },
   {
    "t": "06:20",
@@ -271,8 +271,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.44)",
    "state": null,
-   "tremor_p": 0.767,
-   "tremor_confidence": 0.534
+   "tremor_p": 0.52,
+   "tremor_confidence": 0.041
   },
   {
    "t": "06:30",
@@ -281,8 +281,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.44)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.52,
+   "tremor_confidence": 0.041
   },
   {
    "t": "06:40",
@@ -291,8 +291,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.44)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.52,
+   "tremor_confidence": 0.041
   },
   {
    "t": "06:50",
@@ -301,8 +301,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.43)",
    "state": null,
-   "tremor_p": 0.636,
-   "tremor_confidence": 0.273
+   "tremor_p": 0.52,
+   "tremor_confidence": 0.041
   },
   {
    "t": "07:00",
@@ -311,8 +311,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.43)",
    "state": null,
-   "tremor_p": 0.421,
-   "tremor_confidence": 0.159
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
   },
   {
    "t": "07:10",
@@ -321,8 +321,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.43)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
   },
   {
    "t": "07:20",
@@ -331,8 +331,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.42)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
   },
   {
    "t": "07:30",
@@ -341,8 +341,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.42)",
    "state": null,
-   "tremor_p": 0.421,
-   "tremor_confidence": 0.159
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
   },
   {
    "t": "07:40",
@@ -351,8 +351,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.42)",
    "state": null,
-   "tremor_p": 0.25,
-   "tremor_confidence": 0.5
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
   },
   {
    "t": "07:50",
@@ -361,8 +361,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.42)",
    "state": null,
-   "tremor_p": 0.636,
-   "tremor_confidence": 0.273
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
   },
   {
    "t": "08:00",
@@ -371,8 +371,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.43)",
    "state": null,
-   "tremor_p": 0.25,
-   "tremor_confidence": 0.5
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
   },
   {
    "t": "08:10",
@@ -381,8 +381,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.44)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
   },
   {
    "t": "08:20",
@@ -391,8 +391,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.44)",
    "state": null,
-   "tremor_p": 0.388,
-   "tremor_confidence": 0.225
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
   },
   {
    "t": "08:30",
@@ -401,8 +401,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.45)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
   },
   {
    "t": "08:40",
@@ -411,8 +411,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.45)",
    "state": null,
-   "tremor_p": 0.25,
-   "tremor_confidence": 0.5
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
   },
   {
    "t": "08:50",
@@ -421,8 +421,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.46)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
   },
   {
    "t": "09:00",
@@ -431,8 +431,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.47)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "09:10",
@@ -441,8 +441,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.47)",
    "state": null,
-   "tremor_p": 0.767,
-   "tremor_confidence": 0.534
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "09:20",
@@ -451,8 +451,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.48)",
    "state": null,
-   "tremor_p": 0.421,
-   "tremor_confidence": 0.159
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "09:30",
@@ -461,8 +461,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.48)",
    "state": null,
-   "tremor_p": 0.421,
-   "tremor_confidence": 0.159
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "09:40",
@@ -471,8 +471,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.49)",
    "state": null,
-   "tremor_p": 0.388,
-   "tremor_confidence": 0.225
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "09:50",
@@ -481,8 +481,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.49)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "10:00",
@@ -491,8 +491,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.49)",
    "state": null,
-   "tremor_p": 0.587,
-   "tremor_confidence": 0.174
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "10:10",
@@ -501,8 +501,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.50)",
    "state": null,
-   "tremor_p": 0.767,
-   "tremor_confidence": 0.534
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "10:20",
@@ -511,8 +511,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.50)",
    "state": null,
-   "tremor_p": 0.25,
-   "tremor_confidence": 0.5
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "10:30",
@@ -521,8 +521,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.50)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "10:40",
@@ -561,8 +561,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.50)",
    "state": null,
-   "tremor_p": 0.767,
-   "tremor_confidence": 0.534
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "11:20",
@@ -571,8 +571,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.50)",
    "state": null,
-   "tremor_p": 0.636,
-   "tremor_confidence": 0.273
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "11:30",
@@ -581,8 +581,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.50)",
    "state": null,
-   "tremor_p": 0.412,
-   "tremor_confidence": 0.176
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "11:40",
@@ -591,8 +591,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.49)",
    "state": null,
-   "tremor_p": 0.388,
-   "tremor_confidence": 0.225
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "11:50",
@@ -601,8 +601,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.49)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "12:00",
@@ -631,8 +631,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.48)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.52,
+   "tremor_confidence": 0.041
   },
   {
    "t": "12:30",
@@ -641,8 +641,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.47)",
    "state": null,
-   "tremor_p": 0.587,
-   "tremor_confidence": 0.174
+   "tremor_p": 0.52,
+   "tremor_confidence": 0.041
   },
   {
    "t": "12:40",
@@ -681,8 +681,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.44)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "13:20",
@@ -701,8 +701,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.43)",
    "state": null,
-   "tremor_p": 0.587,
-   "tremor_confidence": 0.174
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "13:40",
@@ -711,8 +711,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.42)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "13:50",
@@ -721,8 +721,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.42)",
    "state": null,
-   "tremor_p": 0.636,
-   "tremor_confidence": 0.273
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "14:00",
@@ -731,8 +731,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.43)",
    "state": null,
-   "tremor_p": 0.421,
-   "tremor_confidence": 0.159
+   "tremor_p": 0.587,
+   "tremor_confidence": 0.174
   },
   {
    "t": "14:10",
@@ -741,8 +741,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.44)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.587,
+   "tremor_confidence": 0.174
   },
   {
    "t": "14:20",
@@ -751,8 +751,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.45)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.587,
+   "tremor_confidence": 0.174
   },
   {
    "t": "14:30",
@@ -771,8 +771,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.47)",
    "state": null,
-   "tremor_p": 0.636,
-   "tremor_confidence": 0.273
+   "tremor_p": 0.587,
+   "tremor_confidence": 0.174
   },
   {
    "t": "14:50",
@@ -781,8 +781,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.48)",
    "state": null,
-   "tremor_p": 0.421,
-   "tremor_confidence": 0.159
+   "tremor_p": 0.587,
+   "tremor_confidence": 0.174
   },
   {
    "t": "15:00",
@@ -791,8 +791,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.48)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.767,
+   "tremor_confidence": 0.534
   },
   {
    "t": "15:10",
@@ -811,8 +811,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.49)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.767,
+   "tremor_confidence": 0.534
   },
   {
    "t": "15:30",
@@ -821,8 +821,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.49)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.767,
+   "tremor_confidence": 0.534
   },
   {
    "t": "15:40",
@@ -831,8 +831,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.50)",
    "state": null,
-   "tremor_p": 0.421,
-   "tremor_confidence": 0.159
+   "tremor_p": 0.767,
+   "tremor_confidence": 0.534
   },
   {
    "t": "15:50",
@@ -851,8 +851,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.50)",
    "state": null,
-   "tremor_p": 0.421,
-   "tremor_confidence": 0.159
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "16:10",
@@ -861,8 +861,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.51)",
    "state": null,
-   "tremor_p": 0.531,
-   "tremor_confidence": 0.061
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "16:20",
@@ -871,8 +871,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.51)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "16:30",
@@ -881,8 +881,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.51)",
    "state": null,
-   "tremor_p": 0.421,
-   "tremor_confidence": 0.159
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "16:40",
@@ -891,8 +891,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.52)",
    "state": null,
-   "tremor_p": 0.25,
-   "tremor_confidence": 0.5
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "16:50",
@@ -911,8 +911,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.53)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
   },
   {
    "t": "17:10",
@@ -921,8 +921,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.53)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
   },
   {
    "t": "17:20",
@@ -931,8 +931,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.53)",
    "state": null,
-   "tremor_p": 0.767,
-   "tremor_confidence": 0.534
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
   },
   {
    "t": "17:30",
@@ -941,8 +941,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.53)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
   },
   {
    "t": "17:40",
@@ -951,8 +951,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.53)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
   },
   {
    "t": "17:50",
@@ -961,8 +961,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.54)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
   },
   {
    "t": "18:00",
@@ -971,8 +971,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.54)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "18:10",
@@ -1011,8 +1011,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.55)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "18:50",
@@ -1021,8 +1021,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.55)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "19:00",
@@ -1031,8 +1031,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.55)",
    "state": null,
-   "tremor_p": 0.388,
-   "tremor_confidence": 0.225
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
   },
   {
    "t": "19:10",
@@ -1041,8 +1041,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.55)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
   },
   {
    "t": "19:20",
@@ -1051,8 +1051,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.54)",
    "state": null,
-   "tremor_p": 0.388,
-   "tremor_confidence": 0.225
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
   },
   {
    "t": "19:30",
@@ -1061,8 +1061,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.54)",
    "state": null,
-   "tremor_p": 0.636,
-   "tremor_confidence": 0.273
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
   },
   {
    "t": "19:40",
@@ -1071,8 +1071,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.54)",
    "state": null,
-   "tremor_p": 0.467,
-   "tremor_confidence": 0.067
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
   },
   {
    "t": "19:50",
@@ -1091,8 +1091,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.53)",
    "state": null,
-   "tremor_p": 0.52,
-   "tremor_confidence": 0.041
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "20:10",
@@ -1101,8 +1101,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.52)",
    "state": null,
-   "tremor_p": 0.587,
-   "tremor_confidence": 0.174
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "20:20",
@@ -1121,8 +1121,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.51)",
    "state": null,
-   "tremor_p": 0.388,
-   "tremor_confidence": 0.225
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "20:40",
@@ -1131,8 +1131,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.50)",
    "state": null,
-   "tremor_p": 0.363,
-   "tremor_confidence": 0.274
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   },
   {
    "t": "20:50",
@@ -1141,8 +1141,8 @@
    "evidence": "reconstructed",
    "reason": "no state preferred (peak probability 0.49)",
    "state": null,
-   "tremor_p": 0.363,
-   "tremor_confidence": 0.274
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
   }
  ],
  "events": [
@@ -1335,16 +1335,148 @@
   1,
   1
  ],
+ "tremor_truth": [
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1
+ ],
  "metrics": {
-  "ordinal_mae": NaN,
+  "ordinal_mae": null,
   "baseline_mae": 0.594,
-  "coverage_90": NaN,
-  "mean_interval_width": NaN,
-  "brier": NaN,
+  "coverage_90": null,
+  "mean_interval_width": null,
+  "brier": null,
   "abstain_rate": 1.0,
   "n_steps": 114,
   "n_answered": 0,
+  "tremor_n_scored": 114,
+  "tremor_day_accuracy": 0.263,
+  "tremor_day_baseline_accuracy": 0.737,
+  "tremor_day_prevalence": 0.737,
+  "tremor_day_brier": 0.261,
+  "tremor_day_brier_climatology": 0.194,
+  "tremor_day_auc": 0.464,
+  "coverage_target": 0.9,
+  "coverage_calibration": 0.903,
+  "coverage_calibration_n_participants": 11,
+  "interval_mass": 0.72,
+  "sensor_config": "both wrists",
+  "holdout_abstain_rate": 0.124,
+  "holdout_mae_answered": 0.226,
+  "holdout_n_hours": 6838,
   "kinesia_beats_baseline": false,
+  "tremor_day_beats_baseline": false,
   "tremor_auc": 0.697,
   "tremor_auc_within_participant_median": 0.55,
   "selective_curve": [
