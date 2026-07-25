@@ -128,6 +128,10 @@ export function DayView() {
               →
             </kbd>{" "}
             step hours
+            {" · "}
+            <a href="/clinician" style={{ color: "var(--brass)" }}>
+              Clinician handoff
+            </a>
           </p>
         </div>
       </header>
