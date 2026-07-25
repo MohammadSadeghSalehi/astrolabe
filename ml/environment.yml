@@ -1,0 +1,20 @@
+name: astrolabe
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - scipy
+  - pandas
+  - scikit-learn
+  - pyarrow
+  - joblib
+  - tqdm
+  - matplotlib
+  - pytest
+  # Rungs 1-3 (features -> ordinal emissions -> HMM -> calibration) need nothing
+  # beyond this. PyTorch is deliberately absent: it is only required for the
+  # optional representation-learning rung, and on Blackwell (sm_120) it needs a
+  # cu128+ wheel, which conda-forge does not carry. Install it separately if
+  # that rung is ever revived:
+  #   pip install torch --index-url https://download.pytorch.org/whl/cu128
