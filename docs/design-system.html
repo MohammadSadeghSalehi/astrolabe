@@ -1,0 +1,368 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Astrolabe — design system</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  /* brand chrome — headings, rules, accents. NOT for data marks. */
+  --ink:#080B11; --plate:#10151F; --rule:#2A3244;
+  --brass:#C8963E; --brass-hi:#EFD39B; --verdigris:#4FB3A4;
+  --parchment:#ECE7DB; --muted:#8D97AB;
+
+  /* categorical series — validated, seeded (see DESIGN.md §3.1) */
+  --s1:#b7862d; --s2:#16a897; --s3:#3d66c4;
+  --s4:#b076d9; --s5:#ac5345; --s6:#46a560;
+
+  /* diverging — KinesiaScore -3..+3 */
+  --k-3:#77a2fc; --k-2:#537ede; --k-1:#3f60a8; --k0:#454a54;
+  --k1:#9d4337;  --k2:#cf5949;  --k3:#fd7562;
+
+  --grid:#1B2231; --axis:#2A3244;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--ink); color:var(--parchment);
+  font-family:"IBM Plex Sans",system-ui,sans-serif; font-weight:300;
+  -webkit-font-smoothing:antialiased; line-height:1.55;
+  padding:clamp(18px,4vw,56px);
+}
+.wrap{max-width:1180px;margin:0 auto}
+h1{font-family:Fraunces,serif;font-weight:300;font-size:clamp(34px,5vw,60px);line-height:1;letter-spacing:-.02em}
+h2{font-family:Fraunces,serif;font-weight:300;font-size:clamp(21px,2.6vw,31px);margin:56px 0 6px;letter-spacing:-.015em}
+h2 .n{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--brass);letter-spacing:.2em;display:block;margin-bottom:8px}
+h3{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);font-weight:500;margin:26px 0 12px}
+p{color:#C7CEDC;max-width:74ch;font-size:15px;margin-bottom:12px}
+p.lede{font-family:Fraunces,serif;font-size:clamp(16px,2vw,21px);color:var(--brass-hi);max-width:60ch;margin:16px 0 0}
+strong{font-weight:600;color:#fff}
+code{font-family:"IBM Plex Mono",monospace;font-size:.9em;color:var(--brass-hi)}
+hr{border:0;border-top:1px solid var(--rule);margin:0}
+a{color:var(--verdigris)}
+
+/* ---------- swatches ---------- */
+.sw{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:10px;margin:14px 0}
+.chip{border:1px solid var(--rule);border-radius:3px;overflow:hidden;background:var(--plate)}
+.chip .band{height:74px}
+.chip .meta{padding:9px 11px;font-family:"IBM Plex Mono",monospace;font-size:11px;line-height:1.5}
+.chip .role{color:var(--parchment);text-transform:uppercase;letter-spacing:.1em;font-size:9.5px}
+.chip .hex{color:var(--muted)}
+.ramp{display:flex;border:1px solid var(--rule);border-radius:3px;overflow:hidden;margin:12px 0}
+.ramp div{flex:1;height:62px;position:relative}
+.ramp span{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:#0009;font-weight:500}
+.ramp.on-dark span{color:#fff9}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:14px 0}
+th{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);text-align:left;font-weight:500;padding:0 14px 9px 0;border-bottom:1px solid var(--rule)}
+td{padding:10px 14px 10px 0;border-bottom:1px solid var(--grid);vertical-align:top;color:#C7CEDC}
+td:first-child{color:var(--parchment);white-space:nowrap}
+.pass{color:var(--verdigris);font-family:"IBM Plex Mono",monospace;font-size:12px}
+
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:20px;margin:18px 0}
+.card{border:1px solid var(--rule);border-radius:3px;padding:17px 19px;background:var(--plate)}
+.card.hot{border-color:#8A6626;background:#151422}
+.card p{font-size:13.5px;margin:0}
+
+figure{border:1px solid var(--rule);border-radius:3px;background:var(--plate);padding:20px;margin:16px 0}
+figcaption{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);margin-top:14px;line-height:1.6}
+.legend{display:flex;gap:20px;flex-wrap:wrap;font-family:"IBM Plex Mono",monospace;font-size:12px;color:#C7CEDC;margin-bottom:14px}
+.legend i{display:inline-block;width:22px;height:11px;margin-right:7px;vertical-align:-1px;border-radius:2px}
+</style>
+
+<div class="wrap">
+
+<p style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--brass);margin-bottom:14px">Astrolabe · design system · 25 Jul 2026</p>
+<h1>Your day, read.</h1>
+<p class="lede">Every colour here was computed and checked — lightness band, chroma floor, colour-vision separation, contrast against the real surface. None of it was picked by eye.</p>
+
+<!-- ═══════════════════════════════════ 01 -->
+<h2><span class="n">01 — the one rule</span>Observed, reported, inferred</h2>
+<p>Every element on screen declares where it came from. The three treatments differ by <strong>fill texture, not hue</strong> — so they survive a projector, greyscale and colour-blind vision, and so hue stays free to carry state.</p>
+
+<figure>
+<svg viewBox="0 0 900 150" style="width:100%;height:auto" role="img" aria-label="The four evidence treatments: observed is a solid bar, reported is a solid bar with a diamond marker, inferred is a 45-degree hatched bar inside an uncertainty band, abstained is an empty dashed outline.">
+  <defs>
+    <pattern id="hatch" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <rect width="7" height="7" fill="#b7862d" opacity=".22"/>
+      <line x1="0" y1="0" x2="0" y2="7" stroke="#b7862d" stroke-width="3"/>
+    </pattern>
+  </defs>
+  <!-- observed -->
+  <rect x="10" y="34" width="185" height="46" rx="4" fill="#16a897"/>
+  <text x="10" y="103" fill="#ECE7DB" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="500">OBSERVED</text>
+  <text x="10" y="122" fill="#8D97AB" font-family="IBM Plex Sans, sans-serif" font-size="12.5">solid fill · off the sensor</text>
+  <!-- reported -->
+  <line x1="322" y1="20" x2="322" y2="80" stroke="#ECE7DB" stroke-width="1.5" stroke-opacity=".55"/>
+  <rect x="235" y="34" width="185" height="46" rx="4" fill="#46a560"/>
+  <path d="M322 12 l9 9 -9 9 -9 -9 z" fill="#ECE7DB"/>
+  <text x="235" y="103" fill="#ECE7DB" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="500">REPORTED</text>
+  <text x="235" y="122" fill="#8D97AB" font-family="IBM Plex Sans, sans-serif" font-size="12.5">solid + diamond · they told us</text>
+  <!-- inferred -->
+  <rect x="460" y="22" width="185" height="70" rx="5" fill="#b7862d" opacity=".16"/>
+  <rect x="460" y="34" width="185" height="46" rx="4" fill="url(#hatch)"/>
+  <text x="460" y="103" fill="#ECE7DB" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="500">INFERRED</text>
+  <text x="460" y="122" fill="#8D97AB" font-family="IBM Plex Sans, sans-serif" font-size="12.5">45° hatch + band · reconstructed</text>
+  <!-- abstained -->
+  <rect x="685" y="34" width="185" height="46" rx="4" fill="none" stroke="#8D97AB" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <text x="685" y="103" fill="#ECE7DB" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="500">ABSTAINED</text>
+  <text x="685" y="122" fill="#8D97AB" font-family="IBM Plex Sans, sans-serif" font-size="12.5">no fill · we do not know</text>
+</svg>
+<figcaption><strong style="color:#fff">Abstention is drawn as absence</strong> — a hole with a dashed edge, never a colour. “We don’t know” must not look like a value, and it must be spottable from the back of the room without reading a legend.</figcaption>
+</figure>
+
+<!-- ═══════════════════════════════════ 02 -->
+<h2><span class="n">02 — series identity</span>Categorical palette</h2>
+<p>Slot order is <strong>semantic and fixed</strong> — it encodes product meaning, so it is not a free variable. Assign in order, never cycle. Six is the cap and you will rarely need more than two.</p>
+
+<h3>Dark — surface #10151F (product &amp; deck)</h3>
+<div class="sw">
+  <div class="chip"><div class="band" style="background:#b7862d"></div><div class="meta"><div class="role">01 reconstructed</div><div class="hex">#b7862d</div></div></div>
+  <div class="chip"><div class="band" style="background:#16a897"></div><div class="meta"><div class="role">02 observed truth</div><div class="hex">#16a897</div></div></div>
+  <div class="chip"><div class="band" style="background:#3d66c4"></div><div class="meta"><div class="role">03 left wrist</div><div class="hex">#3d66c4</div></div></div>
+  <div class="chip"><div class="band" style="background:#b076d9"></div><div class="meta"><div class="role">04 right wrist</div><div class="hex">#b076d9</div></div></div>
+  <div class="chip"><div class="band" style="background:#ac5345"></div><div class="meta"><div class="role">05 tremor</div><div class="hex">#ac5345</div></div></div>
+  <div class="chip"><div class="band" style="background:#46a560"></div><div class="meta"><div class="role">06 med-aligned</div><div class="hex">#46a560</div></div></div>
+</div>
+
+<h3>Light — surface #FAF8F3 (clinician page only)</h3>
+<div class="sw">
+  <div class="chip"><div class="band" style="background:#a67a28"></div><div class="meta"><div class="role">01 reconstructed</div><div class="hex">#a67a28</div></div></div>
+  <div class="chip"><div class="band" style="background:#139b8b"></div><div class="meta"><div class="role">02 observed truth</div><div class="hex">#139b8b</div></div></div>
+  <div class="chip"><div class="band" style="background:#3962bf"></div><div class="meta"><div class="role">03 left wrist</div><div class="hex">#3962bf</div></div></div>
+  <div class="chip"><div class="band" style="background:#a77bc7"></div><div class="meta"><div class="role">04 right wrist</div><div class="hex">#a77bc7</div></div></div>
+  <div class="chip"><div class="band" style="background:#ba3727"></div><div class="meta"><div class="role">05 tremor</div><div class="hex">#ba3727</div></div></div>
+  <div class="chip"><div class="band" style="background:#4e9c61"></div><div class="meta"><div class="role">06 med-aligned</div><div class="hex">#4e9c61</div></div></div>
+</div>
+
+<table>
+<tr><th>Check</th><th>Target</th><th>Dark</th><th>Light</th></tr>
+<tr><td>Lightness band</td><td>L in mode band</td><td class="pass">all 6 pass</td><td class="pass">all 6 pass</td></tr>
+<tr><td>Chroma floor</td><td>C ≥ 0.10</td><td class="pass">all 6 pass</td><td class="pass">all 6 pass</td></tr>
+<tr><td>CVD separation</td><td>ΔE ≥ 8</td><td class="pass">9.1 deutan</td><td class="pass">9.6 deutan</td></tr>
+<tr><td>Tritan (reported)</td><td>—</td><td class="pass">14.0</td><td class="pass">11.4</td></tr>
+<tr><td>Normal-vision floor</td><td>ΔE ≥ 15</td><td class="pass">17.9</td><td class="pass">17.1</td></tr>
+<tr><td>Contrast vs surface</td><td>≥ 3:1</td><td class="pass">all 6 pass</td><td class="pass">all 6 pass</td></tr>
+</table>
+<p style="font-size:13.5px;color:var(--muted)">Regenerate with <code>node scripts/palette_search.mjs</code> — seeded, so it reproduces exactly these hexes.</p>
+
+<div class="cols">
+<div class="card hot"><h3 style="margin-top:0">Brand ≠ chart</h3><p>The deck’s <code>--brass #C8963E</code> and <code>--verdigris #4FB3A4</code> stay exactly as they are for headings, rules and the rete. The chart slots above are <em>steps of the same hues</em> moved into the validated band. Same brand, different job.</p></div>
+<div class="card"><h3 style="margin-top:0">Slot 1 vs slot 2</h3><p>Brass reconstruction against verdigris truth is the money shot, and it is the pair that has to survive a projector. It clears the CVD target with headroom in both modes.</p></div>
+</div>
+
+<!-- ═══════════════════════════════════ 03 -->
+<h2><span class="n">03 — the hero encoding</span>KinesiaScore, diverging</h2>
+<p>The 7-point diary scale maps exactly onto a 7-step diverging ramp. <strong>Zero is the good state and both ends are impairment in opposite directions</strong> — cool is too little movement, warm is too much. Any ramp that runs good→bad in one direction is factually wrong about the disease.</p>
+
+<h3>Dark</h3>
+<div class="ramp on-dark">
+  <div style="background:#77a2fc"><span style="color:#0009">−3</span></div>
+  <div style="background:#537ede"><span>−2</span></div>
+  <div style="background:#3f60a8"><span>−1</span></div>
+  <div style="background:#454a54"><span>0</span></div>
+  <div style="background:#9d4337"><span>+1</span></div>
+  <div style="background:#cf5949"><span>+2</span></div>
+  <div style="background:#fd7562"><span style="color:#0009">+3</span></div>
+</div>
+<h3>Light</h3>
+<div class="ramp on-dark">
+  <div style="background:#2751b8"><span>−3</span></div>
+  <div style="background:#4d77d4"><span>−2</span></div>
+  <div style="background:#7f9edd"><span style="color:#0009">−1</span></div>
+  <div style="background:#b4afa3"><span style="color:#0009">0</span></div>
+  <div style="background:#db8374"><span style="color:#0009">+1</span></div>
+  <div style="background:#c55243"><span>+2</span></div>
+  <div style="background:#a52014"><span>+3</span></div>
+</div>
+
+<table>
+<tr><th>Score</th><th>Diary label</th><th>Share of labelled hours</th></tr>
+<tr><td>−3</td><td>Severe akinesia</td><td>2.6%</td></tr>
+<tr><td>−2</td><td>Discomforting akinesia</td><td>8.1%</td></tr>
+<tr><td>−1</td><td>Slight akinesia</td><td>21.9%</td></tr>
+<tr><td style="color:var(--brass-hi)">0</td><td style="color:var(--brass-hi)">Good kinesia</td><td style="color:var(--brass-hi)">56.6%</td></tr>
+<tr><td>+1</td><td>Slight dyskinesia</td><td>8.5%</td></tr>
+<tr><td>+2</td><td>Discomforting dyskinesia</td><td>1.8%</td></tr>
+<tr><td>+3</td><td>Severe dyskinesia</td><td>0.4%</td></tr>
+</table>
+
+<div class="card hot"><h3 style="margin-top:0">Why the midpoint is not invisible</h3><p>“Good kinesia” is <strong>57% of all labelled hours</strong> — the most common state on a good day. A near-surface neutral would make a healthy day look like missing data. Both midpoints are stepped to clear 2.05:1, so a good hour reads as a calm <em>present</em> band. It stays neutral rather than green: hue at a diverging midpoint makes the centre read as a third category.</p></div>
+
+<!-- ═══════════════════════════════════ 04 -->
+<h2><span class="n">04 — magnitude</span>Sequential: tremor probability, confidence</h2>
+<p>One hue (violet) — unused by any categorical slot and by both diverging arms, so it can never be mistaken for a series or a state.</p>
+<h3>Dark · continuous</h3>
+<div class="ramp on-dark">
+  <div style="background:#491067"></div><div style="background:#612683"></div><div style="background:#783e9d"></div>
+  <div style="background:#9056b6"></div><div style="background:#a86ed1"></div><div style="background:#c287ec"></div>
+  <div style="background:#d5a8f7"></div>
+</div>
+<h3>Dark · discrete cells (trimmed so nothing disappears)</h3>
+<div class="ramp on-dark">
+  <div style="background:#783e9d"></div><div style="background:#9056b6"></div><div style="background:#a86ed1"></div>
+  <div style="background:#c287ec"></div><div style="background:#d5a8f7"></div>
+</div>
+<p style="font-size:13.5px;color:var(--muted)">Use the full range only where the light end genuinely means “near zero”. For discrete hourly cells use the trimmed 5-step span — every step there clears 2:1 against the surface.</p>
+
+<!-- ═══════════════════════════════════ 05 -->
+<h2><span class="n">05 — putting it together</span>The timeline, annotated</h2>
+<figure>
+<svg viewBox="0 0 960 300" style="width:100%;height:auto" role="img" aria-label="Mock motor-state timeline: a hatched reconstruction line inside its uncertainty band, a separate solid truth line showing visible error between them, a reported medication marker, and a dashed abstention gap where the reconstruction stops.">
+  <defs>
+    <pattern id="hatch2" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <rect width="6" height="6" fill="#b7862d" opacity=".18"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#b7862d" stroke-width="2.4"/>
+    </pattern>
+  </defs>
+  <!-- grid -->
+  <g stroke="#1B2231" stroke-width="1">
+    <line x1="66" y1="40"  x2="856" y2="40"/><line x1="66" y1="90"  x2="856" y2="90"/>
+    <line x1="66" y1="140" x2="856" y2="140"/><line x1="66" y1="190" x2="856" y2="190"/>
+  </g>
+  <line x1="66" y1="115" x2="856" y2="115" stroke="#2A3244" stroke-width="1.5"/>
+  <!-- y labels -->
+  <g fill="#8D97AB" font-family="IBM Plex Mono, monospace" font-size="11">
+    <text x="4" y="44">+3 dysk</text><text x="4" y="119">0 good</text><text x="4" y="194">−3 akin</text>
+  </g>
+
+  <!-- uncertainty band — STOPS at the abstention window, and is visibly wider
+       after it, where the evidence is thinner -->
+  <path d="M66 132 C 170 100, 240 74, 330 80 C 400 85, 435 100, 466 112
+           L466 130 C 435 118, 400 103, 330 98 C 240 92, 170 118, 66 150 Z"
+        fill="#b7862d" opacity=".17"/>
+  <path d="M566 128 C 640 160, 700 206, 780 174 C 812 162, 836 146, 856 136
+           L856 168 C 836 178, 812 194, 780 206 C 700 238, 640 192, 566 160 Z"
+        fill="#b7862d" opacity=".17"/>
+
+  <!-- reconstruction — interrupted by the abstention window -->
+  <g fill="none">
+    <path d="M66 141 C 170 109, 240 86, 330 89 C 400 92, 435 109, 466 121"
+          stroke="url(#hatch2)" stroke-width="9"/>
+    <path d="M66 141 C 170 109, 240 86, 330 89 C 400 92, 435 109, 466 121"
+          stroke="#b7862d" stroke-width="2" stroke-dasharray="7 4"/>
+    <path d="M566 144 C 640 176, 700 200, 780 190 C 812 170, 836 156, 856 152"
+          stroke="url(#hatch2)" stroke-width="9"/>
+    <path d="M566 144 C 640 176, 700 200, 780 190 C 812 170, 836 156, 856 152"
+          stroke="#b7862d" stroke-width="2" stroke-dasharray="7 4"/>
+  </g>
+
+  <!-- truth — CROSSES the reconstruction rather than sitting parallel to it:
+       real error wanders, and a constant offset would read as pure bias -->
+  <path d="M66 152 C 130 128, 200 90, 262 84 C 320 79, 390 104, 440 122
+           C 500 144, 545 168, 600 178 C 660 189, 700 178, 745 176
+           C 790 174, 826 162, 856 143"
+        fill="none" stroke="#16a897" stroke-width="2.6"/>
+
+  <!-- abstention window: no fill at all. Truth runs through it, revealed -
+       "we said we didn't know; here is what was actually happening." -->
+  <rect x="466" y="52" width="100" height="150" fill="none" stroke="#8D97AB" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <text x="516" y="72" fill="#ECE7DB" font-family="IBM Plex Mono, monospace" font-size="10.5" text-anchor="middle" letter-spacing="1">ABSTAINED</text>
+  <text x="516" y="88" fill="#8D97AB" font-family="IBM Plex Sans, sans-serif" font-size="10" text-anchor="middle">non-wear &gt; 8 min</text>
+
+  <!-- reported medication event -->
+  <line x1="245" y1="26" x2="245" y2="205" stroke="#ECE7DB" stroke-width="1.4" stroke-opacity=".5"/>
+  <path d="M245 18 l8 8 -8 8 -8 -8 z" fill="#ECE7DB"/>
+  <text x="253" y="243" fill="#8D97AB" font-family="IBM Plex Mono, monospace" font-size="10.5">08:45 L-Dopa 100mg · reported</text>
+
+  <!-- direct labels, inside the frame -->
+  <text x="864" y="139" fill="#16a897" font-family="IBM Plex Mono, monospace" font-size="12">truth</text>
+  <text x="864" y="156" fill="#b7862d" font-family="IBM Plex Mono, monospace" font-size="12">ours</text>
+
+  <!-- x axis -->
+  <g fill="#8D97AB" font-family="IBM Plex Mono, monospace" font-size="11">
+    <text x="66"  y="275">06:00</text><text x="262" y="275">10:00</text>
+    <text x="458" y="275">14:00</text><text x="654" y="275">18:00</text><text x="815" y="275">22:00</text>
+  </g>
+</svg>
+<figcaption>
+Reading the mock: the <span style="color:#16a897">solid line is truth</span>, revealed; the <span style="color:#b7862d">hatched dashed line and its band are the reconstruction</span>; the diamond on a hairline rule is a <strong style="color:#fff">reported</strong> medication time; the dashed hole is an <strong style="color:#fff">abstention</strong> with its reason stated in words. Shape carries the distinction — colour only confirms it. Desaturate this image and it still reads.
+</figcaption>
+</figure>
+
+<!-- ═══════════════════════════════════ 06 -->
+<h2><span class="n">06 — the instrument</span>Interaction</h2>
+<p>The UI is not a viewer, it is an instrument. A judge should be able to take the mouse and interrogate it — that is what separates this from every unfalsifiable demo in the room. Build in this order; each is independently demo-able.</p>
+
+<figure>
+<svg viewBox="0 0 960 210" style="width:100%;height:auto" role="img" aria-label="The reveal wipe: a draggable handle sweeps left to right; behind it truth is drawn over the reconstruction, and a running error readout updates as it moves.">
+  <defs>
+    <pattern id="hatch3" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <rect width="6" height="6" fill="#b7862d" opacity=".18"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#b7862d" stroke-width="2.4"/>
+    </pattern>
+    <clipPath id="swept"><rect x="0" y="0" width="470" height="210"/></clipPath>
+  </defs>
+  <g stroke="#1B2231" stroke-width="1">
+    <line x1="40" y1="60" x2="900" y2="60"/><line x1="40" y1="105" x2="900" y2="105"/><line x1="40" y1="150" x2="900" y2="150"/>
+  </g>
+  <!-- band + reconstruction, whole width -->
+  <path d="M40 92 C 200 62, 340 58, 470 78 C 620 100, 760 140, 900 118
+           L900 148 C 760 170, 620 130, 470 106 C 340 86, 200 90, 40 122 Z"
+        fill="#b7862d" opacity=".15"/>
+  <path d="M40 107 C 200 76, 340 74, 470 92 C 620 115, 760 155, 900 133"
+        fill="none" stroke="url(#hatch3)" stroke-width="8"/>
+  <path d="M40 107 C 200 76, 340 74, 470 92 C 620 115, 760 155, 900 133"
+        fill="none" stroke="#b7862d" stroke-width="2" stroke-dasharray="7 4"/>
+  <!-- truth, clipped to the swept region -->
+  <g clip-path="url(#swept)">
+    <path d="M40 120 C 180 92, 330 62, 470 84 C 620 108, 760 132, 900 126"
+          fill="none" stroke="#16a897" stroke-width="2.6"/>
+  </g>
+  <!-- the handle -->
+  <line x1="470" y1="26" x2="470" y2="180" stroke="#ECE7DB" stroke-width="2"/>
+  <rect x="463" y="88" width="14" height="30" rx="3" fill="#ECE7DB"/>
+  <g fill="#0D121C"><rect x="467" y="95" width="1.4" height="16"/><rect x="471" y="95" width="1.4" height="16"/></g>
+  <!-- running readout -->
+  <rect x="380" y="6" width="180" height="24" rx="3" fill="#151422" stroke="#8A6626"/>
+  <text x="470" y="22" fill="#EFD39B" font-family="IBM Plex Mono, monospace" font-size="12" text-anchor="middle">MAE 0.44 · 6h revealed</text>
+  <!-- labels -->
+  <text x="150" y="200" fill="#16a897" font-family="IBM Plex Mono, monospace" font-size="12">← revealed: truth over ours</text>
+  <text x="620" y="200" fill="#b7862d" font-family="IBM Plex Mono, monospace" font-size="12">not yet revealed: ours only →</text>
+</svg>
+<figcaption><strong style="color:#fff">Why a drag and not a button.</strong> A click is a claim <em>you</em> are making. A drag is a claim <em>they</em> verify. Same data, completely different epistemic weight — and it is the difference between showing a result and letting a judge test one.</figcaption>
+</figure>
+
+<div class="cols">
+<div class="card hot"><h3 style="margin-top:0">1 · Reveal wipe</h3><p>Draggable handle sweeps left→right. Truth is <em>clipped</em> to the swept region so it uncovers rather than fades. Running error readout moves with it. <code>R</code> auto-sweeps in 1.6 s.</p></div>
+<div class="card"><h3 style="margin-top:0">2 · Scrub the day</h3><p>Crosshair + tooltip naming the evidence tier <strong>in words</strong>. Every linked panel updates together.</p></div>
+<div class="card"><h3 style="margin-top:0">3 · Posterior inspector</h3><p>Click an hour → the full 7-way distribution, MAP marked, 90% interval bracketed. Confident = a spike; abstaining = nearly flat. That contrast <em>is</em> the argument.</p></div>
+<div class="card"><h3 style="margin-top:0">4 · Sensor toggles</h3><p>Drop a wrist: band widens 400 ms, abstention holes punch in staggered 20 ms, metrics count rather than jump. Two clicks, whole uncertainty claim.</p></div>
+<div class="card"><h3 style="margin-top:0">5 · Evidence layers</h3><p>Toggle observed / reported / inferred. Turning <em>inferred</em> off should leave the screen <strong>sparse</strong> — that emptiness is the honest picture of how little was measured.</p></div>
+<div class="card"><h3 style="margin-top:0">Keyboard</h3><p>
+<code>←</code> / <code>→</code> — step an hour<br>
+<code>shift</code> + <code>←</code> / <code>→</code> — step a day<br>
+<code>space</code> — play the day<br>
+<code>R</code> — run the reveal sweep<br>
+<code>1</code> / <code>2</code> — toggle left / right wrist<br>
+<code>?</code> — shortcut overlay<br>
+<span style="color:var(--muted)">Every shortcut also has a visible control.</span></p></div>
+</div>
+
+<div class="card" style="margin-top:6px"><h3 style="margin-top:0">Interaction rules</h3><p>Hit targets ≥44px, always larger than the mark. Filters in one row above the charts, never over data. <strong>Nothing animates on hover except the crosshair and tooltip</strong> — data must not appear to move when you point at it. Every state is in the URL, so you can jump back to any moment when a question sends you backwards. Loading is a skeleton in the final layout, never a spinner. <code>prefers-reduced-motion</code> turns the wipe into a toggle: it still works, it just stops moving.</p></div>
+
+<!-- ═══════════════════════════════════ 07 -->
+<h2><span class="n">07 — rules</span>Chart &amp; projector</h2>
+<div class="cols">
+<div class="card"><h3 style="margin-top:0">Never</h3><p>Two y-axes. A number on every point. Colour by rank instead of entity. A rainbow ramp. Hue at a diverging midpoint. Gradients or shadows on data marks. Hairlines under 1.5px.</p></div>
+<div class="card"><h3 style="margin-top:0">Always</h3><p>Legend for ≥2 series <em>and</em> direct labels. Uncertainty as a filled band, not error bars. Hover crosshair + tooltip that names the evidence tier in words. A table view. Recessive hairline grid.</p></div>
+<div class="card hot"><h3 style="margin-top:0">Projector — 3 metres</h3><p>Minimum 16px type on screen, 14px mono for axis labels. <strong>Screenshot and desaturate before you ship</strong> — if the reveal still reads, the encoding is sound. Set browser zoom before you start and never touch it mid-demo.</p></div>
+</div>
+
+<h2><span class="n">08 — motion</span>The reveal</h2>
+<table>
+<tr><th>Beat</th><th>Motion</th></tr>
+<tr><td>Load participant</td><td>Raw signal draws left→right, 600 ms, ease-out</td></tr>
+<tr><td>Hide diary</td><td>Truth line fades to 0 over 200 ms</td></tr>
+<tr><td>Reconstruct</td><td>Band grows from the centreline outward, 500 ms</td></tr>
+<tr style="color:var(--brass-hi)"><td style="color:var(--brass-hi)">Unmask</td><td style="color:var(--brass-hi)">Truth draws over the top, 400 ms, no easing — it should arrive definitively, not drift in</td></tr>
+<tr><td>Error readout</td><td>Counts up over 300 ms</td></tr>
+<tr><td>Drop a wrist</td><td>Band widens 400 ms; abstention holes punch in over 150 ms</td></tr>
+</table>
+<p>Everything else is 150–200 ms or instant. Respect <code>prefers-reduced-motion</code>.</p>
+
+<hr style="margin:56px 0 26px">
+<p style="font-family:Fraunces,serif;font-size:clamp(17px,2.2vw,24px);color:var(--brass-hi);font-weight:300;max-width:none">Ambitious about measurement. Conservative about medicine.</p>
+<p style="font-size:12.5px;color:var(--muted);margin-top:18px">Full spec in <code>docs/DESIGN.md</code>. Generators in <code>scripts/palette_search.mjs</code> and <code>scripts/palette_ramps.mjs</code>. Data notes in <code>docs/DATA.md</code>.</p>
+
+</div>
