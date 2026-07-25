@@ -23,7 +23,7 @@ Tremor is detectable across people. The subjective motor state is not.
 
 | Target, held-out participants | Result |
 |---|---|
-| **Tremor present** — diary `TremorScore` > 0 | **AUC 0.722** |
+| **Tremor present** — diary `TremorScore` > 0 | **AUC 0.697 ± 0.075** |
 | Kinesia OFF/ON, same folds and same pipeline | AUC 0.567 |
 | 7-state kinesia reconstruction | ordinal MAE 0.684, against a 0.594 constant |
 
@@ -95,7 +95,7 @@ And what the model does against it, on participants it never trained on:
 | | |
 |---|---|
 | 7-state kinesia reconstruction | MAE 0.684 — **worse than the baseline** |
-| Tremor presence | **AUC 0.722** |
+| Tremor presence | **AUC 0.697 ± 0.075** |
 | … median within-participant AUC | 0.550 |
 | … average precision, prevalence 30.5% | 0.496 |
 

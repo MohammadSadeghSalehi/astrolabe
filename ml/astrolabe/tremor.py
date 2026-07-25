@@ -1,7 +1,11 @@
 """Tremor detection — the one target that generalises across people.
 
-Held-out AUC 0.722 on unseen participants, against 0.567 for the subjective
-kinesia state on identical folds and the same pipeline. That gap is the whole
+Held-out AUC 0.697 +/- 0.075 on unseen participants, against 0.567 for the
+subjective kinesia state on identical folds and the same pipeline.
+(The feature-selection sweep reported 0.722; that variant trained on ALL
+training participants. The shipped model reserves a fifth of them to fit
+the calibrator, which costs about 0.025 AUC and buys honest confidence.
+0.697 is the number the bundle actually stands behind.) That gap is the whole
 finding, and it is mechanical rather than incidental: tremor is a 4-8 Hz
 oscillation an accelerometer measures directly, while "how well did I move this
 hour" is a judgement the sensor has no access to.
@@ -13,7 +17,8 @@ refuse to claim. Both belong in the demo.
 The caveat that has to be stated
 ═══════════════════════════════════════════════════════════════════════════════
 
-Pooled AUC is 0.657-0.722, but the median WITHIN-participant AUC is 0.565. Much
+Pooled out-of-fold AUC is 0.681, but the median WITHIN-participant AUC is
+0.550, above chance on only 25 of 36 participants. Much
 of the pooled figure comes from separating tremor-dominant people from others,
 not from telling a tremulous hour from a calm one in the same person.
 

@@ -86,7 +86,7 @@ Same folds, same pipeline, same features, different target.
 
 | Target | Held-out AUC |
 |---|---|
-| **Tremor present** (`TremorScore` > 0), 50 band-power features | **0.722** |
+| **Tremor present** (`TremorScore` > 0), 50 band-power features | **0.697 ± 0.075** |
 | Kinesia OFF/ON, binarised | 0.567 |
 
 That gap is the finding. Tremor is a 4–8 Hz mechanical oscillation an
@@ -103,6 +103,15 @@ Operating characteristics of the tremor detector:
 | Brier score | 0.210 |
 
 ---
+
+> **Which tremor AUC to quote.** Two figures appear in this document and both are
+> real. **0.722** comes from the feature-selection sweep, which trained on every
+> training participant. **0.697 ± 0.075** is the shipped detector, which reserves
+> a fifth of the training participants to fit its calibrator — costing roughly
+> 0.025 AUC and buying confidence values that mean something on a new person.
+> **0.697 is the number the product stands behind**, because it is the number for
+> the model that is actually in the bundle. The ablation table below keeps 0.722,
+> since that table is about choosing features rather than about what ships.
 
 ## 4. The model was over-featured
 

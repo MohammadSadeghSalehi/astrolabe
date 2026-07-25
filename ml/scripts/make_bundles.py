@@ -4,7 +4,8 @@ Replaces the mock. Same schema, so nothing downstream changes.
 
 Two claims travel in one bundle, and they are deliberately not equal:
 
-  * TREMOR is a model output that generalises across people (held-out AUC 0.722).
+  * TREMOR is a model output that generalises across people (held-out AUC 0.697,
+    with a fifth of the training participants reserved to calibrate it).
   * KINESIA state does not beat a constant baseline, and the bundle says so —
     `metrics.ordinal_mae` sits next to `metrics.baseline_mae`, and
     `kinesia_beats_baseline` is a flag the interface can read.

@@ -105,7 +105,7 @@ def build_series(
     abstain = abstention.should_abstain(posterior, intervals) | missing
 
     # Tremor is a genuine model output — the one target that generalises across
-    # people (AUC 0.722 held-out). It is computed independently of the kinesia
+    # people (AUC 0.697 held-out). It is computed independently of the kinesia
     # chain because it does NOT go through the HMM: tremor is intermittent
     # within an hour, so smoothing it over a trajectory would erase the thing
     # being measured.

@@ -193,7 +193,8 @@ scores 0.474 — worse than a constant given equal information.
 
 **The baselines above are still correct and still the right bar.** What changed
 is that nothing clears it. Tremor presence does generalise across people —
-held-out AUC 0.722 on the same folds — so that is what the product claims. The
+held-out AUC 0.697 ± 0.075 on the same folds — so that is what the product
+claims. The
 full record, including the caveats, is in [FINDINGS.md](FINDINGS.md).
 
 ## Demo-participant shortlist

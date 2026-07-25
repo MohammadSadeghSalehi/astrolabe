@@ -284,6 +284,10 @@ def band_columns(df: pd.DataFrame) -> list[str]:
         minus medication + env      0.702
         band features only (50)     0.722   <-- best
 
+    Those figures come from the SELECTION sweep, which trained on every
+    training participant. The shipped detector reserves a fifth of them to
+    fit its calibrator and scores 0.697 +/- 0.075 - the number to quote.
+
     Two reasons the full set is worse. Medication timing is close to a
     participant fingerprint — who takes which drug, on what schedule — so it
     hands the model an identity cue that cannot transfer to a new person.
