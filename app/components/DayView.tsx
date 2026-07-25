@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { getBundle } from "@/lib/source";
 import { useStore } from "@/lib/store";
 import { Timeline } from "./Timeline";
+import { TremorRow } from "./TremorRow";
 import { PosteriorInspector } from "./PosteriorInspector";
 import { SensorToggles } from "./SensorToggles";
 import { MetricsPanel } from "./MetricsPanel";
@@ -155,6 +156,16 @@ export function DayView() {
           onSelect={(i) => set({ hour: i })}
           height={380}
         />
+
+        {/*
+          Separate row, own y-axis, same x-scale and margins as the timeline
+          above. Two claims of different kinds never share an axis: the state
+          row is a 7-point ordinal scale the model declines to predict, this one
+          is a probability it will stand behind.
+        */}
+        <div className="mt-3 border-t pt-3" style={{ borderColor: "var(--axis)" }}>
+          <TremorRow bundle={bundle} revealX={revealX} hour={hour} />
+        </div>
       </section>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

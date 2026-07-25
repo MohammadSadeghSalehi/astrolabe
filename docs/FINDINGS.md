@@ -175,7 +175,92 @@ right question would find it.
 
 ---
 
-## 7. What this means for the product
+## 7. Two ways the pipeline was quietly flattering itself
+
+Both were found by checking results that looked *good*, which is the only way
+this class of bug ever surfaces.
+
+### The dropped-wrist stress test proved nothing
+
+Dropping a wrist is meant to be the demonstration that the uncertainty is real:
+less evidence, more refusal. It did the opposite — abstention fell from 12% to
+46%. Two independent causes, compounding.
+
+**The posterior got sharper on less evidence.** Blanked features take a default
+branch in every tree of a gradient-boosted ensemble, and the ensemble returns a
+confident answer built on the remaining wrist plus the training prior. Nothing
+in the pipeline knew that confidence was worth less. Coverage mass is now fitted
+**per sensor configuration**: 0.72 with both wrists, 0.89 with one, both landing
+at 0.90 achieved coverage.
+
+**The abstention threshold was tuned to a fixed abstention *rate*.** That
+guarantees the two configurations abstain equally often — the degraded case
+*cannot* show degradation, because the threshold moves to absorb it. The rule
+now holds a fixed **error budget** instead: the reference configuration answers
+88% of hours at MAE 0.226, and every other configuration has to meet that same
+MAE on whatever it answers.
+
+| Configuration | Interval mass | Coverage | Abstains on | MAE on the rest |
+|---|---|---|---|---|
+| Both wrists | 0.72 | 0.903 | 12.4% | 0.226 |
+| Left wrist dropped | 0.89 | 0.904 | **77.3%** | 0.218 |
+
+Measured on 6,838 hours from 11 held-out participants. The refusal rate is now a
+consequence of measured accuracy rather than a number chosen to look good.
+
+### Tremor was scored at a resolution it was never trained at
+
+`train_tremor.py` aggregates to one row per participant-hour before fitting, but
+the bundle generator was scoring individual 10-minute windows. A 10-minute band
+power is a noisier draw than the mean of six of them, and the model had never
+seen that spread — inference out of distribution, worth about 0.05 AUC on the
+demo participant (0.592 per-window against 0.610 hourly).
+
+Tremor is now scored hourly and held flat across the hour. That is also the
+honest display: neither the detector nor the diary label has 10-minute
+resolution, so drawing a smooth 10-minute curve would draw a precision that does
+not exist.
+
+---
+
+## 8. What the demo participant actually looks like
+
+Stated plainly, because the interface shows it and a judge can check it.
+
+COPS-29 was fixed as the demo participant before any of these results existed,
+and is held out of training entirely. On that participant:
+
+| Figure | Value |
+|---|---|
+| Tremor AUC, hourly, whole participant | 0.610 |
+| Tremor prevalence | 0.59 |
+| Day-level AUC, across its 8 days | 0.44 – 0.67 |
+| The shown day (day 6): accuracy at 0.5 | 0.263 against a 0.737 majority class |
+| The shown day: kinesia | abstained on all 114 steps |
+
+Three things follow.
+
+**No single day is evidence.** A day is ~19 labelled hours, and day-level AUC
+swings from 0.46 to 0.69 between the two sensor variants of the *same day*. That
+is sampling noise. Every headline number in the interface is therefore the
+held-out participant-level one; day figures are shown scoped to the day.
+
+**The operating point is wrong for this person, and that is a different failure
+from bad ranking.** The detector is calibrated to a cohort prevalence of 0.30;
+this participant-day is 0.74 tremulous. Its mean predicted probability, 0.455,
+sits below the prevalence, so a 0.5 threshold answers "no" on a day that was
+mostly "yes". AUC and accuracy are reported separately for exactly this reason —
+collapsing them into one number would hide which of the two failed.
+
+**The day was chosen on the labels, never on the score.** `pick_day` ranks by
+how many labelled hours a day has and how much the state varies. Selecting the
+day the model happened to do best on would be indefensible, and
+`ml/scripts/diagnose_demo_day.py` prints the label-only pick beside the
+best-scoring day so the difference stays visible.
+
+---
+
+## 9. What this means for the product
 
 - **The tremor row is a claim; the kinesia row is not.** Tremor can be shown as
   reconstructed, wrapped in its uncertainty. The 7-state motor trajectory cannot
@@ -190,6 +275,11 @@ right question would find it.
   target the sensor can actually measure.
 - **Report the within-participant spread everywhere.** §6 is the number a
   careful reader will ask for, and it should already be on screen when they do.
+- **Nothing scoped to one day is a headline.** §8. A day is ~19 labelled hours
+  and its AUC swings on resampling alone. The interface separates
+  "measured on held-out participants" from "this day" and labels both.
+- **Check the results that look good.** §7 is two bugs that made the model look
+  better than it was, and neither would have been found by chasing a bad number.
 
 A negative result that is properly established is a result. The kinesia target
 was pursued through nine feature sets, per-participant normalisation, rank
@@ -213,4 +303,5 @@ Each of these sweeps folds over the full feature table and takes a long time.
 | `ml/scripts/diagnose_deep.py` | tremor versus kinesia on identical folds |
 | `ml/scripts/diagnose_featureset.py` | the nine-feature-set sweep |
 | `ml/scripts/diagnose_tremor.py` | how good tremor detection gets |
+| `ml/scripts/diagnose_demo_day.py` | day selection on labels only; the resolution mismatch |
 | `ml/scripts/train_tremor.py` | the shipped detector, calibration, selective curve |

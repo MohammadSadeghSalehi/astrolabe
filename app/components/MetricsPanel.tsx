@@ -2,6 +2,16 @@
 
 import type { Bundle } from "@/lib/contract";
 
+/**
+ * A null metric could not be computed — an MAE over zero answered steps has no
+ * value. It renders as an em-dash, never as 0.00: a zero would read as a
+ * perfect score for a day the model declined outright, which is the exact
+ * overclaim this interface exists to prevent.
+ */
+function fmt(v: number | null | undefined, digits: number): string {
+  return v == null ? "—" : v.toFixed(digits);
+}
+
 export function MetricsPanel({ bundle }: { bundle: Bundle | null }) {
   const m = bundle?.metrics;
 
@@ -24,7 +34,8 @@ export function MetricsPanel({ bundle }: { bundle: Bundle | null }) {
         <dl className="grid grid-cols-2 gap-x-4 gap-y-3">
           <Metric
             label="Ordinal MAE"
-            value={m.ordinal_mae.toFixed(2)}
+            value={fmt(m.ordinal_mae, 2)}
+            hint={m.ordinal_mae == null ? "nothing answered" : undefined}
             emphasize
           />
           <Metric
@@ -33,13 +44,10 @@ export function MetricsPanel({ bundle }: { bundle: Bundle | null }) {
             hint="always-good"
           />
           {m.coverage_90 != null && (
-            <Metric label="Coverage 90" value={m.coverage_90.toFixed(2)} />
+            <Metric label="Coverage 90" value={fmt(m.coverage_90, 2)} />
           )}
           {m.mean_interval_width != null && (
-            <Metric
-              label="Mean CI width"
-              value={m.mean_interval_width.toFixed(2)}
-            />
+            <Metric label="Mean CI width" value={fmt(m.mean_interval_width, 2)} />
           )}
           {m.abstain_rate != null && (
             <Metric

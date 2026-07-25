@@ -14,6 +14,8 @@ export type SeriesPoint = {
   t: string; // "HH:MM"
   state: SeriesState | null;
   tremor_p: number | null;
+  /** Distance from a coin flip, 0..1. Null wherever tremor_p is. */
+  tremor_confidence?: number | null;
   confidence: number;
   abstain: boolean;
   evidence: Evidence;
@@ -28,15 +30,59 @@ export type BundleEvent = {
   dose_mg?: number;
 };
 
+/**
+ * `null` is a real value here and never interchangeable with 0. It means the
+ * quantity could not be computed — an MAE over zero answered steps has no
+ * value, and rendering that as `0.00` would claim a perfect score for a day the
+ * model declined entirely. Render null as an em-dash with a reason.
+ */
 export type BundleMetrics = {
-  ordinal_mae: number;
+  // ── this day only. Context, never a headline: one day is ~19 labelled hours.
+  ordinal_mae: number | null;
   baseline_mae: number;
-  coverage_90?: number;
-  macro_f1?: number;
-  brier?: number;
-  mean_interval_width?: number;
-  n_hours?: number;
-  abstain_rate?: number;
+  coverage_90?: number | null;
+  macro_f1?: number | null;
+  brier?: number | null;
+  mean_interval_width?: number | null;
+  n_hours?: number | null;
+  n_steps?: number;
+  n_answered?: number;
+  abstain_rate?: number | null;
+  kinesia_beats_baseline?: boolean;
+
+  tremor_n_scored?: number;
+  tremor_day_accuracy?: number | null;
+  tremor_day_baseline_accuracy?: number | null;
+  tremor_day_prevalence?: number | null;
+  tremor_day_auc?: number | null;
+  tremor_day_brier?: number | null;
+  tremor_day_brier_climatology?: number | null;
+  tremor_day_beats_baseline?: boolean;
+
+  // ── measured on held-out participants. These are the claims.
+  coverage_target?: number;
+  coverage_calibration?: number;
+  coverage_calibration_n_participants?: number;
+  interval_mass?: number;
+  sensor_config?: string;
+  abstain_min_peak?: number;
+  abstain_max_interval_width?: number;
+  peak_confidence_max?: number | null;
+  holdout_abstain_rate?: number;
+  holdout_mae_answered?: number;
+  holdout_n_hours?: number;
+  tremor_auc?: number;
+  tremor_auc_within_participant_median?: number;
+  selective_curve?: SelectivePoint[];
+};
+
+export type SelectivePoint = {
+  answered_fraction: number;
+  n: number;
+  auc: number;
+  balanced_accuracy: number;
+  accuracy: number;
+  min_confidence?: number;
 };
 
 export type Bundle = {
@@ -48,6 +94,13 @@ export type Bundle = {
   events: BundleEvent[];
   /** Present only in reveal bundles. Index-aligned with series. */
   truth?: number[];
+  /**
+   * The diary's own tremor answer per step, 0/1, null where the hour was
+   * unlabelled. Index-aligned with series. This is what a reveal can actually
+   * be scored against — the kinesia reconstruction abstains everywhere.
+   */
+  tremor_truth?: (number | null)[];
+  state_names?: string[];
   metrics: BundleMetrics;
   next_observation?: {
     action: string;

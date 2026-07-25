@@ -174,7 +174,8 @@ export function ClinicianView() {
             <div className="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
               <Stat
                 label="Ordinal MAE"
-                value={m.ordinal_mae.toFixed(2)}
+                value={m.ordinal_mae != null ? m.ordinal_mae.toFixed(2) : "—"}
+                hint={m.ordinal_mae == null ? "nothing answered" : undefined}
                 emphasize
               />
               <Stat

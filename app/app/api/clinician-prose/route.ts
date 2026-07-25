@@ -24,7 +24,11 @@ export async function POST(req: Request) {
   }
 
   const { metrics, derived } = body;
-  if (!metrics || typeof metrics.ordinal_mae !== "number" || !derived) {
+  // ordinal_mae is legitimately null on a day the model declined entirely, and
+  // that day still gets a clinician page — it is the one most worth discussing.
+  // Only baseline_mae is genuinely required, since every number shown is quoted
+  // against it.
+  if (!metrics || typeof metrics.baseline_mae !== "number" || !derived) {
     return NextResponse.json(
       { error: "metrics and derived required" },
       { status: 400 },

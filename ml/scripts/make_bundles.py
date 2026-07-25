@@ -225,6 +225,13 @@ def main() -> None:
         metrics["coverage_calibration_n_participants"] = len(cal_people)
         metrics["interval_mass"] = round(calibrator.mass, 3)
         metrics["sensor_config"] = "left wrist dropped" if drop else "both wrists"
+        # The threshold itself, so the interface can state what it would have
+        # taken to answer rather than reverse-engineering it from the per-step
+        # reason strings.
+        metrics["abstain_min_peak"] = round(float(abstention.min_peak), 3)
+        metrics["abstain_max_interval_width"] = int(abstention.max_interval_width)
+        peaks = [s["confidence"] for s in series]
+        metrics["peak_confidence_max"] = round(float(max(peaks)), 3) if peaks else None
         # The sensor-drop claim, measured on held-out people rather than on the
         # 19 hours currently on screen. Both configurations are held to the same
         # error budget, so the abstention rate is what has to move.

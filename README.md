@@ -40,7 +40,22 @@ of 0.68 falls to a median **within-participant** AUC of 0.550, above chance on
 people from others rather than a tremulous hour from a calm one in the same
 person, and within-person is what a diary needs.
 
-[docs/FINDINGS.md](docs/FINDINGS.md) is the full record.
+### What holds up best
+
+The uncertainty itself, which is the part the product is actually built on.
+
+| Measured on 11 held-out participants, 6,838 hours | |
+|---|---|
+| 90% interval, achieved coverage | **0.903** |
+| Abstains, both wrists | 12.4% of hours, at MAE 0.226 on the rest |
+| Abstains, one wrist dropped | **77.3%**, at MAE 0.218 on the rest |
+
+Both sensor configurations are held to the same error budget, so the refusal
+rate is the thing that has to move. Losing a wrist does not make the model
+slightly less sure — it takes away most of what it was willing to say.
+
+[docs/FINDINGS.md](docs/FINDINGS.md) is the full record, including §7 on two
+ways the pipeline was flattering itself before those numbers were trustworthy.
 
 ## What this does
 
@@ -76,6 +91,7 @@ never look like a value.
 | Design system, validated palettes | ✅ |
 | Feature pipeline | ✅ |
 | Tremor detector, calibration, abstention | ✅ |
+| Real bundles from trained models, per sensor configuration | ✅ |
 | 7-state kinesia reconstruction | ❌ does not generalise across people — [docs/FINDINGS.md](docs/FINDINGS.md) |
 | Web app | 🔨 |
 
@@ -142,10 +158,21 @@ it, and the mock and the trained model emit the same shape.
   ],
   "events":  [{ "t": "08:45", "type": "medication", "source": "reported",
                 "drug": "Levodopa / Benserazid", "dose_mg": 100 }],
-  "truth":   [3, 3, 4, 4, 5],
-  "metrics": { "ordinal_mae": 0.44, "coverage_90": 0.88, "baseline_mae": 0.594 }
+  "truth":        [3, 3, 4, 4, 5],   // the 7-state diary answer
+  "tremor_truth": [1, 1, 0, 0, 1],   // the diary's own tremor answer, 0/1/null
+  "metrics": {
+    // this day only — context, never a headline: one day is ~19 labelled hours
+    "ordinal_mae": null, "baseline_mae": 0.594, "abstain_rate": 1.0,
+    // measured on held-out participants — these are the claims
+    "coverage_calibration": 0.903, "holdout_abstain_rate": 0.124,
+    "tremor_auc": 0.697, "tremor_auc_within_participant_median": 0.55
+  }
 }
 ```
+
+`null` is a real value and never interchangeable with zero: an MAE over zero
+answered steps has no value, and rendering it as `0.00` would claim a perfect
+score for a day the model declined outright.
 
 The values above illustrate the shape and are not measurements — the measured
 numbers are in [docs/FINDINGS.md](docs/FINDINGS.md). `tremor_p` is the field the

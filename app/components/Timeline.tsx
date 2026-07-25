@@ -245,6 +245,21 @@ export function Timeline({
   const wristDropped = !mask.left || !mask.right;
   const empty = !loading && series.length === 0;
 
+  const totalRefusal =
+    series.length > 0 && series.every((s) => s.abstain);
+  /**
+   * Both figures come from the bundle. The threshold was set on held-out
+   * participants, so "0.55 against 0.58" is a statement about a rule fixed
+   * before this day was seen — not a line tuned until the sentence read well.
+   */
+  const refusalDetail = useMemo(() => {
+    const m = bundle?.metrics;
+    const peak = m?.peak_confidence_max;
+    const thr = m?.abstain_min_peak;
+    if (peak == null || thr == null) return "confidence never cleared the threshold";
+    return `peak confidence ${peak.toFixed(2)} · it answers at ${thr.toFixed(2)}`;
+  }, [bundle?.metrics]);
+
   return (
     <div ref={wrapRef} className="relative w-full">
       {wristDropped && (
@@ -482,6 +497,24 @@ export function Timeline({
               });
             })()}
 
+          {/*
+            Every step declined. Without this the plot is an empty frame, which
+            reads as a rendering failure rather than as the model's answer. It
+            IS the answer, so it gets stated in words with the two numbers that
+            justify it — both read from the bundle, neither computed here.
+          */}
+          {!loading && totalRefusal && (
+            <rect
+              x={0}
+              y={0}
+              width={plotW}
+              height={plotH}
+              fill="url(#map-hatch)"
+              opacity={0.1}
+              pointerEvents="none"
+            />
+          )}
+
           {/* Medication events — diamonds always; times when they fit */}
           {!loading &&
             medLayout.items.map(({ ev, x, showLabel, label }, i) => (
@@ -565,6 +598,63 @@ export function Timeline({
               />
             )}
           </g>
+
+          {/*
+            The refusal, stated last so it survives the reveal sweeping under
+            it. Without this the plot is an empty frame and reads as a rendering
+            failure rather than as the model's answer — and it IS the answer, so
+            it gets said in words. Both numbers come from the bundle: the
+            threshold was fixed on held-out participants before this day was
+            seen, so "0.55 against 0.58" is a fact about a rule, not a line
+            tuned until the sentence read well.
+          */}
+          {!loading && totalRefusal && (
+            <g pointerEvents="none">
+              <rect
+                x={plotW / 2 - 224}
+                y={plotH / 2 - 36}
+                width={448}
+                height={66}
+                rx={4}
+                fill="var(--surface)"
+                opacity={0.9}
+              />
+              <text
+                x={plotW / 2}
+                y={plotH / 2 - 12}
+                textAnchor="middle"
+                fill="var(--ink)"
+                style={{
+                  fontFamily: "var(--font-mono), ui-monospace, monospace",
+                  fontSize: 15,
+                  letterSpacing: "0.06em",
+                }}
+              >
+                {`DECLINED ALL ${series.length} STEPS`}
+              </text>
+              <text
+                x={plotW / 2}
+                y={plotH / 2 + 10}
+                textAnchor="middle"
+                fill="var(--ink-2)"
+                style={{
+                  fontFamily: "var(--font-mono), ui-monospace, monospace",
+                  fontSize: 14,
+                }}
+              >
+                {refusalDetail}
+              </text>
+              <text
+                x={plotW / 2}
+                y={plotH / 2 + 28}
+                textAnchor="middle"
+                fill="var(--ink-2)"
+                style={{ fontSize: 14 }}
+              >
+                No motor state is shown because none was earned.
+              </text>
+            </g>
+          )}
         </g>
 
         {/* Series identity — top-left of SVG, clear of the reveal pill */}
