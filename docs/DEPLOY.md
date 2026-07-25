@@ -1,10 +1,27 @@
 # Deploying the demo
 
+**Live: https://astrolabe-flame.vercel.app**
+
 A public URL so judges can open the product without cloning anything.
 
-## Vercel, via the dashboard
+## Vercel, via the CLI
 
-The CLI needs an interactive login, so the dashboard route is faster.
+Already done for this project — `sadegh3/astrolabe`, deployed from `app/` so the
+root directory resolves without extra configuration. To repeat it elsewhere:
+
+```bash
+cd app
+npx vercel login          # device-code flow, approve in a browser
+npx vercel link --yes --project astrolabe
+printf '%s' "$VALUE" | npx vercel env add NAME production --force
+npx vercel --prod --yes
+```
+
+Running from `app/` is what makes the root directory correct. Deploying from the
+repository root instead requires setting **Root Directory: `app`** in project
+settings, and the build fails confusingly if that is missed.
+
+## Or via the dashboard
 
 1. [vercel.com/new](https://vercel.com/new) → **Import** `MohammadSadeghSalehi/astrolabe`.
 2. **Root Directory: `app`.** This is the one setting that matters — the Next.js

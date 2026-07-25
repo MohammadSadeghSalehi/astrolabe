@@ -2,6 +2,8 @@
 
 **Read the hours you couldn't record.**
 
+**→ [astrolabe-flame.vercel.app](https://astrolabe-flame.vercel.app)**
+
 Reconstructs the tremor row of the Parkinson's motor diary from wrist
 accelerometry — shows how certain it is, and abstains when the evidence is too
 weak.
