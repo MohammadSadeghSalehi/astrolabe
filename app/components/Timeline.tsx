@@ -425,21 +425,13 @@ export function Timeline({
                 });
                 if (!collides) labelSet.add(r.idx);
               }
-              const soleLabeled = labelSet.size === 1;
 
               return enriched.map((r) => {
                 const showTitle =
                   labelSet.has(r.idx) &&
                   (r.w >= ABSTAIN_LABEL_MIN_W || r.nPts >= 2);
-                const showReason =
-                  soleLabeled &&
-                  showTitle &&
-                  r.reason.length > 0 &&
-                  (r.w >= ABSTAIN_REASON_MIN_W || r.nPts >= 3);
-                const reasonLabel =
-                  r.reason.length > 36
-                    ? `${r.reason.slice(0, 34)}…`
-                    : r.reason;
+                // Reason lives in the hover tooltip — never paint it on the chart
+                // (it collides with MAP peaks and the reveal line).
                 const cx = r.left + r.w / 2;
                 const pillX = Math.min(
                   Math.max(cx - pillW / 2, 0),
@@ -458,10 +450,11 @@ export function Timeline({
                       strokeDasharray="6 5"
                     />
                     {showTitle && (
-                      <g transform={`translate(${pillX}, 4)`}>
+                      // Sit in the top margin (negative y) so MAP/truth never cover it
+                      <g transform={`translate(${pillX}, -18)`}>
                         <rect
                           width={pillW}
-                          height={16}
+                          height={15}
                           rx={3}
                           fill="var(--page)"
                           stroke="var(--ink-2)"
@@ -470,7 +463,7 @@ export function Timeline({
                         />
                         <text
                           x={pillW / 2}
-                          y={12}
+                          y={11}
                           textAnchor="middle"
                           fill="var(--ink)"
                           style={{
@@ -483,20 +476,6 @@ export function Timeline({
                           ABSTAINED
                         </text>
                       </g>
-                    )}
-                    {showReason && (
-                      <text
-                        x={Math.min(Math.max(cx, 48), plotW - 48)}
-                        y={34}
-                        textAnchor="middle"
-                        fill="var(--ink-2)"
-                        style={{
-                          fontFamily: "var(--font-sans), system-ui, sans-serif",
-                          fontSize: 11,
-                        }}
-                      >
-                        {reasonLabel}
-                      </text>
                     )}
                   </g>
                 );
