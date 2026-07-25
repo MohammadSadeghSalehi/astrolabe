@@ -71,6 +71,65 @@ def pick_day(rows):
     return best
 
 
+def smooth_posteriors(series, passes=3, weight=0.55):
+    """Give the mock trajectory temporal structure.
+
+    Each step's posterior is generated independently, which produces a line that
+    swings three states in ten minutes. Real motor state does not do that, and a
+    clinician would find the shape obviously wrong -- so the interface would be
+    developed against something the real model will never emit.
+
+    The trained model gets this structure from the HMM. Here a few smoothing
+    passes over neighbouring steps stand in for it.
+    """
+    idx = [i for i, p in enumerate(series) if not p["abstain"] and p["state"]]
+    for _ in range(passes):
+        prev = {i: list(series[i]["state"]["posterior"]) for i in idx}
+        for pos, i in enumerate(idx):
+            neigh = []
+            if pos > 0 and idx[pos - 1] == i - 1:
+                neigh.append(prev[i - 1])
+            if pos < len(idx) - 1 and idx[pos + 1] == i + 1:
+                neigh.append(prev[i + 1])
+            if not neigh:
+                continue
+            cur = prev[i]
+            blended = [
+                weight * cur[k] + (1 - weight) * sum(n[k] for n in neigh) / len(neigh)
+                for k in range(7)
+            ]
+            s = sum(blended)
+            series[i]["state"]["posterior"] = [round(v / s, 4) for v in blended]
+
+    # Smoothing alone tracks the truth almost perfectly, because the truth is
+    # itself smooth (one hourly label repeated across six steps). A mock that is
+    # never wrong would let the interface ship tuned for tight bands the real
+    # model will never produce. So drift a slowly-varying bias across the day:
+    # sustained, plausible error rather than per-step noise.
+    bias, drift = 0.0, 0.0
+    for pos, i in enumerate(idx):
+        drift = 0.85 * drift + random.gauss(0, 0.10)
+        bias = max(-0.9, min(0.9, bias + drift * 0.30))
+        p = series[i]["state"]["posterior"]
+        # shift mass along the ordinal axis by `bias` states
+        out = [0.0] * 7
+        for k in range(7):
+            target = k + bias
+            lo, frac = int(math.floor(target)), target - math.floor(target)
+            if 0 <= lo < 7:
+                out[lo] += p[k] * (1 - frac)
+            if 0 <= lo + 1 < 7:
+                out[lo + 1] += p[k] * frac
+        s = sum(out) or 1.0
+        series[i]["state"]["posterior"] = [round(v / s, 4) for v in out]
+
+    for i in idx:
+        p = series[i]["state"]["posterior"]
+        series[i]["state"]["map"] = max(range(7), key=lambda k: p[k])
+        series[i]["state"]["ci"] = interval(p)
+        series[i]["confidence"] = round(max(p), 2)
+
+
 def inject_gap(series, truth):
     """Force one abstention run if the day has none.
 
@@ -220,6 +279,7 @@ def main():
                 "reason": None,
             })
 
+    smooth_posteriors(series)
     synthetic = inject_gap(series, truth)
 
     def metrics_for(ser):
