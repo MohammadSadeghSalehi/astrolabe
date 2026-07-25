@@ -153,7 +153,7 @@ export function DayView() {
           onRevealX={(x) => set({ revealX: x })}
           onHover={(i) => set({ hour: i })}
           onSelect={(i) => set({ hour: i })}
-          height={360}
+          height={380}
         />
       </section>
 

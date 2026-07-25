@@ -200,11 +200,22 @@ export function RevealWipe({
   if (!valid) return null;
 
   const hx = revealX * plotWidth;
-  const pillW = 168;
-  const pillX = Math.min(
-    Math.max(hx - pillW / 2, 0),
-    Math.max(0, plotWidth - pillW),
-  );
+  // Wider pill for MAE string; keep clear of left legend (~210px) at revealX≈0
+  const pillW = revealX <= 0.001 ? 148 : 176;
+  const legendClear = 210;
+  let pillX: number;
+  if (revealX <= 0.001) {
+    // Park the "drag to reveal" cue mid-right so it doesn't cover series labels
+    pillX = Math.min(
+      Math.max(plotWidth * 0.55 - pillW / 2, legendClear),
+      Math.max(0, plotWidth - pillW),
+    );
+  } else {
+    pillX = Math.min(
+      Math.max(hx - pillW / 2, 0),
+      Math.max(0, plotWidth - pillW),
+    );
+  }
 
   return (
     <g id="reveal-wipe" style={{ pointerEvents: "all" }}>

@@ -21,7 +21,11 @@ export type TimelineProps = {
   height?: number;
 };
 
-const MARGIN = { top: 36, right: 24, bottom: 48, left: 64 };
+const MARGIN = { top: 40, right: 28, bottom: 64, left: 64 };
+const MIN_TICK_GAP_PX = 56;
+const MIN_MED_LABEL_GAP_PX = 48;
+const ABSTAIN_LABEL_MIN_W = 28;
+const ABSTAIN_REASON_MIN_W = 110;
 
 function formatYLabel(i: number): string {
   const score = i - 3;
@@ -120,14 +124,98 @@ export function Timeline({
   }, [bundle, layers.reported]);
 
   const xTicks = useMemo(() => {
-    if (series.length === 0) return [] as string[];
-    const step = Math.max(1, Math.floor(series.length / 8));
-    const ticks: string[] = [];
-    for (let i = 0; i < series.length; i += step) ticks.push(series[i]!.t);
+    if (series.length === 0) return [] as { t: string; x: number; anchor: string }[];
+    const step = Math.max(1, Math.floor(series.length / 7));
+    const candidates: string[] = [];
+    for (let i = 0; i < series.length; i += step) candidates.push(series[i]!.t);
     const last = series[series.length - 1]!.t;
-    if (ticks[ticks.length - 1] !== last) ticks.push(last);
-    return ticks;
-  }, [series]);
+    if (candidates[candidates.length - 1] !== last) candidates.push(last);
+
+    // Drop ticks that would collide; always keep first; prefer keeping last with end anchor.
+    const placed: { t: string; x: number; anchor: string }[] = [];
+    for (let i = 0; i < candidates.length; i++) {
+      const t = candidates[i]!;
+      const x = xScale(parseTime(t));
+      const isLast = i === candidates.length - 1;
+      const isFirst = placed.length === 0;
+      if (!isFirst && !isLast) {
+        const prev = placed[placed.length - 1]!;
+        if (x - prev.x < MIN_TICK_GAP_PX) continue;
+      }
+      if (isLast && placed.length > 0) {
+        const prev = placed[placed.length - 1]!;
+        if (x - prev.x < MIN_TICK_GAP_PX) placed.pop();
+      }
+      placed.push({
+        t,
+        x,
+        anchor: isLast ? "end" : isFirst ? "start" : "middle",
+      });
+    }
+    return placed;
+  }, [series, xScale]);
+
+  /**
+   * Med marks: diamonds always.
+   * Labels are time-only under the diamond when they fit; dense clusters collapse
+   * to a single "+N more" caption (brief B2).
+   */
+  const medLayout = useMemo(() => {
+    type Item = {
+      ev: (typeof meds)[number];
+      x: number;
+      showLabel: boolean;
+      label: string;
+    };
+    const items: Item[] = meds.map((ev) => ({
+      ev,
+      x: xScale(parseTime(ev.t)),
+      showLabel: false,
+      label: ev.t,
+    }));
+    if (items.length === 0) return { items, overflow: null as null | { x: number; text: string } };
+
+    // Greedy left-to-right placement of time labels
+    let lastLabeledX = -Infinity;
+    let hidden = 0;
+    for (const it of items) {
+      if (it.x - lastLabeledX >= MIN_MED_LABEL_GAP_PX) {
+        it.showLabel = true;
+        lastLabeledX = it.x;
+      } else {
+        hidden += 1;
+      }
+    }
+    // Ensure first + last diamonds get a time if possible
+    if (items.length >= 1) {
+      items[0]!.showLabel = true;
+    }
+    if (items.length >= 2) {
+      const last = items[items.length - 1]!;
+      last.showLabel = true;
+      // un-label previous if collision
+      for (let i = items.length - 2; i >= 1; i--) {
+        if (!items[i]!.showLabel) continue;
+        if (last.x - items[i]!.x < MIN_MED_LABEL_GAP_PX) {
+          items[i]!.showLabel = false;
+          hidden += 1;
+        }
+        break;
+      }
+    }
+    // Recount hidden after force first/last
+    hidden = items.filter((it) => !it.showLabel).length;
+
+    const overflow =
+      hidden > 0
+        ? {
+            x: plotW / 2,
+            text: `medication · ${items.length} doses · +${hidden} unlabeled`,
+          }
+        : null;
+
+    return { items, overflow };
+  }, [meds, xScale, plotW]);
 
   const nearestIndex = (clientX: number, svg: SVGSVGElement) => {
     const pt = svg.createSVGPoint();
@@ -247,17 +335,17 @@ export function Timeline({
             </g>
           ))}
 
-          {/* X ticks */}
-          {xTicks.map((t) => (
+          {/* X ticks — collision-pruned, end-anchored last tick */}
+          {xTicks.map(({ t, x, anchor }) => (
             <text
               key={t}
-              x={xScale(parseTime(t))}
-              y={plotH + 22}
-              textAnchor="middle"
+              x={x}
+              y={plotH + 20}
+              textAnchor={anchor as "start" | "middle" | "end"}
               fill="var(--ink-2)"
               style={{
                 fontFamily: "var(--font-mono), ui-monospace, monospace",
-                fontSize: 14,
+                fontSize: 13,
               }}
             >
               {t}
@@ -294,13 +382,12 @@ export function Timeline({
             </>
           )}
 
-          {/* Abstention holes */}
+          {/* Abstention holes — dashed absence; label only when wide enough */}
           {!loading &&
             layers.reconstructed &&
             runs.map(([a, b]) => {
               const x0 = xScale(parseTime(series[a]!.t));
               const x1 = xScale(parseTime(series[b]!.t));
-              // half-step padding so the hole has visible width for single points
               const pad =
                 series.length > 1
                   ? Math.abs(
@@ -311,8 +398,17 @@ export function Timeline({
               const left = x0 - pad;
               const w = Math.max(12, x1 - x0 + pad * 2);
               const reason = series[a]!.reason ?? "";
-              const label =
-                reason.length > 42 ? `${reason.slice(0, 40)}…` : reason;
+              const nPts = b - a + 1;
+              const showTitle = w >= ABSTAIN_LABEL_MIN_W || nPts >= 2;
+              const showReason =
+                (w >= ABSTAIN_REASON_MIN_W || nPts >= 4) && reason.length > 0;
+              const maxChars = Math.max(8, Math.floor(w / 6.5));
+              const reasonLabel =
+                reason.length > maxChars
+                  ? `${reason.slice(0, maxChars - 1)}…`
+                  : reason;
+              const title =
+                nPts >= 3 || w >= 72 ? "ABSTAINED" : w >= 36 ? "ABST." : "·";
               return (
                 <g key={`abs-${a}-${b}`}>
                   <rect
@@ -325,20 +421,22 @@ export function Timeline({
                     strokeWidth={1.6}
                     strokeDasharray="6 5"
                   />
-                  <text
-                    x={left + w / 2}
-                    y={14}
-                    textAnchor="middle"
-                    fill="var(--ink)"
-                    style={{
-                      fontFamily: "var(--font-mono), ui-monospace, monospace",
-                      fontSize: 11,
-                      letterSpacing: "0.06em",
-                    }}
-                  >
-                    ABSTAINED
-                  </text>
-                  {label && (
+                  {showTitle && (
+                    <text
+                      x={left + w / 2}
+                      y={14}
+                      textAnchor="middle"
+                      fill="var(--ink)"
+                      style={{
+                        fontFamily: "var(--font-mono), ui-monospace, monospace",
+                        fontSize: title === "ABSTAINED" ? 10.5 : 9,
+                        letterSpacing: title === "ABSTAINED" ? "0.05em" : "0.04em",
+                      }}
+                    >
+                      {title}
+                    </text>
+                  )}
+                  {showReason && (
                     <text
                       x={left + w / 2}
                       y={28}
@@ -349,55 +447,60 @@ export function Timeline({
                         fontSize: 11,
                       }}
                     >
-                      {label}
+                      {reasonLabel}
                     </text>
                   )}
                 </g>
               );
             })}
 
-          {/* Medication events */}
+          {/* Medication events — diamonds always; times when they fit */}
           {!loading &&
-            meds.map((ev, i) => {
-              const x = xScale(parseTime(ev.t));
-              const label = `${ev.t} ${ev.drug ?? "med"}${
-                ev.dose_mg != null ? ` ${ev.dose_mg}mg` : ""
-              }`;
-              // Collapse: skip labels that would overlap previous (simple)
-              const showLabel = i === 0 || i === meds.length - 1 || i % 2 === 0;
-              return (
-                <g key={`med-${ev.t}-${i}`}>
-                  <line
-                    x1={x}
-                    y1={8}
-                    x2={x}
-                    y2={plotH}
-                    stroke="var(--ink)"
-                    strokeOpacity={0.55}
-                    strokeWidth={1}
-                  />
-                  {/* filled diamond on hairline — reported evidence */}
-                  <polygon
-                    points={`${x},2 ${x + 5},10 ${x},18 ${x - 5},10`}
-                    fill="var(--ink)"
-                  />
-                  {showLabel && (
-                    <text
-                      x={x}
-                      y={plotH + 38}
-                      textAnchor="middle"
-                      fill="var(--ink-2)"
-                      style={{
-                        fontFamily: "var(--font-mono), ui-monospace, monospace",
-                        fontSize: 11,
-                      }}
-                    >
-                      {label.length > 28 ? `${label.slice(0, 26)}…` : label}
-                    </text>
-                  )}
-                </g>
-              );
-            })}
+            medLayout.items.map(({ ev, x, showLabel, label }, i) => (
+              <g key={`med-${ev.t}-${i}`}>
+                <line
+                  x1={x}
+                  y1={10}
+                  x2={x}
+                  y2={plotH}
+                  stroke="var(--ink)"
+                  strokeOpacity={0.55}
+                  strokeWidth={1}
+                />
+                <polygon
+                  points={`${x},2 ${x + 5},10 ${x},18 ${x - 5},10`}
+                  fill="var(--ink)"
+                />
+                {showLabel && (
+                  <text
+                    x={Math.min(Math.max(x, 18), plotW - 18)}
+                    y={plotH + 36}
+                    textAnchor={x < 28 ? "start" : x > plotW - 28 ? "end" : "middle"}
+                    fill="var(--ink-2)"
+                    style={{
+                      fontFamily: "var(--font-mono), ui-monospace, monospace",
+                      fontSize: 11,
+                    }}
+                  >
+                    {label}
+                  </text>
+                )}
+              </g>
+            ))}
+          {!loading && medLayout.overflow && (
+            <text
+              x={medLayout.overflow.x}
+              y={plotH + 52}
+              textAnchor="middle"
+              fill="var(--ink-2)"
+              style={{
+                fontFamily: "var(--font-mono), ui-monospace, monospace",
+                fontSize: 11,
+              }}
+            >
+              {medLayout.overflow.text}
+            </text>
+          )}
 
           {/* Cursor */}
           {cursorX != null && cursor && (
@@ -436,32 +539,36 @@ export function Timeline({
           </g>
         </g>
 
-        {/* Direct labels for series identity */}
+        {/* Series identity — top-left of SVG, clear of the reveal pill */}
         {!loading && series.length > 0 && layers.reconstructed && (
-          <g transform={`translate(${MARGIN.left},${MARGIN.top - 14})`}>
+          <g transform={`translate(${MARGIN.left}, 14)`}>
+            <circle cx={4} cy={-3} r={3.5} fill="var(--s1-reconstructed)" />
             <text
-              x={0}
+              x={12}
               y={0}
               fill="var(--s1-reconstructed)"
               style={{
                 fontFamily: "var(--font-sans), system-ui, sans-serif",
-                fontSize: 13,
+                fontSize: 12,
               }}
             >
               reconstruction
             </text>
             {bundle?.truth && (
-              <text
-                x={130}
-                y={0}
-                fill="var(--s2-truth)"
-                style={{
-                  fontFamily: "var(--font-sans), system-ui, sans-serif",
-                  fontSize: 13,
-                }}
-              >
-                diary truth
-              </text>
+              <>
+                <circle cx={128} cy={-3} r={3.5} fill="var(--s2-truth)" />
+                <text
+                  x={136}
+                  y={0}
+                  fill="var(--s2-truth)"
+                  style={{
+                    fontFamily: "var(--font-sans), system-ui, sans-serif",
+                    fontSize: 12,
+                  }}
+                >
+                  diary truth
+                </text>
+              </>
             )}
           </g>
         )}
