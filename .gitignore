@@ -1,0 +1,60 @@
+# ── internal ──────────────────────────────────────────────────────────────────
+# Working notes, build strategy, agent task briefs, pitch material.
+# Development artefacts, not part of the shipped product.
+internal/
+
+# ── secrets ───────────────────────────────────────────────────────────────────
+.env
+.env.local
+.env*.local
+!.env.example
+
+# ── data ──────────────────────────────────────────────────────────────────────
+# Raw COPS archives are 45 GB — fetch with scripts/osf_download.py, never commit.
+data/cops/raw/
+data/cops/interim/
+data/cops/features/
+*.parquet
+*.joblib
+*.pkl
+
+# Third-party originals (the authors' MATLAB scripts, the blank diary form,
+# demographics) belong to the COPS authors — fetched, not vendored.
+data/cops/meta/
+
+# data/cops/derived/ IS tracked: our own label extraction, ~1.5 MB, no raw signal.
+
+# ── python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# ── node / next ───────────────────────────────────────────────────────────────
+node_modules/
+.next/
+out/
+build/
+dist/
+.turbo/
+*.tsbuildinfo
+
+# ── vercel / supabase ─────────────────────────────────────────────────────────
+.vercel/
+supabase/.branches/
+supabase/.temp/
+
+# ── os / editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/settings.json
+
+# ── scratch ───────────────────────────────────────────────────────────────────
+scratch/
+*.log

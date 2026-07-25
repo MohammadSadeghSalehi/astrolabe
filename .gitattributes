@@ -1,0 +1,15 @@
+# This repo is worked on from both WSL and Windows. Without this, git on each
+# side disagrees about line endings and every file shows as modified after a
+# shell switch — which blocks rebases and pollutes diffs.
+#
+# Normalise to LF in the repository; let each checkout do what it likes locally.
+* text=auto eol=lf
+
+# Never touch these.
+*.png    binary
+*.jpg    binary
+*.pdf    binary
+*.mat    binary
+*.zip    binary
+*.parquet binary
+*.joblib binary
