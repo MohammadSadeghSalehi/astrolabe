@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Astrolabe — web app
 
-## Getting Started
-
-First, run the development server:
+Next.js 16 · TypeScript · Tailwind v4 · `motion` · `d3-scale`/`d3-shape` for
+maths only. Every chart is hand-rolled SVG: the hatch fills, the uncertainty
+bands and the abstention holes are not shapes a charting library will draw.
 
 ```bash
-npm run dev
+npm install
+npm run dev                    # http://localhost:3000
 # or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build && npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Choosing the data source
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The app renders one JSON bundle per participant-day. Where that comes from is
+decided in exactly one place, [`lib/source.ts`](lib/source.ts).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| `NEXT_PUBLIC_DEMO_MODE` | Source |
+|---|---|
+| `offline` (default) | `public/bundles/*.json` |
+| `supabase` | the `bundles` table, anon read |
 
-## Learn More
+`NEXT_PUBLIC_*` is inlined at build time, so changing that variable means a
+rebuild. To compare both paths without one, override per request:
 
-To learn more about Next.js, take a look at the following resources:
+```
+/?source=local
+/?source=supabase
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The override only selects between two real sources — it cannot manufacture data
+— and **the footer reports where the bundle actually came from**, not what was
+asked for. A request for Supabase that falls back to local says so on screen.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+If the online path misbehaves, `node ../scripts/check_supabase.mjs` names the
+failing step (env, migration, grants, or seed) instead of leaving you to infer
+it from a 401.
 
-## Deploy on Vercel
+Copy `../.env.example` to `.env.local`. Everything except `NEXT_PUBLIC_*` is
+server-side only, and the Supabase service role must never appear under `app/`
+outside a route handler.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Windows and WSL cannot share one `node_modules`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`npm install` fetches binaries compiled for the platform it runs on —
+`lightningcss` and `@next/swc` both ship as native `.node` files. Install on
+Windows, build from WSL, and the build dies on a missing Linux binary:
+
+```
+Error: Cannot find module '../lightningcss.linux-x64-gnu.node'
+```
+
+Reinstalling in the other shell only moves the failure. Pick one environment per
+checkout and stay in it — in this repo the Python and ML work happens in WSL and
+the app is built from PowerShell, so the installed binaries are `win32-x64`. A
+fresh clone on Linux or macOS runs `npm install` there and is fine.
+
+## Layout
+
+```
+app/            routes — day view, /clinician, and the API handlers
+components/     Timeline, TremorRow, RevealWipe, MetricsPanel, …
+lib/            contract types, scales, store, source, openai
+public/bundles/ the emitted bundles the UI renders
+public/brand/   mark, wordmark, cards
+```
+
+## The design rule
+
+Every element declares where it came from: solid fill for observed, a diamond
+for reported, hatch inside an uncertainty band for reconstructed, and — where
+the model abstained — no fill at all, a dashed hole with the reason written out.
+
+Treatments differ by **texture, not hue**, so they survive greyscale, a
+projector and colour-blind vision. Abstention is drawn as absence, because "we
+don't know" must never look like a value.
+
+`null` in a metric means *could not be computed* and renders as an em-dash. It
+is never shown as `0.00`; a zero would read as a perfect score for a day the
+model declined entirely.
