@@ -1,0 +1,11 @@
+{
+  "text": "I took my 2pm dose late, levodopa 100 milligrams",
+  "extraction": {
+    "type": "medication",
+    "t": "14:00",
+    "drug": "Levodopa",
+    "dose_mg": 100,
+    "note": "Took 2pm dose late, levodopa 100mg",
+    "confidence": "high"
+  }
+}
