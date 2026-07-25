@@ -8,6 +8,7 @@ import { TremorRow } from "./TremorRow";
 import { PosteriorInspector } from "./PosteriorInspector";
 import { SensorToggles } from "./SensorToggles";
 import { MetricsPanel } from "./MetricsPanel";
+import { SelectivePredictionChart } from "./SelectivePredictionChart";
 import { EvidenceLayers } from "./EvidenceLayers";
 import { VoiceNote } from "./VoiceNote";
 
@@ -168,8 +169,16 @@ export function DayView() {
         </div>
       </section>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {/*
+        Metrics need room for held-out vs day split + selective curve.
+        Full-width pair under the timeline; inspector/controls stay below.
+      */}
+      <div className="grid gap-4 lg:grid-cols-2">
         <MetricsPanel bundle={bundle} />
+        <SelectivePredictionChart bundle={bundle} />
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <PosteriorInspector bundle={bundle} hour={hour} />
         <SensorToggles
           mask={mask}
