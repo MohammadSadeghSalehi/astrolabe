@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+/* ── Astrolabe tokens (validated — do not substitute hex ad hoc) ─────────── */
+:root {
+  --surface: #10151f;
+  --page: #080b11;
+  --ink: #ece7db;
+  --ink-2: #8d97ab;
+  --grid: #1b2231;
+  --axis: #2a3244;
+
+  --surface-light: #faf8f3;
+  --page-light: #f3f0e8;
+  --ink-light: #12151c;
+  --ink-2-light: #585f6e;
+
+  --brass: #c8963e;
+  --brass-hi: #efd39b;
+  --verdigris: #4fb3a4;
+
+  --s1-reconstructed: #b7862d;
+  --s2-truth: #16a897;
+  --s3-wrist-left: #3d66c4;
+  --s4-wrist-right: #b076d9;
+  --s5-tremor: #ac5345;
+  --s6-aligned: #46a560;
+
+  --k0: #77a2fc;
+  --k1: #537ede;
+  --k2: #3f60a8;
+  --k3: #454a54;
+  --k4: #9d4337;
+  --k5: #cf5949;
+  --k6: #fd7562;
+
+  --seq-1: #783e9d;
+  --seq-2: #9056b6;
+  --seq-3: #a86ed1;
+  --seq-4: #c287ec;
+  --seq-5: #d5a8f7;
+
+  --font-sans: var(--font-plex-sans), "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+  --font-display: var(--font-fraunces), Fraunces, Georgia, serif;
+}
+
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+html,
+body {
+  background: var(--page);
+  color: var(--ink);
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Motion: respect reduced motion — components also short-circuit animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hairline rule used under headers */
+.rule {
+  height: 1px;
+  background: var(--axis);
+}
