@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "reac
 import { area as d3area, line as d3line, curveStepAfter } from "d3-shape";
 import type { Bundle } from "@/lib/contract";
 import { makeXScale, parseTime } from "@/lib/scales";
+import { useStore } from "@/lib/store";
 
 /**
  * The tremor row.
@@ -24,6 +25,9 @@ import { makeXScale, parseTime } from "@/lib/scales";
 
 // Must match Timeline's MARGIN so the two x-axes line up under each other.
 const MARGIN = { top: 22, right: 28, bottom: 50, left: 64 };
+
+/** Half-width of the confidence band at conf=0 (probability units). */
+const CONF_BAND_MAX = 0.1;
 
 export type TremorRowProps = {
   bundle: Bundle | null;
@@ -61,6 +65,7 @@ export function TremorRow({
   const wrapRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(800);
   const reduced = usePrefersReducedMotion();
+  const set = useStore((s) => s.set);
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -91,6 +96,9 @@ export function TremorRow({
   );
 
   const hasP = series.some((s) => s.tremor_p != null);
+  const hasConf = series.some(
+    (s) => s.tremor_p != null && s.tremor_confidence != null,
+  );
 
   const pathP = useMemo(() => {
     if (!hasP) return "";
@@ -112,6 +120,29 @@ export function TremorRow({
       .curve(curveStepAfter);
     return gen(series) ?? "";
   }, [series, xScale, y, plotH, hasP]);
+
+  /**
+   * Thin band around the step line: half-width shrinks with tremor_confidence
+   * (distance from a coin flip). Absent confidence → no band.
+   */
+  const confBand = useMemo(() => {
+    if (!hasConf) return "";
+    const gen = d3area<(typeof series)[number]>()
+      .defined((d) => d.tremor_p != null && d.tremor_confidence != null)
+      .x((d) => xScale(parseTime(d.t)))
+      .y0((d) => {
+        const conf = d.tremor_confidence ?? 0;
+        const half = (1 - conf) * CONF_BAND_MAX;
+        return y(Math.max(0, d.tremor_p! - half));
+      })
+      .y1((d) => {
+        const conf = d.tremor_confidence ?? 0;
+        const half = (1 - conf) * CONF_BAND_MAX;
+        return y(Math.min(1, d.tremor_p! + half));
+      })
+      .curve(curveStepAfter);
+    return gen(series) ?? "";
+  }, [series, xScale, y, hasConf]);
 
   /** Contiguous runs of the diary's own tremor answer, for the truth rail. */
   const truthRuns = useMemo(() => {
@@ -163,6 +194,28 @@ export function TremorRow({
       hours: (n * (bundle?.resolution_min ?? 10)) / 60,
     };
   }, [truth, series, revealX, plotW, xScale, bundle?.resolution_min]);
+
+  const nearestIndex = (clientX: number, svg: SVGSVGElement) => {
+    if (series.length === 0) return null;
+    const pt = svg.createSVGPoint();
+    pt.x = clientX;
+    pt.y = 0;
+    const ctm = svg.getScreenCTM();
+    if (!ctm) return null;
+    const local = pt.matrixTransform(ctm.inverse());
+    const px = local.x - MARGIN.left;
+    let best = 0;
+    let bestD = Infinity;
+    for (let i = 0; i < series.length; i++) {
+      const x = xScale(parseTime(series[i]!.t));
+      const d = Math.abs(x - px);
+      if (d < bestD) {
+        bestD = d;
+        best = i;
+      }
+    }
+    return best;
+  };
 
   const cursorX =
     hour != null && series[hour] ? xScale(parseTime(series[hour]!.t)) : null;
@@ -217,6 +270,12 @@ export function TremorRow({
         role="img"
         aria-label="Tremor probability against the reported diary"
         className="block select-none"
+        onPointerMove={(e) => {
+          if (series.length === 0) return;
+          const i = nearestIndex(e.clientX, e.currentTarget);
+          if (i != null) set({ hour: i });
+        }}
+        onPointerLeave={() => set({ hour: null })}
       >
         <defs>
           <clipPath id="tremor-reveal">
@@ -226,6 +285,24 @@ export function TremorRow({
             <stop offset="0%" stopColor="var(--seq-3)" stopOpacity={0.42} />
             <stop offset="100%" stopColor="var(--seq-1)" stopOpacity={0.06} />
           </linearGradient>
+          {/* Light diagonal hatch for truth=0 so hollow runs stay visible in greyscale */}
+          <pattern
+            id="tremor-none-hatch"
+            width={6}
+            height={6}
+            patternUnits="userSpaceOnUse"
+            patternTransform="rotate(-45)"
+          >
+            <line
+              x1={0}
+              y1={0}
+              x2={0}
+              y2={6}
+              stroke="var(--s2-truth)"
+              strokeWidth={1.25}
+              strokeOpacity={0.55}
+            />
+          </pattern>
         </defs>
 
         <g transform={`translate(${MARGIN.left},${MARGIN.top})`}>
@@ -255,6 +332,14 @@ export function TremorRow({
           ))}
 
           <path d={areaP} fill="url(#tremor-fill)" />
+          {confBand && (
+            <path
+              d={confBand}
+              fill="var(--seq-4)"
+              fillOpacity={0.18}
+              stroke="none"
+            />
+          )}
           <path
             d={pathP}
             fill="none"
@@ -265,9 +350,8 @@ export function TremorRow({
 
           {/*
             The diary's own answer, uncovered by the same handle that drives the
-            state row. Filled = tremor reported, hollow = none: the two are told
-            apart by fill rather than hue, so the comparison survives greyscale
-            and a projector.
+            state row. Filled = tremor reported; hatched light fill = none —
+            both survive greyscale and a projector (hue alone is never the cue).
           */}
           <g clipPath="url(#tremor-reveal)">
             {truthRuns.map((r, i) => (
@@ -278,10 +362,12 @@ export function TremorRow({
                 width={Math.max(2, r.x1 - r.x0)}
                 height={9}
                 rx={2}
-                fill={r.v === 1 ? "var(--s2-truth)" : "none"}
+                fill={
+                  r.v === 1 ? "var(--s2-truth)" : "url(#tremor-none-hatch)"
+                }
                 stroke="var(--s2-truth)"
                 strokeWidth={1.25}
-                opacity={r.v === 1 ? 0.95 : 0.5}
+                opacity={r.v === 1 ? 0.95 : 0.85}
               />
             ))}
           </g>
@@ -295,7 +381,7 @@ export function TremorRow({
               fontSize={14}
               fill="var(--ink-2)"
             >
-              diary — filled = tremor reported, hollow = none
+              diary — filled = tremor reported, hatched = none
             </text>
           )}
 
