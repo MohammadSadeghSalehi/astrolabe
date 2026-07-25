@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.115.0",
     "@elevenlabs/elevenlabs-js": "^2.59.0",
     "@supabase/supabase-js": "^2.110.8",
     "d3-array": "^3.2.4",

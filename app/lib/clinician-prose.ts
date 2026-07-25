@@ -3,7 +3,9 @@ import { KINESIA_LABELS } from "./contract";
 
 /**
  * Deterministic visit questions — every number comes from the bundle.
- * Claude / Anthropic may rephrase only; never invent metrics.
+ * A model may rephrase these only; it never invents or recomputes a metric.
+ * The prose route enforces that by rejecting any rewrite containing a number
+ * that is not already present in the template it was given.
  */
 export type ClinicianDerived = {
   abstained: { t: string; reason: string }[];
