@@ -41,6 +41,25 @@ Copy `../.env.example` to `.env.local`. Everything except `NEXT_PUBLIC_*` is
 server-side only, and the Supabase service role must never appear under `app/`
 outside a route handler.
 
+## If the page looks unstyled
+
+Stop the server before rebuilding. `next build` replaces `.next` in place, so a
+running `next start` keeps serving HTML that points at chunk filenames the new
+build no longer wrote:
+
+```
+GET /_next/static/chunks/<hash>.css  500
+```
+
+Nothing else errors. React hydrates, the data loads, every number is correct —
+and the page renders as unstyled full-width blocks, which reads as a broken UI
+rather than a missing stylesheet. Kill the server, `rm -rf .next`, rebuild,
+start.
+
+```powershell
+npm run build ; npm start     # sequential, never against a live server
+```
+
 ## Windows and WSL cannot share one `node_modules`
 
 `npm install` fetches binaries compiled for the platform it runs on —
