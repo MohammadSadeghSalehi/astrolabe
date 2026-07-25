@@ -237,6 +237,74 @@ def diary_frame(participants: list[str], raw_dir: str) -> pd.DataFrame:
 
 
 # ──────────────────────────────────────────────────────────────────────────────
+# medication timing
+# ──────────────────────────────────────────────────────────────────────────────
+
+@dataclass(frozen=True)
+class Dose:
+    """One reported medication intake.
+
+    The diary resolves intake only to the hour that contains it, so `minute` is
+    the midpoint of that hour, not a measured time. Everything downstream that
+    uses it — `minutes_since_dose` above all — inherits roughly +/-30 min of
+    slack. Say that out loud rather than implying the timing is exact.
+    """
+
+    day: int
+    minute: int              # minutes from midnight, hour midpoint
+    drugs: tuple[str, ...]
+    total_mg: float
+
+    @property
+    def absolute_minute(self) -> int:
+        """Minutes from the start of day 0, so doses order across midnight."""
+        return self.day * 24 * 60 + self.minute
+
+
+def dose_events(hours: list[Hour]) -> list[Dose]:
+    """Every reported medication intake for a participant, chronologically.
+
+    The `Medication` field packs multiple drugs into one `;`-separated string,
+    with `Dosage_1`/`Dosage_2` matched positionally.
+    """
+    doses: list[Dose] = []
+    for h in hours:
+        if not h.medication:
+            continue
+        drugs = tuple(d.strip() for d in h.medication.split(";") if d.strip())
+        if not drugs:
+            continue
+        mg = sum(v for v in (h.dose_mg_1, h.dose_mg_2) if v is not None)
+        doses.append(
+            Dose(
+                day=h.day,
+                # the diary only says "during [T-1, T)" — take the midpoint
+                minute=h.hour_start * 60 + 30,
+                drugs=drugs,
+                total_mg=float(mg),
+            )
+        )
+    doses.sort(key=lambda d: d.absolute_minute)
+    return doses
+
+
+def minutes_since_dose(doses: list[Dose], day: int, minute_of_day: int
+                       ) -> tuple[float | None, float]:
+    """(minutes elapsed since the last dose at or before this time, its mg).
+
+    Returns (None, 0.0) before the first recorded dose — the caller decides how
+    to encode "no dose yet", which is genuinely different from "a very long time
+    ago" and must not be silently conflated with it.
+    """
+    now = day * 24 * 60 + minute_of_day
+    prior = [d for d in doses if d.absolute_minute <= now]
+    if not prior:
+        return None, 0.0
+    last = prior[-1]
+    return float(now - last.absolute_minute), last.total_mg
+
+
+# ──────────────────────────────────────────────────────────────────────────────
 # the alignment check
 # ──────────────────────────────────────────────────────────────────────────────
 

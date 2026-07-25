@@ -20,7 +20,12 @@ from astrolabe.features import (
     feature_columns,
     hour_features,
 )
-from astrolabe.io_cops import KINESIA_LABELS, iter_usable_hours
+from astrolabe.io_cops import (
+    KINESIA_LABELS,
+    dose_events,
+    iter_usable_hours,
+    load_diary,
+)
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
 RAW = str(ROOT / "data" / "cops" / "raw")
@@ -32,12 +37,15 @@ FS = 100.0 / DOWNSAMPLE
 
 
 def main() -> None:
+    doses = dose_events(load_diary(PID, RAW))
+    print(f"{PID}: {len(doses)} reported medication intakes")
+
     t0 = time.time()
     frames = []
     for i, (hour, left, right) in enumerate(
         iter_usable_hours(PID, RAW, downsample=DOWNSAMPLE)
     ):
-        frames.append(hour_features(hour, left, right, fs=FS))
+        frames.append(hour_features(hour, left, right, fs=FS, doses=doses))
         if len(frames) >= N:
             break
     elapsed = time.time() - t0

@@ -22,7 +22,7 @@ import numpy as np
 import pandas as pd
 from scipy import signal, stats
 
-from .io_cops import SAMPLE_RATE_HZ, Hour
+from .io_cops import SAMPLE_RATE_HZ, Dose, Hour, minutes_since_dose
 
 WINDOW_MIN = 10
 WINDOWS_PER_HOUR = 60 // WINDOW_MIN
@@ -158,21 +158,44 @@ def asymmetry(left: dict, right: dict) -> dict:
     return out
 
 
-def context_features(hour: Hour, window_index: int,
-                     minutes_since_dose: float | None) -> dict:
+#: Beyond this, "time since dose" stops meaning anything pharmacologically —
+#: levodopa's effect is long gone. Capping keeps the feature from encoding
+#: "how late in the day is it", which `tod_sin`/`tod_cos` already carry.
+DOSE_HORIZON_MIN = 480.0
+
+
+def context_features(hour: Hour, window_index: int, doses: list[Dose]) -> dict:
     """Everything that is not the accelerometer.
 
-    `minutes_since_dose` is derived from REPORTED medication times, so it is a
-    legitimate input — it is not leaked from the label.
+    Medication timing comes from REPORTED intake, so it is a legitimate input —
+    it is not leaked from the label. It is only resolved to the hour, though, so
+    it carries about +/-30 min of slack (see `io_cops.Dose`).
     """
     minute_of_day = hour.hour_start * 60 + window_index * WINDOW_MIN
     theta = 2 * np.pi * minute_of_day / (24 * 60)
-    since = 600.0 if minutes_since_dose is None else float(min(minutes_since_dose, 600.0))
+
+    since, last_mg = minutes_since_dose(doses, hour.day, minute_of_day)
+    # "no dose recorded yet" is a different state from "a long time since one",
+    # so it gets its own flag rather than being folded into a large number.
+    no_dose_yet = since is None
+    since_capped = DOSE_HORIZON_MIN if no_dose_yet else min(since, DOSE_HORIZON_MIN)
+
+    doses_so_far = sum(
+        1 for d in doses
+        if d.absolute_minute <= hour.day * 24 * 60 + minute_of_day and d.day == hour.day
+    )
+
     return {
         "tod_sin": float(np.sin(theta)),
         "tod_cos": float(np.cos(theta)),
-        "minutes_since_dose": since,
-        "dose_recent": float(since < 90.0),
+        "minutes_since_dose": float(since_capped),
+        "no_dose_yet": float(no_dose_yet),
+        # Levodopa's on-period is roughly the first 1-2 h after intake; these
+        # bracket the window where an effect, if any, would show.
+        "dose_within_60": float(not no_dose_yet and since <= 60),
+        "dose_within_120": float(not no_dose_yet and since <= 120),
+        "last_dose_mg": float(last_mg),
+        "doses_today": float(doses_so_far),
     }
 
 
@@ -196,7 +219,7 @@ def hour_features(
     left: pd.DataFrame,
     right: pd.DataFrame,
     fs: float = SAMPLE_RATE_HZ,
-    minutes_since_dose: float | None = None,
+    doses: list[Dose] | None = None,
 ) -> pd.DataFrame:
     """One row per complete 10-minute window in this hour.
 
@@ -235,7 +258,7 @@ def hour_features(
         row.update(lf)
         row.update(rf)
         row.update(asymmetry(lf, rf))
-        row.update(context_features(hour, i, minutes_since_dose))
+        row.update(context_features(hour, i, doses or []))
         rows.append(row)
 
     return pd.DataFrame(rows)
