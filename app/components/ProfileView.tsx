@@ -170,14 +170,13 @@ export function ProfileView() {
                 acceleration at that rate nor a second wrist, so this is a real
                 engineering problem rather than an integration away.
               </p>
-              <button
-                type="button"
-                disabled
-                className="mt-3 min-h-[44px] cursor-not-allowed rounded-md border px-4 py-2 text-[16px]"
-                style={{ borderColor: "var(--axis)", color: "var(--ink-2)", opacity: 0.7 }}
+              <Link
+                href="/devices"
+                className="mt-3 inline-flex min-h-[44px] items-center rounded-md border px-4 py-2 text-[16px]"
+                style={{ borderColor: "var(--axis)", color: "var(--ink)" }}
               >
-                Pair a device — unavailable
-              </button>
+                Which devices could work →
+              </Link>
             </div>
           </div>
 
