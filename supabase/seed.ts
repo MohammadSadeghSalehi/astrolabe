@@ -21,14 +21,42 @@ const require = createRequire(join(REPO_ROOT, "app", "package.json"));
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { createClient } = require("@supabase/supabase-js") as typeof import("@supabase/supabase-js");
 
+/**
+ * Falls back to app/.env.local so the service role can live in the gitignored
+ * file it already belongs in, rather than being exported into shell history on
+ * every run. Process env still wins, for CI.
+ */
+function fromEnvLocal(key: string): string | undefined {
+  const p = join(REPO_ROOT, "app", ".env.local");
+  if (!existsSync(p)) return undefined;
+  for (const line of readFileSync(p, "utf8").split(/\r?\n/)) {
+    const m = new RegExp(`^\\s*${key}\\s*=\\s*(.*)$`).exec(line);
+    if (m) {
+      const v = m[1]!.trim().replace(/^["']|["']$/g, "");
+      if (v) return v;
+    }
+  }
+  return undefined;
+}
+
 const url =
-  process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
+  process.env.SUPABASE_URL ??
+  process.env.NEXT_PUBLIC_SUPABASE_URL ??
+  fromEnvLocal("SUPABASE_URL") ??
+  fromEnvLocal("NEXT_PUBLIC_SUPABASE_URL") ??
+  "";
+const serviceKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ??
+  fromEnvLocal("SUPABASE_SERVICE_ROLE_KEY") ??
+  "";
 
 if (!url || !serviceKey) {
-  console.error(
-    "Missing SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL) and SUPABASE_SERVICE_ROLE_KEY.",
-  );
+  console.error("\nMissing Supabase credentials.\n");
+  console.error(`  url          ${url ? "ok" : "MISSING"}`);
+  console.error(`  service role ${serviceKey ? "ok" : "MISSING"}\n`);
+  console.error("Easiest fix — put it in app/.env.local (gitignored):\n");
+  console.error("  SUPABASE_SERVICE_ROLE_KEY=<Supabase → Settings → API → service_role>\n");
+  console.error("then re-run:  npx --yes tsx supabase/seed.ts\n");
   console.error(
     "Service role is seed-only — never put it in NEXT_PUBLIC_* or app/ code.",
   );
