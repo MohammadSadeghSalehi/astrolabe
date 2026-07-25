@@ -2,8 +2,9 @@
 
 **Read the hours you couldn't record.**
 
-Reconstructs the Parkinson's motor diary from wrist accelerometry — shows how
-certain it is, and abstains when the evidence is too weak.
+Reconstructs the tremor row of the Parkinson's motor diary from wrist
+accelerometry — shows how certain it is, and abstains when the evidence is too
+weak.
 
 ---
 
@@ -16,14 +17,40 @@ are twenty-minute snapshots, months apart.
 > *"My meds felt off all week. My neurologist asked when it was worse and I honestly
 > couldn't tell her. I'd stopped filling in the diary by Wednesday."*
 
+## What we found
+
+Tremor is detectable across people. The subjective motor state is not.
+
+| Target, held-out participants | Result |
+|---|---|
+| **Tremor present** — diary `TremorScore` > 0 | **AUC 0.722** |
+| Kinesia OFF/ON, same folds and same pipeline | AUC 0.567 |
+| 7-state kinesia reconstruction | ordinal MAE 0.684, against a 0.594 constant |
+
+Tremor is a 4–8 Hz mechanical oscillation the accelerometer measures directly.
+Kinesia is a subjective judgement about how an hour went, and the sensor has no
+access to it. Nine feature sets over five participant-level folds were swept;
+none beat the constant.
+
+Two consequences, both of them in the product. Answering only the most confident
+quarter of hours raises tremor accuracy from 0.713 to 0.825 — that is the
+evidence behind abstention, rather than an assertion of it. And the pooled AUC
+of 0.68 falls to a median **within-participant** AUC of 0.550, above chance on
+25 of 36 participants: much of the pooled figure separates tremor-dominant
+people from others rather than a tremulous hour from a calm one in the same
+person, and within-person is what a diary needs.
+
+[docs/FINDINGS.md](docs/FINDINGS.md) is the full record.
+
 ## What this does
 
-Reconstructs a continuous motor-state trajectory from bilateral wrist accelerometry
-and reported medication times, with **calibrated uncertainty** — and refuses to
-answer when the evidence cannot support one.
+Reconstructs a continuous tremor trajectory from bilateral wrist accelerometry,
+against the medication times the patient reported, with **calibrated
+uncertainty** — and refuses to answer when the evidence cannot support one. The
+7-state motor status sits beside it as *reported*, never as inferred.
 
 The claim is testable, and testing it is the demo: hide a real participant's diary,
-reconstruct it, then reveal the truth on screen.
+reconstruct the tremor row, then reveal the truth on screen.
 
 ### The design thesis
 
@@ -47,7 +74,9 @@ never look like a value.
 | Dataset tooling, diary extraction, baselines | ✅ |
 | Bundle contract + mock bundles | ✅ |
 | Design system, validated palettes | ✅ |
-| Feature pipeline, model, calibration | 🔨 |
+| Feature pipeline | ✅ |
+| Tremor detector, calibration, abstention | ✅ |
+| 7-state kinesia reconstruction | ❌ does not generalise across people — [docs/FINDINGS.md](docs/FINDINGS.md) |
 | Web app | 🔨 |
 
 ## The numbers that matter
@@ -61,8 +90,19 @@ From `scripts/baselines.py` over all 66 COPS archives:
 | **Baseline to beat** — always predict "Good kinesia" | **ordinal MAE 0.594** |
 | Oracle per-participant median | MAE 0.380 |
 
+And what the model does against it, on participants it never trained on:
+
+| | |
+|---|---|
+| 7-state kinesia reconstruction | MAE 0.684 — **worse than the baseline** |
+| Tremor presence | **AUC 0.722** |
+| … median within-participant AUC | 0.550 |
+| … average precision, prevalence 30.5% | 0.496 |
+
 Any reported error is meaningless without that baseline beside it, so
-`baseline_mae` is a required field in the output contract.
+`baseline_mae` is a required field in the output contract. It is also what makes
+the kinesia row a reported negative result rather than a number that would read
+as fine on its own.
 
 ## Quick start
 
@@ -107,6 +147,12 @@ it, and the mock and the trained model emit the same shape.
 }
 ```
 
+The values above illustrate the shape and are not measurements — the measured
+numbers are in [docs/FINDINGS.md](docs/FINDINGS.md). `tremor_p` is the field the
+model can stand behind; `ordinal_mae` records how far the state reconstruction
+is from the baseline, and on held-out participants it is on the wrong side of
+it.
+
 `posterior` is a 7-vector over the KinesiaScore states, indexed `0..6` →
 `−3..+3`. **Index 3 is the *good* state.** The scale is diverging, not monotone
 severity: both ends are impairment in opposite directions — too little movement
@@ -118,6 +164,7 @@ severity: both ends are impairment in opposite directions — too little movemen
 contract/   the frozen output contract + mock bundles
 scripts/    dataset download, diary extraction, baselines, palette generators
 docs/       DATA.md — dataset reference · DESIGN.md — design system
+            FINDINGS.md — what generalises across people, and what does not
             design-system.html — visual reference, open it in a browser
 data/       derived label CSVs (tracked); raw archives (fetched, ignored)
 ```
@@ -155,6 +202,13 @@ Stated up front, because they bound what this can honestly claim:
 - **Not a medical device.** No diagnostic, dosing or treatment claim is made.
 - Three of the seven states have under 200 labelled hours across the whole cohort,
   so the extremes are not learnable from this data alone.
+- **The 7-state motor status is not reconstructed.** It does not generalise
+  across people — held-out MAE 0.684 against a 0.594 constant — so it is shown
+  as reported or abstained, never as inferred.
+- **Pooled AUC flatters the tremor result.** Median within-participant AUC is
+  0.550, above chance on 25 of 36 participants. Much of the pooled 0.68
+  separates tremor-dominant people from everyone else rather than a tremulous
+  hour from a calm one in the same person.
 
 ## Licence
 

@@ -1,7 +1,9 @@
 # COPS — dataset reference
 
 Everything here was verified against the downloaded files on 25 Jul 2026, not from
-the paper. Numbers come from `scripts/scan_diaries.py` and `scripts/baselines.py`.
+the paper. Numbers come from `scripts/scan_diaries.py` and `scripts/baselines.py`;
+the held-out model numbers come from `ml/scripts/` and are recorded in full in
+[FINDINGS.md](FINDINGS.md).
 
 ## Source & licence
 
@@ -159,8 +161,8 @@ classifier will not learn them. Use ordinal regression and report MAE.
 
 **Sanity-check every reported MAE against 0.594 before believing it.** An error of
 0.61 looks like a working model and is in fact worse than predicting "Good
-kinesia" every hour. Target ≤ 0.45 for a real claim; ≤ 0.40 beats oracle
-personalisation.
+kinesia" every hour. The bar was set at ≤ 0.45 for a real claim; ≤ 0.40 would
+beat oracle personalisation.
 
 Baseline D is not achievable at inference time — it needs the true previous label,
 and the whole point is that the diary is hidden. It is reported as evidence that
@@ -169,6 +171,30 @@ the state is autocorrelated enough for a temporal model to be worth building.
 **20 of 65 participants show ≤ 2 distinct states all week.** Participant-level
 splits will therefore have high variance. Report the per-participant spread, not
 just a pooled mean, or one lucky test participant will flatter you.
+
+### The bar was not met
+
+The kinesia target is not reachable from this sensor across people, and that is
+a property of the target rather than of the tuning.
+
+| Method, held-out participants | Ordinal MAE |
+|---|---|
+| Baseline A — always "Good kinesia" | **0.594** |
+| Ordinal emission model | 0.684 |
+| … with HMM smoothing, tempered likelihoods | 0.696 |
+
+Nine feature sets over five participant-level folds were swept and none beat
+0.594. The reason is visible in the cumulative-threshold AUCs on held-out
+participants — 0.428, 0.530, 0.587, 0.324, 0.455 — several of them below chance,
+which is systematic inversion: the feature-to-state relationship flips between
+people. Per-participant offset calibration does not fix it either. Given the
+same calibration labels, a personal constant scores MAE 0.400 and the model
+scores 0.474 — worse than a constant given equal information.
+
+**The baselines above are still correct and still the right bar.** What changed
+is that nothing clears it. Tremor presence does generalise across people —
+held-out AUC 0.722 on the same folds — so that is what the product claims. The
+full record, including the caveats, is in [FINDINGS.md](FINDINGS.md).
 
 ## Demo-participant shortlist
 
