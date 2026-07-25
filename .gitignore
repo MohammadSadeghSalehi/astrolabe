@@ -58,6 +58,11 @@ desktop.ini
 .vscode/*
 !.vscode/settings.json
 
+# Local agent tooling — the impeccable design skill and its hooks. Development
+# apparatus, not product, and gitignore has no inline comments so this sits on
+# its own line.
+.claude/
+
 # ── scratch ───────────────────────────────────────────────────────────────────
 scratch/
 *.log
