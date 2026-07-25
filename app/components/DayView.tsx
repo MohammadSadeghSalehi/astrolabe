@@ -23,6 +23,7 @@ export function DayView() {
     participant,
     bundle,
     origin,
+    fellBack,
     loading,
     hour,
     mask,
@@ -40,11 +41,12 @@ export function DayView() {
       try {
         // Stress case: any wrist dropped → nowrist bundle (matches handoff)
         const nowrist = !m.left || !m.right;
-        const { bundle: b, origin } = await getBundle(p, { nowrist });
+        const { bundle: b, origin, fellBack } = await getBundle(p, { nowrist });
         if (seq !== loadSeq.current) return;
         set({
           bundle: b,
           origin,
+          fellBack,
           loading: false,
           revealX: 0,
           hour: null,
@@ -52,7 +54,7 @@ export function DayView() {
       } catch (err) {
         console.error(err);
         if (seq !== loadSeq.current) return;
-        set({ bundle: null, origin: null, loading: false });
+        set({ bundle: null, origin: null, fellBack: false, loading: false });
       }
     },
     [set],
@@ -258,7 +260,7 @@ export function DayView() {
           </>
         ) : origin === "local" ? (
           <>
-            {isOfflineDemo() ? "Offline demo path" : "Supabase unreachable — local fallback"}
+            {fellBack ? "Supabase unreachable — local fallback" : "Offline demo path"}
             {" · bundles from "}
             <span className="font-mono">/public/bundles</span>
           </>

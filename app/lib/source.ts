@@ -4,7 +4,17 @@ import { createBrowserClient } from "./db";
 /** Where a bundle actually came from — not where it was configured to come from. */
 export type BundleOrigin = "supabase" | "local";
 
-export type LoadedBundle = { bundle: Bundle; origin: BundleOrigin };
+export type LoadedBundle = {
+  bundle: Bundle;
+  origin: BundleOrigin;
+  /**
+   * True only when the online path was attempted and did not answer. Local
+   * because it was asked for is a different fact from local because Supabase
+   * failed, and a footer that conflates them either cries wolf on a deliberate
+   * offline run or stays quiet on a real outage.
+   */
+  fellBack: boolean;
+};
 
 /**
  * Single place that knows where bundles come from.
@@ -23,18 +33,45 @@ export type LoadedBundle = { bundle: Bundle; origin: BundleOrigin };
  * argues that displayed claims should be checkable; its own footer is not
  * exempt.
  */
+/**
+ * `?source=local` / `?source=supabase` overrides NEXT_PUBLIC_DEMO_MODE.
+ *
+ * NEXT_PUBLIC_* is inlined at build time, so without this, comparing the two
+ * paths means editing .env.local and rebuilding between each look — slow enough
+ * that in practice you check one and assume the other. Two tabs is the version
+ * of that test people actually run.
+ *
+ * It only ever picks between two real sources; it cannot manufacture data, and
+ * the footer still reports where the bundle came from rather than what was
+ * requested. So a URL that asks for Supabase and silently falls back still says
+ * so on screen.
+ */
+function requestedSource(): "local" | "supabase" | null {
+  if (typeof window === "undefined") return null;
+  const q = new URLSearchParams(window.location.search).get("source");
+  if (q === "local" || q === "offline") return "local";
+  if (q === "supabase" || q === "online") return "supabase";
+  return null;
+}
+
 export async function getBundle(
   participant: string,
   opts?: { nowrist?: boolean },
 ): Promise<LoadedBundle> {
   const mode = (process.env.NEXT_PUBLIC_DEMO_MODE ?? "offline").toLowerCase();
-  const online = mode === "online" || mode === "supabase";
+  const override = requestedSource();
+  const online =
+    override != null
+      ? override === "supabase"
+      : mode === "online" || mode === "supabase";
   const variant = opts?.nowrist ? "nowrist" : "full";
 
+  let attemptedOnline = false;
   if (online) {
+    attemptedOnline = true;
     try {
       const bundle = await fetchBundleFromSupabase(participant, variant);
-      if (bundle) return { bundle, origin: "supabase" };
+      if (bundle) return { bundle, origin: "supabase", fellBack: false };
       console.warn(
         "[source] online path returned no row; falling back to local bundles",
       );
@@ -49,6 +86,7 @@ export async function getBundle(
   return {
     bundle: await fetchBundleLocal(participant, opts?.nowrist === true),
     origin: "local",
+    fellBack: attemptedOnline,
   };
 }
 
