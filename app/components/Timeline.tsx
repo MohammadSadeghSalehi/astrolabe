@@ -407,8 +407,15 @@ export function Timeline({
                 reason.length > maxChars
                   ? `${reason.slice(0, maxChars - 1)}…`
                   : reason;
+              // Caption sits above the hole so it never clips inside a narrow gap.
               const title =
-                nPts >= 3 || w >= 72 ? "ABSTAINED" : w >= 36 ? "ABST." : "·";
+                nPts >= 2 || w >= 48 ? "ABSTAINED" : w >= 28 ? "ABS" : "";
+              const cx = left + w / 2;
+              const pillW = title === "ABSTAINED" ? 78 : 36;
+              const pillX = Math.min(
+                Math.max(cx - pillW / 2, 0),
+                Math.max(0, plotW - pillW),
+              );
               return (
                 <g key={`abs-${a}-${b}`}>
                   <rect
@@ -421,25 +428,36 @@ export function Timeline({
                     strokeWidth={1.6}
                     strokeDasharray="6 5"
                   />
-                  {showTitle && (
-                    <text
-                      x={left + w / 2}
-                      y={14}
-                      textAnchor="middle"
-                      fill="var(--ink)"
-                      style={{
-                        fontFamily: "var(--font-mono), ui-monospace, monospace",
-                        fontSize: title === "ABSTAINED" ? 10.5 : 9,
-                        letterSpacing: title === "ABSTAINED" ? "0.05em" : "0.04em",
-                      }}
-                    >
-                      {title}
-                    </text>
+                  {showTitle && title && (
+                    <g transform={`translate(${pillX}, 4)`}>
+                      <rect
+                        width={pillW}
+                        height={16}
+                        rx={3}
+                        fill="var(--page)"
+                        stroke="var(--ink-2)"
+                        strokeWidth={1}
+                        strokeDasharray="4 3"
+                      />
+                      <text
+                        x={pillW / 2}
+                        y={12}
+                        textAnchor="middle"
+                        fill="var(--ink)"
+                        style={{
+                          fontFamily: "var(--font-mono), ui-monospace, monospace",
+                          fontSize: 10,
+                          letterSpacing: "0.06em",
+                        }}
+                      >
+                        {title}
+                      </text>
+                    </g>
                   )}
                   {showReason && (
                     <text
-                      x={left + w / 2}
-                      y={28}
+                      x={Math.min(Math.max(cx, 40), plotW - 40)}
+                      y={34}
                       textAnchor="middle"
                       fill="var(--ink-2)"
                       style={{
