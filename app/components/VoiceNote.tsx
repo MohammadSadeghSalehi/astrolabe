@@ -126,7 +126,7 @@ export function VoiceNote() {
   }, [clearTimer, stopStream]);
 
   const commitEvent = useCallback(
-    (d: Draft) => {
+    async (d: Draft) => {
       const ev = draftToEvent(d);
       if (!ev) {
         setError("Time is required as HH:MM before adding.");
@@ -139,14 +139,59 @@ export function VoiceNote() {
         setError("No day loaded yet.");
         return false;
       }
-      set({
-        bundle: {
-          ...b,
-          events: [...b.events, ev],
-        },
-      });
+
+      // Optimistic local update so the timeline diamond appears immediately.
+      const already = b.events.some(
+        (e) => e.t === ev.t && e.type === ev.type && e.drug === ev.drug,
+      );
+      if (!already) {
+        set({
+          bundle: {
+            ...b,
+            events: [...b.events, ev],
+          },
+        });
+      }
+
+      // Online path: persist so realtime + other clients see it. Offline skips.
+      if (!isOfflineDemo()) {
+        try {
+          const res = await fetch("/api/events", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              participant: b.participant,
+              day: b.day ?? null,
+              t: ev.t,
+              type: ev.type,
+              source: ev.source,
+              drug: ev.drug ?? null,
+              dose_mg: ev.dose_mg ?? null,
+              note: d.note.trim() || null,
+            }),
+          });
+          if (!res.ok) {
+            const body = (await res.json().catch(() => ({}))) as {
+              error?: string;
+              offline?: boolean;
+            };
+            // Local diamond still stands; surface a soft warning for the sponsor path.
+            if (!body.offline) {
+              setError(
+                body.error
+                  ? `Saved on screen; Supabase insert failed: ${body.error}`
+                  : "Saved on screen; Supabase insert failed.",
+              );
+            }
+          }
+        } catch (err) {
+          console.error("[VoiceNote] events insert", err);
+          setError("Saved on screen; could not reach Supabase.");
+        }
+      }
+
       setProgress("added");
-      setError(null);
+      if (isOfflineDemo()) setError(null);
       setTimeout(() => {
         setProgress("idle");
         setDraft(emptyDraft());
@@ -330,11 +375,11 @@ export function VoiceNote() {
     if (!d.note.trim() && d.drug.trim()) {
       d.note = `${d.drug}${d.dose_mg ? ` ${d.dose_mg}mg` : ""}`.trim();
     }
-    commitEvent(d);
+    void commitEvent(d);
   };
 
   const onAccept = () => {
-    commitEvent(draft);
+    void commitEvent(draft);
   };
 
   const onDiscard = () => {

@@ -104,7 +104,7 @@ export function SensorToggles({
       </div>
 
       <p
-        className="mt-3 text-[15px] italic leading-snug"
+        className="mt-3 text-[16px] italic leading-snug"
         style={{ color: "var(--ink-2)" }}
       >
         same error budget — with one wrist it can only meet it by answering less.

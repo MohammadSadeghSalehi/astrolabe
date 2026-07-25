@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-import { getBundle } from "@/lib/source";
+import { getBundle, subscribeEvents } from "@/lib/source";
+import type { BundleEvent } from "@/lib/contract";
 import { useStore } from "@/lib/store";
 import { Timeline } from "./Timeline";
 import { TremorRow } from "./TremorRow";
@@ -11,6 +12,11 @@ import { MetricsPanel } from "./MetricsPanel";
 import { SelectivePredictionChart } from "./SelectivePredictionChart";
 import { EvidenceLayers } from "./EvidenceLayers";
 import { VoiceNote } from "./VoiceNote";
+
+function isOfflineDemo(): boolean {
+  const m = process.env.NEXT_PUBLIC_DEMO_MODE;
+  return m !== "online" && m !== "supabase";
+}
 
 export function DayView() {
   const {
@@ -53,6 +59,34 @@ export function DayView() {
   useEffect(() => {
     void load(participant, mask);
   }, [participant, mask, load]);
+
+  // Supabase realtime: voice/typed events inserted elsewhere appear as diamonds.
+  // Offline DEMO_MODE skips the subscription entirely.
+  useEffect(() => {
+    if (isOfflineDemo()) return;
+    if (!bundle?.participant) return;
+    const day = bundle.day ?? 0;
+    const unsub = subscribeEvents(bundle.participant, day, (row) => {
+      const b = useStore.getState().bundle;
+      if (!b || b.participant !== row.participant) return;
+      if (row.day != null && b.day != null && row.day !== b.day) return;
+
+      const ev: BundleEvent = {
+        t: row.t,
+        type: row.type,
+        source: (row.source as BundleEvent["source"]) || "reported",
+      };
+      if (row.drug) ev.drug = row.drug;
+      if (row.dose_mg != null) ev.dose_mg = Number(row.dose_mg);
+
+      const dup = b.events.some(
+        (e) => e.t === ev.t && e.type === ev.type && e.drug === ev.drug,
+      );
+      if (dup) return;
+      set({ bundle: { ...b, events: [...b.events, ev] } });
+    });
+    return unsub;
+  }, [bundle?.participant, bundle?.day, set]);
 
   // Keyboard: step hours, space play (light), R handled in RevealWipe
   useEffect(() => {
@@ -206,9 +240,18 @@ export function DayView() {
       {/* Track E — voice note; mounts under day chrome, does not rewrite Timeline */}
       <VoiceNote />
 
-      <footer className="pb-6 text-[15px]" style={{ color: "var(--ink-2)" }}>
-        Offline demo path · bundles from{" "}
-        <span className="font-mono">/public/bundles</span>
+      <footer className="pb-6 text-[16px]" style={{ color: "var(--ink-2)" }}>
+        {isOfflineDemo() ? (
+          <>
+            Offline demo path · bundles from{" "}
+            <span className="font-mono">/public/bundles</span>
+          </>
+        ) : (
+          <>
+            Online · Supabase bundles + realtime events ·{" "}
+            <span className="font-mono">DEMO_MODE=supabase</span>
+          </>
+        )}
         {" · "}
         COPS data CC-BY 4.0 · not a medical device
       </footer>

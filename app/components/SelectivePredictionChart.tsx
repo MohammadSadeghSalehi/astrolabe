@@ -128,7 +128,7 @@ export function SelectivePredictionChart({
       >
         Selective prediction
       </h2>
-      <p className="mb-3 text-[15px] leading-snug" style={{ color: "var(--ink-2)" }}>
+      <p className="mb-3 text-[16px] leading-snug" style={{ color: "var(--ink-2)" }}>
         Hold-out accuracy vs fraction of hours answered
         {usingFallback && (
           <span className="ml-1 opacity-80">
@@ -260,7 +260,7 @@ export function SelectivePredictionChart({
       </div>
 
       <p
-        className="mt-2 text-[15px] leading-snug"
+        className="mt-2 text-[16px] leading-snug"
         style={{ color: "var(--ink-2)" }}
       >
         the fewer hours it answers, the more often it is right — so the refusals
