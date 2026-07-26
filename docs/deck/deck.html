@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Astrolabe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /*
+    Astrolabe — two-minute pitch deck.
+
+    Seven slides, roughly seventeen seconds each. Built to be TALKED OVER, so
+    every slide carries one claim and the fewest words that can hold it: text a
+    presenter has to compete with is text that beat them. The spoken script and
+    per-slide timings live beside this file in SCRIPT.md.
+
+    Tokens are the product's own, copied exactly — this is the same instrument,
+    not a deck about it.
+  */
+  :root {
+    --page: #080B11;
+    --surface: #10151F;
+    --ink: #ECE7DB;
+    --ink-2: #8D97AB;
+    --axis: #2A3244;
+    --brass: #C8963E;
+    --brass-hi: #EFD39B;
+    --sans: "IBM Plex Sans", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+    --display: Fraunces, Georgia, serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--page); }
+  body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+  .slide {
+    position: relative;
+    width: 1280px; height: 720px;
+    padding: 64px 82px 74px;
+    background: var(--page);
+    overflow: hidden;
+    break-after: page; page-break-after: always;
+    display: flex; flex-direction: column;
+  }
+  .slide:last-child { break-after: auto; page-break-after: auto; }
+
+  .bug { position: absolute; left: 82px; bottom: 32px;
+    font-family: var(--mono); font-size: 13px; letter-spacing: .22em;
+    color: var(--ink-2); opacity: .5; text-transform: uppercase; }
+  .num { position: absolute; right: 46px; bottom: 32px;
+    font-family: var(--mono); font-size: 13px; color: var(--ink-2); opacity: .5; }
+
+  .eyebrow { font-family: var(--mono); font-size: 15px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--brass); margin-bottom: 20px; }
+  h1 { font-family: var(--display); font-weight: 300; font-size: 76px; line-height: 1.04; letter-spacing: -.01em; }
+  h2 { font-family: var(--display); font-weight: 300; font-size: 44px; line-height: 1.14; max-width: 30ch; }
+  .lede { font-size: 21px; line-height: 1.5; color: var(--ink-2); max-width: 60ch; margin-top: 20px; }
+  em { font-style: italic; }
+  .rule { height: 1px; background: var(--axis); margin: 26px 0; }
+  .small { font-size: 17px; line-height: 1.55; color: var(--ink-2); }
+
+  .figrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 34px; }
+  .fig .n { font-family: var(--mono); font-size: 50px; line-height: 1; color: var(--brass-hi); }
+  .fig .n.sm { font-size: 42px; }
+  .fig .h { font-size: 18px; margin-top: 12px; color: var(--ink); line-height: 1.3; }
+  .fig .s { font-size: 15px; margin-top: 6px; color: var(--ink-2); line-height: 1.45; }
+
+  .pipe { display: flex; align-items: stretch; gap: 10px; margin-top: 38px; }
+  .stage { flex: 1; border: 1px solid var(--axis); border-radius: 8px; padding: 18px 16px; background: var(--surface); }
+  .stage.last { border-color: var(--brass); border-style: dashed; background: transparent; }
+  .stage .k { font-family: var(--mono); font-size: 12px; color: var(--brass); letter-spacing: .1em; }
+  .stage .t { font-size: 16px; margin-top: 9px; line-height: 1.35; }
+  .arrow { align-self: center; color: var(--ink-2); font-size: 18px; }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; margin-top: 22px; }
+  .two p { font-size: 17px; line-height: 1.6; color: var(--ink-2); }
+  b { color: var(--ink); font-weight: 500; }
+
+  /* Slides whose argument IS the screenshot: the heading gives up a size step
+     so the picture and its caption both fit above the fold. A caption pushed
+     off the page is the one line that told you what you were looking at. */
+  .slide.shotslide h2 { font-size: 37px; max-width: 48ch; }
+  .shot { margin-top: 24px; }
+  .shot img { width: 100%; display: block; border: 1px solid var(--axis); border-radius: 8px; }
+  .cap { font-family: var(--mono); font-size: 15px; color: var(--ink-2); margin-top: 15px; }
+  .cap b { color: var(--brass-hi); font-weight: 500; }
+
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: 13px 0; border-bottom: 1px solid var(--axis); font-size: 17px; vertical-align: baseline; }
+  td.v { font-family: var(--mono); font-size: 20px; color: var(--brass-hi); white-space: nowrap; padding-right: 30px; width: 1%; }
+  td.v.dim { color: var(--ink-2); }
+  td.a { color: var(--ink-2); font-size: 15px; text-align: right; }
+  .col-h { font-family: var(--mono); font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--brass); padding-bottom: 4px; }
+
+  ul.plain { list-style: none; margin-top: 20px; }
+  ul.plain li { font-size: 17px; line-height: 1.5; color: var(--ink-2);
+    padding: 10px 0 10px 24px; position: relative; border-bottom: 1px solid var(--axis); }
+  ul.plain li:before { content: "—"; position: absolute; left: 0; color: var(--brass); }
+
+  .plate { position: absolute; inset: 0; pointer-events: none; }
+  .plate img { position: absolute; right: -150px; top: -110px; width: 800px; opacity: .3;
+    -webkit-mask-image: radial-gradient(ellipse 62% 68% at 52% 46%, #000 34%, transparent 100%); }
+  .center { justify-content: center; }
+  .links { font-family: var(--mono); font-size: 21px; color: var(--brass-hi); margin-top: 24px; line-height: 1.85; }
+  .links span { color: var(--ink-2); font-size: 18px; }
+  .disc { font-size: 15px; color: var(--ink-2); margin-top: 26px; max-width: 70ch; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<!-- 1 ── title · 0:00–0:08 ────────────────────────────────────────────────── -->
+<section class="slide center">
+  <div class="plate"><img src="../../app/public/brand/hero-plate.png" alt=""></div>
+  <div class="eyebrow">Parkinson's motor diary</div>
+  <h1>A diary that tells&nbsp;you<br><em>when it doesn't know.</em></h1>
+  <p class="lede">Reconstructs the hours a Parkinson's symptom diary never recorded, from
+    two wrist sensors — and refuses, hour by hour, wherever the evidence cannot
+    carry an answer.</p>
+  <div class="links">astrolabe-flame.vercel.app</div>
+  <div class="bug">Astrolabe</div>
+</section>
+
+<!-- 2 ── problem · 0:08–0:30 ──────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">The problem</div>
+  <h2>Treatment depends on knowing <em>when</em>. Nobody records it.</h2>
+  <p class="lede">Symptoms fluctuate hour to hour. The clinic visit that sets medication
+    sees one of those hours. The diary meant to fill the gap is a chore, so it stops
+    getting filled.</p>
+  <div class="figrow">
+    <div class="fig">
+      <div class="n">11.8M</div>
+      <div class="h">people living with Parkinson's</div>
+      <div class="s">up 274% since 1990 · <i>Lancet Healthy Longevity 2024</i></div>
+    </div>
+    <div class="fig">
+      <div class="n sm">60–90%</div>
+      <div class="h">develop motor fluctuations</div>
+      <div class="s">within 5–10 years of levodopa · <i>PMC4634347</i></div>
+    </div>
+    <div class="fig">
+      <div class="n">61.6%</div>
+      <div class="h">of hours carry a diary entry</div>
+      <div class="s">and that is <em>with</em> research staff helping</div>
+    </div>
+  </div>
+  <div class="bug">Astrolabe</div><div class="num">02</div>
+</section>
+
+<!-- 3 ── what we built · 0:30–0:50 ────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">What we built</div>
+  <h2>One signal, five stages, and a refusal.</h2>
+  <div class="pipe">
+    <div class="stage"><div class="k">01</div><div class="t">Both wrists, 100 Hz</div></div>
+    <div class="arrow">→</div>
+    <div class="stage"><div class="k">02</div><div class="t">Band split · 0.1–3 Hz, 4–8 Hz</div></div>
+    <div class="arrow">→</div>
+    <div class="stage"><div class="k">03</div><div class="t">Ordinal emissions, prior divided out</div></div>
+    <div class="arrow">→</div>
+    <div class="stage"><div class="k">04</div><div class="t">HMM forward–backward over the day</div></div>
+    <div class="arrow">→</div>
+    <div class="stage last"><div class="k">05</div><div class="t">Calibrated interval — <b style="color:var(--brass-hi)">or decline</b></div></div>
+  </div>
+  <div class="rule"></div>
+  <div class="two" style="margin-top:2px">
+    <p><b>Coverage is earned, not asserted.</b> Asking for 90% of posterior mass does not
+      give 90% empirical coverage. The interval is widened on held-out people until
+      measured coverage reaches target.</p>
+    <p><b>Abstention holds an error budget, not a rate.</b> Tune to a fixed refusal rate and
+      a degraded sensor <em>cannot</em> show degradation. Fix the error budget and a worse
+      one can only comply by answering less.</p>
+  </div>
+  <div class="bug">Astrolabe</div><div class="num">03</div>
+</section>
+
+<!-- 4 ── the reveal · 0:50–1:08 ───────────────────────────────────────────── -->
+<section class="slide shotslide">
+  <div class="eyebrow">The demo</div>
+  <h2>Drag, and the real diary comes out from behind the reconstruction.</h2>
+  <div class="shot">
+    <img src="shot-reveal.png" alt="">
+    <p class="cap">A participant <b>held out of training</b> — the model is meeting them for the first time.</p>
+  </div>
+  <div class="bug">Astrolabe</div><div class="num">04</div>
+</section>
+
+<!-- 5 ── the refusal · 1:08–1:34 ──────────────────────────────────────────── -->
+<section class="slide shotslide">
+  <div class="eyebrow">The part nobody demos</div>
+  <h2>On this day it answers nothing — and says why.</h2>
+  <div class="shot">
+    <img src="shot-refusal.png" alt="">
+    <p class="cap"><b>114 of 114 steps declined.</b> Peak confidence 0.55; it answers at 0.58. That is the system working.</p>
+  </div>
+  <div class="bug">Astrolabe</div><div class="num">05</div>
+</section>
+
+<!-- 6 ── measured · 1:34–1:56 ─────────────────────────────────────────────── -->
+<section class="slide">
+  <div class="eyebrow">Measured on people the model never trained on</div>
+  <h2>What holds up — and what does not.</h2>
+  <table style="margin-top:24px">
+    <tr><td colspan="3" class="col-h">Holds</td></tr>
+    <tr><td>The 90% interval really contains the truth</td><td class="v">0.903</td><td class="a">against a 0.90 target</td></tr>
+    <tr><td>Refusing improves what remains</td><td class="v">0.713 → 0.825</td><td class="a">all hours vs the most confident quarter</td></tr>
+    <tr><td>Losing a wrist costs answers, not accuracy</td><td class="v">12.4% → 77.3%</td><td class="a">hours declined, same error budget</td></tr>
+    <tr><td colspan="3" class="col-h" style="padding-top:24px">Does not</td></tr>
+    <tr><td>7-state motor scale, ordinal MAE</td><td class="v dim">0.684</td><td class="a">worse than a <b>0.594</b> constant</td></tr>
+    <tr><td>Median <em>within-participant</em> tremor AUC</td><td class="v dim">0.550</td><td class="a">the figure a diary is judged on</td></tr>
+  </table>
+  <p class="small" style="margin-top:20px"><b>So we do not predict how the day felt.</b> That row
+    stays yours — what you reported, or an honest blank. It is on our landing page,
+    not in a footnote.</p>
+  <div class="bug">Astrolabe</div><div class="num">06</div>
+</section>
+
+<!-- 7 ── close · 1:56–2:10 ────────────────────────────────────────────────── -->
+<section class="slide center">
+  <div class="plate"><img src="../../app/public/brand/hero-plate.png" alt=""></div>
+  <div class="eyebrow">How it was built</div>
+  <h2>Three agents, one frozen contract, no model near a prediction.</h2>
+  <ul class="plain" style="max-width:68ch">
+    <li>ML, UI and the film behind a frozen JSON contract, so no agent could reshape another's output</li>
+    <li><b>ElevenLabs</b> transcribes the voice note, so a tremor does not mean typing</li>
+    <li><b>OpenAI</b> structures it — behind a guard rejecting any number not in the transcript</li>
+    <li>Hand-written maths, hand-rolled SVG. Every figure regenerates from a named script</li>
+  </ul>
+  <div class="links">
+    astrolabe-flame.vercel.app<br>
+    <span>github.com/MohammadSadeghSalehi/astrolabe</span>
+  </div>
+  <p class="disc">Not a medical device. No diagnostic, dosing or treatment claim is made.
+    COPS data CC-BY 4.0 — 66 people with Parkinson's, bilateral wrist accelerometry.</p>
+  <div class="bug">Astrolabe</div>
+</section>
+
+</body>
+</html>
