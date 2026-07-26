@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none" aria-hidden="true">
+  <!--
+    where-it-stops — instrument diagram (not a photograph).
+    solid = measured · dashed empty = declined.
+    No type: labels live in the app/film composite.
+    Tokens: page #080B11 · axis #2A3244 · brass #C8963E · ink #ECE7DB · ink-2 #8D97AB
+  -->
+  <rect width="1600" height="900" fill="#080B11"/>
+
+  <!-- quiet plate fragment, upper right -->
+  <g stroke="#2A3244" stroke-width="1.2" opacity="0.4" transform="translate(1320 140)">
+    <path d="M -160 140 A 200 200 0 0 1 140 -30"/>
+    <path d="M -100 100 A 130 130 0 0 1 100 10"/>
+  </g>
+
+  <!-- left rail labels as pure mark language (no glyphs):
+       top = filled brass node cluster (measured)
+       bottom = open dashed ring (declined) -->
+  <g transform="translate(120 0)">
+    <circle cx="40" cy="300" r="7" fill="#C8963E"/>
+    <line x1="54" y1="300" x2="90" y2="300" stroke="#ECE7DB" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="40" cy="560" r="7" fill="none" stroke="#8D97AB" stroke-width="1.8" stroke-dasharray="3 3"/>
+    <line x1="54" y1="560" x2="90" y2="560" stroke="#8D97AB" stroke-width="2" stroke-linecap="round" stroke-dasharray="6 7" opacity="0.85"/>
+  </g>
+
+  <!-- tremor rail — measured, solid -->
+  <line x1="280" y1="300" x2="1380" y2="300" stroke="#ECE7DB" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="480" cy="300" r="10" fill="#C8963E" stroke="#ECE7DB" stroke-width="1.5"/>
+  <circle cx="780" cy="300" r="10" fill="#C8963E" stroke="#ECE7DB" stroke-width="1.5"/>
+  <circle cx="1120" cy="300" r="10" fill="#C8963E" stroke="#ECE7DB" stroke-width="1.5"/>
+  <line x1="480" y1="288" x2="480" y2="272" stroke="#C8963E" stroke-width="1.6" stroke-linecap="round"/>
+  <line x1="780" y1="288" x2="780" y2="272" stroke="#C8963E" stroke-width="1.6" stroke-linecap="round"/>
+  <line x1="1120" y1="288" x2="1120" y2="272" stroke="#C8963E" stroke-width="1.6" stroke-linecap="round"/>
+
+  <!-- brass hairline between rails — the sensor's reach -->
+  <line x1="280" y1="430" x2="1380" y2="430" stroke="#C8963E" stroke-width="1" opacity="0.55"/>
+  <path d="M 830 430 L 830 404" stroke="#C8963E" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M 830 404 L 821 416 M 830 404 L 839 416" stroke="#C8963E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- how-it-felt rail — declined, dashed, empty -->
+  <line x1="280" y1="560" x2="1380" y2="560" stroke="#8D97AB" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="11 13" opacity="0.9"/>
+  <circle cx="480" cy="560" r="10" fill="none" stroke="#8D97AB" stroke-width="1.8" stroke-dasharray="3.5 3.5" opacity="0.75"/>
+  <circle cx="780" cy="560" r="10" fill="none" stroke="#8D97AB" stroke-width="1.8" stroke-dasharray="3.5 3.5" opacity="0.75"/>
+  <circle cx="1120" cy="560" r="10" fill="none" stroke="#8D97AB" stroke-width="1.8" stroke-dasharray="3.5 3.5" opacity="0.75"/>
+
+  <!-- legend swatches, no words -->
+  <line x1="280" y1="720" x2="420" y2="720" stroke="#ECE7DB" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="350" cy="720" r="6" fill="#C8963E"/>
+  <line x1="500" y1="720" x2="640" y2="720" stroke="#8D97AB" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="7 8"/>
+  <circle cx="570" cy="720" r="6" fill="none" stroke="#8D97AB" stroke-width="1.6" stroke-dasharray="2.5 2.5"/>
+</svg>
