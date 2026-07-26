@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
-import { HeroStrip } from "@/components/HeroStrip";
+import { HeroDay } from "@/components/HeroDay";
 import { MethodPipeline } from "@/components/MethodPipeline";
 import { AstrolabeGlyph } from "@/components/AstrolabeGlyph";
 
@@ -104,34 +104,34 @@ export default function Home() {
           {/* The claim, stated as three measured facts rather than adjectives.
               Each carries its comparator, because a number without one is a
               decoration. */}
-          <dl className="mt-10 grid max-w-[64ch] gap-x-10 gap-y-6 sm:grid-cols-3">
+          <dl className="mt-10 grid max-w-[68ch] gap-x-10 gap-y-7 sm:grid-cols-3">
             {[
               {
-                v: "61.6%",
-                k: "of hours have a diary entry",
-                s: "even with study staff supporting it",
-              },
-              {
                 v: "0.903",
-                k: "achieved interval coverage",
-                s: "against a 0.90 target, held out",
+                k: "Its 90% range really is 90%",
+                s: "measured on people it never trained on, not assumed",
               },
               {
-                v: "114/114",
-                k: "steps declined on the demo day",
-                s: "the product working, not failing",
+                v: "6×",
+                k: "More cautious when a sensor drops",
+                s: "declines 12.4% of hours → 77.3%, same error budget",
+              },
+              {
+                v: "+11 pts",
+                k: "More accurate the less it answers",
+                s: "0.713 → 0.825 as it keeps only what it is sure of",
               },
             ].map((m) => (
               <div key={m.v} className="min-w-0">
                 <dt
-                  className="font-mono text-[30px] leading-none tabular-nums md:text-[38px]"
+                  className="font-mono text-[32px] leading-none tabular-nums md:text-[40px]"
                   style={{ color: "var(--brass-hi)" }}
                 >
                   {m.v}
                 </dt>
-                <dd className="mt-2 text-[16px] leading-snug" style={{ color: "var(--ink)" }}>
+                <dd className="mt-2.5 text-[17px] leading-snug" style={{ color: "var(--ink)" }}>
                   {m.k}
-                  <span className="mt-0.5 block text-[15px]" style={{ color: "var(--ink-2)" }}>
+                  <span className="mt-1 block text-[15px]" style={{ color: "var(--ink-2)" }}>
                     {m.s}
                   </span>
                 </dd>
@@ -140,7 +140,7 @@ export default function Home() {
           </dl>
 
           <div className="mt-10 md:mt-12">
-            <HeroStrip />
+            <HeroDay />
           </div>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -166,11 +166,11 @@ export default function Home() {
             className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 border-t pt-5 font-mono text-[14px]"
             style={{ borderColor: "var(--axis)", color: "var(--ink-2)" }}
           >
-            <span>66 participants</span>
+            <span>Bayesian state inference over the day</span>
             <span aria-hidden style={{ color: "var(--axis)" }}>·</span>
-            <span>CC-BY 4.0 research cohort</span>
+            <span>intervals calibrated against held-out truth</span>
             <span aria-hidden style={{ color: "var(--axis)" }}>·</span>
-            <span>every figure held out of training</span>
+            <span>no language model anywhere near a prediction</span>
           </div>
         </div>
       </section>

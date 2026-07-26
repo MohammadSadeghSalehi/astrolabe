@@ -1,0 +1,3026 @@
+{
+ "participant": "COPS-31",
+ "day": 3,
+ "resolution_min": 10,
+ "generated": "trained model, participant held out of training; tremor is a model output, kinesia state does not beat its baseline",
+ "series": [
+  {
+   "t": "06:00",
+   "abstain": false,
+   "confidence": 0.602,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.004,
+     0.0368,
+     0.3361,
+     0.6023,
+     0.0178,
+     0.0019,
+     0.0011
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "06:10",
+   "abstain": false,
+   "confidence": 0.601,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0037,
+     0.0353,
+     0.341,
+     0.6006,
+     0.0166,
+     0.0018,
+     0.0011
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "06:20",
+   "abstain": false,
+   "confidence": 0.599,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0035,
+     0.0338,
+     0.3457,
+     0.5989,
+     0.0154,
+     0.0017,
+     0.001
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "06:30",
+   "abstain": false,
+   "confidence": 0.597,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0033,
+     0.0323,
+     0.3505,
+     0.5968,
+     0.0145,
+     0.0016,
+     0.001
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "06:40",
+   "abstain": false,
+   "confidence": 0.595,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0031,
+     0.0309,
+     0.3543,
+     0.5953,
+     0.0139,
+     0.0015,
+     0.0009
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "06:50",
+   "abstain": false,
+   "confidence": 0.595,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0029,
+     0.0297,
+     0.357,
+     0.5947,
+     0.0134,
+     0.0014,
+     0.0009
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "07:00",
+   "abstain": false,
+   "confidence": 0.595,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0028,
+     0.0285,
+     0.3589,
+     0.5946,
+     0.013,
+     0.0013,
+     0.0008
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "07:10",
+   "abstain": false,
+   "confidence": 0.595,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0026,
+     0.0275,
+     0.3605,
+     0.5948,
+     0.0126,
+     0.0012,
+     0.0008
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "07:20",
+   "abstain": false,
+   "confidence": 0.595,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0025,
+     0.0265,
+     0.3617,
+     0.5952,
+     0.0122,
+     0.0011,
+     0.0007
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "07:30",
+   "abstain": false,
+   "confidence": 0.596,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0023,
+     0.0255,
+     0.3624,
+     0.5962,
+     0.0118,
+     0.0011,
+     0.0007
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "07:40",
+   "abstain": false,
+   "confidence": 0.598,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0022,
+     0.0246,
+     0.3624,
+     0.5978,
+     0.0114,
+     0.001,
+     0.0007
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "07:50",
+   "abstain": false,
+   "confidence": 0.599,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0021,
+     0.0237,
+     0.3623,
+     0.5994,
+     0.0109,
+     0.0009,
+     0.0006
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "08:00",
+   "abstain": false,
+   "confidence": 0.601,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.002,
+     0.0229,
+     0.3617,
+     0.6014,
+     0.0105,
+     0.0009,
+     0.0006
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "08:10",
+   "abstain": false,
+   "confidence": 0.604,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0019,
+     0.0222,
+     0.361,
+     0.6036,
+     0.01,
+     0.0008,
+     0.0006
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "08:20",
+   "abstain": false,
+   "confidence": 0.606,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0018,
+     0.0214,
+     0.3601,
+     0.6059,
+     0.0096,
+     0.0008,
+     0.0005
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "08:30",
+   "abstain": false,
+   "confidence": 0.608,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0017,
+     0.0206,
+     0.359,
+     0.6083,
+     0.0091,
+     0.0008,
+     0.0005
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "08:40",
+   "abstain": false,
+   "confidence": 0.611,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0016,
+     0.0199,
+     0.3578,
+     0.6107,
+     0.0087,
+     0.0007,
+     0.0005
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "08:50",
+   "abstain": false,
+   "confidence": 0.613,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0015,
+     0.0193,
+     0.3562,
+     0.6135,
+     0.0083,
+     0.0007,
+     0.0005
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "09:00",
+   "abstain": false,
+   "confidence": 0.616,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0015,
+     0.0187,
+     0.3546,
+     0.616,
+     0.008,
+     0.0007,
+     0.0005
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "09:10",
+   "abstain": false,
+   "confidence": 0.619,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0014,
+     0.0183,
+     0.3525,
+     0.6189,
+     0.0078,
+     0.0006,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "09:20",
+   "abstain": false,
+   "confidence": 0.623,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0014,
+     0.018,
+     0.3495,
+     0.6225,
+     0.0075,
+     0.0006,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "09:30",
+   "abstain": false,
+   "confidence": 0.626,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0013,
+     0.0178,
+     0.3463,
+     0.6263,
+     0.0074,
+     0.0006,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "09:40",
+   "abstain": false,
+   "confidence": 0.63,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0013,
+     0.0177,
+     0.3427,
+     0.6302,
+     0.0072,
+     0.0006,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "09:50",
+   "abstain": false,
+   "confidence": 0.635,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0012,
+     0.0177,
+     0.3386,
+     0.6345,
+     0.0071,
+     0.0005,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "10:00",
+   "abstain": false,
+   "confidence": 0.639,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0012,
+     0.0177,
+     0.3338,
+     0.6394,
+     0.007,
+     0.0005,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "10:10",
+   "abstain": false,
+   "confidence": 0.645,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0012,
+     0.0177,
+     0.3288,
+     0.6446,
+     0.0069,
+     0.0005,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "10:20",
+   "abstain": false,
+   "confidence": 0.65,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0011,
+     0.0177,
+     0.3235,
+     0.6501,
+     0.0067,
+     0.0005,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "10:30",
+   "abstain": false,
+   "confidence": 0.656,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0011,
+     0.0176,
+     0.3183,
+     0.6556,
+     0.0066,
+     0.0004,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "10:40",
+   "abstain": false,
+   "confidence": 0.661,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0011,
+     0.0175,
+     0.313,
+     0.6612,
+     0.0065,
+     0.0004,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "10:50",
+   "abstain": false,
+   "confidence": 0.666,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0011,
+     0.0174,
+     0.3079,
+     0.6665,
+     0.0064,
+     0.0004,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "11:00",
+   "abstain": false,
+   "confidence": 0.671,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0011,
+     0.0173,
+     0.3033,
+     0.6714,
+     0.0063,
+     0.0004,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "11:10",
+   "abstain": false,
+   "confidence": 0.676,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0011,
+     0.017,
+     0.2995,
+     0.6755,
+     0.0062,
+     0.0004,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "11:20",
+   "abstain": false,
+   "confidence": 0.679,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.001,
+     0.0169,
+     0.2962,
+     0.6792,
+     0.0061,
+     0.0004,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "11:30",
+   "abstain": false,
+   "confidence": 0.683,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.001,
+     0.0167,
+     0.293,
+     0.6827,
+     0.006,
+     0.0003,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "11:40",
+   "abstain": false,
+   "confidence": 0.686,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.001,
+     0.0166,
+     0.2898,
+     0.6862,
+     0.0058,
+     0.0003,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "11:50",
+   "abstain": false,
+   "confidence": 0.69,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.001,
+     0.0165,
+     0.2866,
+     0.6897,
+     0.0056,
+     0.0003,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.25,
+   "tremor_confidence": 0.5
+  },
+  {
+   "t": "12:00",
+   "abstain": false,
+   "confidence": 0.693,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0011,
+     0.0163,
+     0.2836,
+     0.6931,
+     0.0054,
+     0.0003,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "12:10",
+   "abstain": false,
+   "confidence": 0.696,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0011,
+     0.0161,
+     0.2806,
+     0.6964,
+     0.0052,
+     0.0003,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "12:20",
+   "abstain": false,
+   "confidence": 0.699,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0011,
+     0.016,
+     0.2779,
+     0.6995,
+     0.005,
+     0.0003,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     2,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "12:30",
+   "abstain": false,
+   "confidence": 0.702,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0012,
+     0.0158,
+     0.2752,
+     0.7025,
+     0.0048,
+     0.0002,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "12:40",
+   "abstain": false,
+   "confidence": 0.705,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0012,
+     0.0157,
+     0.2726,
+     0.7054,
+     0.0046,
+     0.0002,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "12:50",
+   "abstain": false,
+   "confidence": 0.709,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0013,
+     0.0156,
+     0.2696,
+     0.7087,
+     0.0045,
+     0.0002,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "13:00",
+   "abstain": false,
+   "confidence": 0.712,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0013,
+     0.0155,
+     0.2665,
+     0.7119,
+     0.0043,
+     0.0002,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "13:10",
+   "abstain": false,
+   "confidence": 0.715,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0014,
+     0.0154,
+     0.2633,
+     0.7152,
+     0.0042,
+     0.0002,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "13:20",
+   "abstain": false,
+   "confidence": 0.718,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0014,
+     0.0158,
+     0.2599,
+     0.7185,
+     0.0041,
+     0.0002,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "13:30",
+   "abstain": false,
+   "confidence": 0.722,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0015,
+     0.0162,
+     0.2565,
+     0.7216,
+     0.0039,
+     0.0001,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "13:40",
+   "abstain": false,
+   "confidence": 0.725,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0015,
+     0.0166,
+     0.2531,
+     0.7248,
+     0.0037,
+     0.0001,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "13:50",
+   "abstain": false,
+   "confidence": 0.728,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0016,
+     0.017,
+     0.2494,
+     0.7281,
+     0.0035,
+     0.0001,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "14:00",
+   "abstain": false,
+   "confidence": 0.731,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0016,
+     0.0175,
+     0.2459,
+     0.7313,
+     0.0033,
+     0.0001,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "14:10",
+   "abstain": false,
+   "confidence": 0.734,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0017,
+     0.018,
+     0.2425,
+     0.7343,
+     0.0032,
+     0.0001,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "14:20",
+   "abstain": false,
+   "confidence": 0.737,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0018,
+     0.0184,
+     0.2395,
+     0.737,
+     0.003,
+     0.0001,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "14:30",
+   "abstain": false,
+   "confidence": 0.74,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0019,
+     0.0189,
+     0.2363,
+     0.7398,
+     0.0029,
+     0.0001,
+     0.0002
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "14:40",
+   "abstain": false,
+   "confidence": 0.743,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.002,
+     0.0194,
+     0.2326,
+     0.7429,
+     0.0027,
+     0.0001,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "14:50",
+   "abstain": false,
+   "confidence": 0.746,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0021,
+     0.0199,
+     0.2288,
+     0.7461,
+     0.0027,
+     0.0001,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "15:00",
+   "abstain": false,
+   "confidence": 0.75,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0022,
+     0.0205,
+     0.2245,
+     0.7497,
+     0.0027,
+     0.0001,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "15:10",
+   "abstain": false,
+   "confidence": 0.754,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0024,
+     0.0212,
+     0.2196,
+     0.7537,
+     0.0027,
+     0.0001,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "15:20",
+   "abstain": false,
+   "confidence": 0.757,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0025,
+     0.0219,
+     0.2152,
+     0.7573,
+     0.0027,
+     0.0001,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "15:30",
+   "abstain": false,
+   "confidence": 0.761,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0026,
+     0.0226,
+     0.2103,
+     0.7612,
+     0.0027,
+     0.0001,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "15:40",
+   "abstain": false,
+   "confidence": 0.765,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0028,
+     0.0234,
+     0.2052,
+     0.7654,
+     0.0028,
+     0.0002,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "15:50",
+   "abstain": false,
+   "confidence": 0.77,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0029,
+     0.0243,
+     0.1993,
+     0.7702,
+     0.0029,
+     0.0002,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "16:00",
+   "abstain": false,
+   "confidence": 0.775,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0031,
+     0.0253,
+     0.1935,
+     0.7747,
+     0.003,
+     0.0002,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "16:10",
+   "abstain": false,
+   "confidence": 0.779,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0032,
+     0.0265,
+     0.1877,
+     0.7791,
+     0.0031,
+     0.0002,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "16:20",
+   "abstain": false,
+   "confidence": 0.783,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0033,
+     0.028,
+     0.1819,
+     0.7832,
+     0.0031,
+     0.0002,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "16:30",
+   "abstain": false,
+   "confidence": 0.788,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0034,
+     0.0296,
+     0.1757,
+     0.7877,
+     0.0032,
+     0.0002,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "16:40",
+   "abstain": false,
+   "confidence": 0.793,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0035,
+     0.0312,
+     0.169,
+     0.7926,
+     0.0033,
+     0.0002,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "16:50",
+   "abstain": false,
+   "confidence": 0.798,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0035,
+     0.033,
+     0.1622,
+     0.7975,
+     0.0033,
+     0.0001,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "17:00",
+   "abstain": false,
+   "confidence": 0.802,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0036,
+     0.0349,
+     0.1556,
+     0.8021,
+     0.0033,
+     0.0001,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "17:10",
+   "abstain": false,
+   "confidence": 0.806,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0037,
+     0.0369,
+     0.1493,
+     0.8064,
+     0.0033,
+     0.0001,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "17:20",
+   "abstain": false,
+   "confidence": 0.811,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0039,
+     0.0389,
+     0.1427,
+     0.8108,
+     0.0033,
+     0.0001,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "17:30",
+   "abstain": false,
+   "confidence": 0.816,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.004,
+     0.0409,
+     0.1356,
+     0.8158,
+     0.0033,
+     0.0001,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "17:40",
+   "abstain": false,
+   "confidence": 0.821,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0041,
+     0.043,
+     0.1279,
+     0.8212,
+     0.0033,
+     0.0001,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "17:50",
+   "abstain": false,
+   "confidence": 0.824,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0043,
+     0.0444,
+     0.1237,
+     0.8238,
+     0.0033,
+     0.0001,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "18:00",
+   "abstain": false,
+   "confidence": 0.826,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0044,
+     0.0458,
+     0.1195,
+     0.8264,
+     0.0034,
+     0.0002,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "18:10",
+   "abstain": false,
+   "confidence": 0.829,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0046,
+     0.0472,
+     0.1157,
+     0.8286,
+     0.0034,
+     0.0002,
+     0.0003
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "18:20",
+   "abstain": false,
+   "confidence": 0.831,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0048,
+     0.0486,
+     0.1115,
+     0.8312,
+     0.0035,
+     0.0002,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "18:30",
+   "abstain": false,
+   "confidence": 0.834,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.005,
+     0.05,
+     0.1073,
+     0.8336,
+     0.0035,
+     0.0002,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "18:40",
+   "abstain": false,
+   "confidence": 0.836,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0053,
+     0.0514,
+     0.1029,
+     0.8363,
+     0.0036,
+     0.0002,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "18:50",
+   "abstain": false,
+   "confidence": 0.839,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0055,
+     0.0529,
+     0.0984,
+     0.8389,
+     0.0036,
+     0.0002,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "19:00",
+   "abstain": false,
+   "confidence": 0.839,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0058,
+     0.0539,
+     0.0967,
+     0.8393,
+     0.0037,
+     0.0002,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "19:10",
+   "abstain": false,
+   "confidence": 0.84,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0061,
+     0.0549,
+     0.0949,
+     0.8398,
+     0.0037,
+     0.0002,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "19:20",
+   "abstain": false,
+   "confidence": 0.84,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0064,
+     0.056,
+     0.0931,
+     0.8401,
+     0.0038,
+     0.0002,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "19:30",
+   "abstain": false,
+   "confidence": 0.841,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0067,
+     0.0575,
+     0.0909,
+     0.8406,
+     0.0037,
+     0.0003,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "19:40",
+   "abstain": false,
+   "confidence": 0.841,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.007,
+     0.059,
+     0.0886,
+     0.8411,
+     0.0037,
+     0.0003,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "19:50",
+   "abstain": false,
+   "confidence": 0.842,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0073,
+     0.0604,
+     0.0863,
+     0.8415,
+     0.0038,
+     0.0003,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "20:00",
+   "abstain": false,
+   "confidence": 0.842,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0076,
+     0.0621,
+     0.0836,
+     0.8421,
+     0.0039,
+     0.0003,
+     0.0004
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "20:10",
+   "abstain": false,
+   "confidence": 0.843,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0079,
+     0.0638,
+     0.0806,
+     0.8429,
+     0.004,
+     0.0003,
+     0.0005
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "20:20",
+   "abstain": false,
+   "confidence": 0.843,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0082,
+     0.0654,
+     0.0781,
+     0.8434,
+     0.0041,
+     0.0003,
+     0.0005
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "20:30",
+   "abstain": false,
+   "confidence": 0.842,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0085,
+     0.0667,
+     0.0778,
+     0.8419,
+     0.0042,
+     0.0004,
+     0.0005
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "20:40",
+   "abstain": false,
+   "confidence": 0.841,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0087,
+     0.0681,
+     0.0772,
+     0.8407,
+     0.0044,
+     0.0004,
+     0.0005
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "20:50",
+   "abstain": false,
+   "confidence": 0.839,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0089,
+     0.0694,
+     0.0767,
+     0.8393,
+     0.0046,
+     0.0005,
+     0.0005
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.421,
+   "tremor_confidence": 0.159
+  },
+  {
+   "t": "21:00",
+   "abstain": false,
+   "confidence": 0.838,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0092,
+     0.0708,
+     0.0761,
+     0.838,
+     0.0048,
+     0.0006,
+     0.0006
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "21:10",
+   "abstain": false,
+   "confidence": 0.837,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0094,
+     0.0724,
+     0.0751,
+     0.8368,
+     0.0051,
+     0.0006,
+     0.0006
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "21:20",
+   "abstain": false,
+   "confidence": 0.836,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0096,
+     0.074,
+     0.0738,
+     0.8358,
+     0.0054,
+     0.0007,
+     0.0006
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "21:30",
+   "abstain": false,
+   "confidence": 0.835,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0098,
+     0.0758,
+     0.0725,
+     0.8347,
+     0.0058,
+     0.0008,
+     0.0006
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "21:40",
+   "abstain": false,
+   "confidence": 0.834,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.01,
+     0.0776,
+     0.0708,
+     0.8336,
+     0.0063,
+     0.0009,
+     0.0007
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "21:50",
+   "abstain": false,
+   "confidence": 0.831,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0102,
+     0.0789,
+     0.0714,
+     0.8308,
+     0.0069,
+     0.001,
+     0.0007
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.388,
+   "tremor_confidence": 0.225
+  },
+  {
+   "t": "22:00",
+   "abstain": false,
+   "confidence": 0.828,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0105,
+     0.0802,
+     0.0719,
+     0.8279,
+     0.0077,
+     0.0011,
+     0.0008
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "22:10",
+   "abstain": false,
+   "confidence": 0.825,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0107,
+     0.0816,
+     0.0717,
+     0.8254,
+     0.0085,
+     0.0013,
+     0.0008
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "22:20",
+   "abstain": false,
+   "confidence": 0.823,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.011,
+     0.0831,
+     0.0713,
+     0.823,
+     0.0094,
+     0.0014,
+     0.0008
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "22:30",
+   "abstain": false,
+   "confidence": 0.821,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0112,
+     0.0845,
+     0.0709,
+     0.8205,
+     0.0104,
+     0.0016,
+     0.0009
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "22:40",
+   "abstain": false,
+   "confidence": 0.816,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0115,
+     0.0854,
+     0.0727,
+     0.8163,
+     0.0114,
+     0.0017,
+     0.0009
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "22:50",
+   "abstain": false,
+   "confidence": 0.81,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0118,
+     0.0859,
+     0.0769,
+     0.81,
+     0.0125,
+     0.0019,
+     0.001
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.467,
+   "tremor_confidence": 0.067
+  },
+  {
+   "t": "23:00",
+   "abstain": false,
+   "confidence": 0.801,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0121,
+     0.0858,
+     0.0841,
+     0.8011,
+     0.0136,
+     0.0022,
+     0.001
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "23:10",
+   "abstain": false,
+   "confidence": 0.791,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0124,
+     0.0856,
+     0.0923,
+     0.7911,
+     0.0149,
+     0.0025,
+     0.0011
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "23:20",
+   "abstain": false,
+   "confidence": 0.781,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0127,
+     0.0853,
+     0.1009,
+     0.7807,
+     0.0165,
+     0.0028,
+     0.0011
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "23:30",
+   "abstain": false,
+   "confidence": 0.77,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0131,
+     0.085,
+     0.1097,
+     0.7697,
+     0.0182,
+     0.0031,
+     0.0012
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "23:40",
+   "abstain": false,
+   "confidence": 0.758,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0133,
+     0.0849,
+     0.118,
+     0.7584,
+     0.0206,
+     0.0035,
+     0.0012
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  },
+  {
+   "t": "23:50",
+   "abstain": false,
+   "confidence": 0.746,
+   "evidence": "reconstructed",
+   "reason": null,
+   "state": {
+    "posterior": [
+     0.0136,
+     0.0847,
+     0.1267,
+     0.7459,
+     0.024,
+     0.0038,
+     0.0013
+    ],
+    "map": 3,
+    "ci": [
+     3,
+     3
+    ]
+   },
+   "tremor_p": 0.363,
+   "tremor_confidence": 0.274
+  }
+ ],
+ "events": [
+  {
+   "t": "06:30",
+   "type": "medication",
+   "source": "reported",
+   "drug": "Ropinirole ER",
+   "dose_mg": 5.0,
+   "day": 3
+  }
+ ],
+ "truth": [
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2
+ ],
+ "tremor_truth": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "metrics": {
+  "ordinal_mae": 0.626,
+  "baseline_mae": 0.594,
+  "coverage_90": 0.417,
+  "mean_interval_width": 1.36,
+  "brier": 0.996,
+  "abstain_rate": 0.0,
+  "n_steps": 108,
+  "n_answered": 108,
+  "tremor_n_scored": 108,
+  "tremor_day_accuracy": 1.0,
+  "tremor_day_baseline_accuracy": 1.0,
+  "tremor_day_prevalence": 0.0,
+  "tremor_day_brier": 0.152,
+  "tremor_day_brier_climatology": 0.0,
+  "tremor_day_auc": null,
+  "coverage_target": 0.9,
+  "coverage_calibration": 0.902,
+  "coverage_calibration_n_participants": 11,
+  "interval_mass": 0.7,
+  "sensor_config": "both wrists",
+  "abstain_min_peak": 0.56,
+  "abstain_max_interval_width": 4,
+  "peak_confidence_max": 0.843,
+  "holdout_abstain_rate": 0.123,
+  "holdout_mae_answered": 0.23,
+  "holdout_n_hours": 6838,
+  "kinesia_beats_baseline": false,
+  "tremor_day_beats_baseline": false,
+  "tremor_auc": 0.697,
+  "tremor_auc_within_participant_median": 0.55,
+  "selective_curve": [
+   {
+    "answered_fraction": 1.0,
+    "n": 6291,
+    "auc": 0.6806215201052619,
+    "balanced_accuracy": 0.6101043774222576,
+    "accuracy": 0.7134000953743443,
+    "min_confidence": 0.0
+   },
+   {
+    "answered_fraction": 0.75,
+    "n": 4916,
+    "auc": 0.6873466828318365,
+    "balanced_accuracy": 0.6493649470305662,
+    "accuracy": 0.7581366965012205,
+    "min_confidence": 0.0561797752808989
+   },
+   {
+    "answered_fraction": 0.5,
+    "n": 3312,
+    "auc": 0.7096920354307303,
+    "balanced_accuracy": 0.6868215862114873,
+    "accuracy": 0.7853260869565217,
+    "min_confidence": 0.18000000000000005
+   },
+   {
+    "answered_fraction": 0.35,
+    "n": 2324,
+    "auc": 0.7254584360458906,
+    "balanced_accuracy": 0.7003970449041806,
+    "accuracy": 0.7865748709122203,
+    "min_confidence": 0.24
+   },
+   {
+    "answered_fraction": 0.25,
+    "n": 1624,
+    "auc": 0.7087969018755601,
+    "balanced_accuracy": 0.707507389974354,
+    "accuracy": 0.8251231527093597,
+    "min_confidence": 0.3529411764705882
+   }
+  ]
+ },
+ "state_names": [
+  "Severe akinesia",
+  "Discomforting akinesia",
+  "Slight akinesia",
+  "Good kinesia",
+  "Slight dyskinesia",
+  "Discomforting dyskinesia",
+  "Severe dyskinesia"
+ ],
+ "next_observation": {
+  "action": "20s hand rest task",
+  "expected_uncertainty_drop": 0.34,
+  "burden": 1
+ }
+}

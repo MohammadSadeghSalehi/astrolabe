@@ -1,0 +1,52 @@
+{
+ "participants": [
+  {
+   "participant": "COPS-28",
+   "file": "COPS-28.json",
+   "day": 2,
+   "steps": 126,
+   "hours": 21,
+   "tremor_prevalence": 0.0,
+   "abstain_rate": 0.325,
+   "medications": 8,
+   "has_nowrist": true,
+   "summary": "no tremor reported all day \u00b7 declines 32% of steps \u00b7 126 steps"
+  },
+  {
+   "participant": "COPS-29",
+   "file": "COPS-29.json",
+   "day": 6,
+   "steps": 114,
+   "hours": 19,
+   "tremor_prevalence": 0.737,
+   "abstain_rate": 1.0,
+   "medications": 9,
+   "has_nowrist": true,
+   "summary": "tremor reported in 74% of hours \u00b7 the model declines every step \u00b7 114 steps"
+  },
+  {
+   "participant": "COPS-31",
+   "file": "COPS-31.json",
+   "day": 3,
+   "steps": 108,
+   "hours": 18,
+   "tremor_prevalence": 0.0,
+   "abstain_rate": 0.0,
+   "medications": 1,
+   "has_nowrist": true,
+   "summary": "no tremor reported all day \u00b7 declines 0% of steps \u00b7 108 steps"
+  },
+  {
+   "participant": "COPS-33",
+   "file": "COPS-33.json",
+   "day": 4,
+   "steps": 114,
+   "hours": 19,
+   "tremor_prevalence": 1.0,
+   "abstain_rate": 0.0,
+   "medications": 4,
+   "has_nowrist": true,
+   "summary": "tremor reported in 100% of hours \u00b7 declines 0% of steps \u00b7 114 steps"
+  }
+ ]
+}

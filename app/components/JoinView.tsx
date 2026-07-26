@@ -3,6 +3,8 @@
 import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { UPLOAD_KEY } from "@/lib/source";
+import { ParticipantPicker } from "@/components/ParticipantPicker";
+import { VisitorCount } from "@/components/VisitorCount";
 import type { Bundle } from "@/lib/contract";
 
 /**
@@ -115,7 +117,7 @@ export function JoinView() {
 
   return (
     <main className="mx-auto w-full max-w-[1180px] flex-1 px-5 py-12 md:px-6 md:py-16">
-      <header className="max-w-[64ch]">
+      <header className="max-w-[68ch]">
         <p
           className="inline-block rounded border border-dashed px-2.5 py-1 font-mono text-[14px]"
           style={{ borderColor: "var(--brass)", color: "var(--brass)" }}
@@ -123,19 +125,80 @@ export function JoinView() {
           Hackathon prototype · not a medical device
         </p>
         <h1
-          className="font-display mt-5 text-[32px] font-light leading-[1.1] md:text-[44px]"
+          className="font-display mt-5 text-[34px] font-light leading-[1.08] md:text-[48px]"
           style={{ color: "var(--ink)" }}
         >
-          Try it on a recording
+          Run it on a real day
         </h1>
-        <p className="mt-4 text-[17px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
-          Upload a bundle and the same pipeline runs on it — the interval, the
-          refusals, the reveal. Or leave an email if you want to hear whether
-          this becomes something real.
+        <p className="mt-4 text-[18px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+          Pick someone from the research cohort and watch the whole pipeline
+          work on their recording — the interval, the refusals, the diary
+          revealed behind it. Nothing is simulated.
         </p>
+        <div className="mt-4">
+          <VisitorCount />
+        </div>
       </header>
 
-      <div className="mt-12 grid items-start gap-6 lg:grid-cols-[1.05fr_1fr]">
+      {/* ── the thing that actually works, first ───────────────────────── */}
+      <section className="mt-10">
+        <h2 className="text-[20px] font-medium" style={{ color: "var(--ink)" }}>
+          Choose a participant
+        </h2>
+        <p className="mt-1.5 max-w-[62ch] text-[16px]" style={{ color: "var(--ink-2)" }}>
+          Real recordings from the COPS cohort. Each was held out of training,
+          so what you see is the model meeting them for the first time.
+        </p>
+        <div className="mt-5">
+          <ParticipantPicker />
+        </div>
+      </section>
+
+      <div className="mt-10 grid items-start gap-6 lg:grid-cols-3">
+        {/* ── pair a device ──────────────────────────────────────────────── */}
+        <section
+          className="min-w-0 rounded-lg border p-6 md:p-8"
+          style={{ borderColor: "var(--axis)", background: "var(--surface)" }}
+        >
+          <h2 className="text-[20px] font-medium" style={{ color: "var(--ink)" }}>
+            Pair your own wearable
+          </h2>
+          <p className="mt-2 text-[16px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+            Wear it, and the diary fills itself in.
+          </p>
+
+          <button
+            type="button"
+            disabled
+            aria-describedby="pair-status"
+            className="group mt-6 flex w-full items-center justify-center gap-3 rounded-lg border-2 border-dashed px-6 py-5 text-[18px] font-medium"
+            style={{ borderColor: "var(--brass)", color: "var(--brass)", cursor: "not-allowed" }}
+          >
+            <span
+              className="inline-block h-6 w-6"
+              style={{
+                backgroundColor: "var(--brass)",
+                mask: "url(/brand/dev-watch.svg) center / contain no-repeat",
+                WebkitMask: "url(/brand/dev-watch.svg) center / contain no-repeat",
+              }}
+              aria-hidden
+            />
+            Pair a device
+          </button>
+          <p
+            id="pair-status"
+            className="mt-3 text-center text-[15px] leading-relaxed"
+            style={{ color: "var(--ink-2)" }}
+          >
+            <span className="font-mono" style={{ color: "var(--brass)" }}>Coming soon.</span>{" "}
+            The blocker is real rather than scheduling: this needs raw
+            acceleration from both wrists, and most consumer wearables expose
+            neither. <a href="/devices" className="underline underline-offset-4" style={{ color: "var(--brass)" }}>
+              What each device can supply →
+            </a>
+          </p>
+        </section>
+
         {/* ── upload ─────────────────────────────────────────────────────── */}
         <section
           className="min-w-0 rounded-lg border p-6 md:p-8"
