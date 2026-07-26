@@ -412,21 +412,40 @@ export function VoiceNote() {
       style={{ background: "var(--surface)", borderColor: "var(--axis)" }}
       aria-label="Voice note"
     >
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h2
-          className="text-[15px] font-medium uppercase tracking-[0.08em]"
-          style={{ color: "var(--brass)" }}
+      {/* The panel previously announced itself as "Voice note · offline demo",
+          which names the mechanism and never the point. Nobody could tell what
+          it was for or why it sat under a chart. It now states the job: the
+          model has just declined these hours, and this is how the one person
+          who does know fills them in. */}
+      <div className="mb-4">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+          <h2 className="text-[20px] font-medium" style={{ color: "var(--ink)" }}>
+            Tell it what it couldn&apos;t know
+          </h2>
+          {isOfflineDemo() && (
+            <span className="font-mono text-[14px]" style={{ color: "var(--ink-2)" }}>
+              works offline
+            </span>
+          )}
+        </div>
+        <p
+          className="mt-2 max-w-[68ch] text-[16px] leading-relaxed"
+          style={{ color: "var(--ink-2)" }}
         >
-          Voice note
-        </h2>
-        {isOfflineDemo() && (
+          Where the model abstained, the hour is not lost — it is just unknown to
+          a sensor. Say what happened and it lands on the timeline above as a{" "}
           <span
-            className="font-mono text-[14px]"
-            style={{ color: "var(--ink-2)" }}
+            className="inline-flex items-center gap-1.5 whitespace-nowrap"
+            style={{ color: "var(--ink)" }}
           >
-            offline demo
-          </span>
-        )}
+            <svg width="11" height="11" viewBox="0 0 11 11" aria-hidden>
+              <polygon points="5.5,0 11,5.5 5.5,11 0,5.5" fill="currentColor" />
+            </svg>
+            reported
+          </span>{" "}
+          mark — never as something the model inferred. You always confirm before
+          anything is written.
+        </p>
       </div>
 
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
