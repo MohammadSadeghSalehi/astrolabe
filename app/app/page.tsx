@@ -72,33 +72,36 @@ export default function Home() {
         {/* Ambient only. It sits under the headline at low opacity, is muted,
             and is hidden from assistive tech — it carries no information. */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
-          {/* Mobile gets the still only — same atmosphere, none of the bytes. */}
-          <div
-            className="absolute inset-0 sm:hidden"
-            style={{
-              backgroundImage: "url(/brand/hero-plate.png)",
-              backgroundSize: "cover",
-              backgroundPosition: "70% 30%",
-              opacity: 0.22,
-            }}
-          />
-          <video
-            className="astro-hero-video hidden h-full w-full object-cover sm:block"
-            poster="/brand/hero-plate.png"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-          >
-            <source src="/brand/hero-loop.webm" type="video/webm" />
-            <source src="/brand/hero-loop.mp4" type="video/mp4" />
-          </video>
+          {/* One sized object, one crop, every width — see .astro-plate. Mobile
+              gets the still: same composition, a hundredth of the bytes. */}
+          <div className="astro-plate">
+            {/* The still is the base layer, always. The loop lays over it from
+                sm up — so switching the loop off (reduced motion, a phone, a
+                codec nobody supports) falls back to the picture rather than to
+                nothing. The wrapper carries the opacity, so the two never
+                compound. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/hero-plate.png" alt="" />
+            <video
+              className="astro-hero-video absolute inset-0 hidden sm:block"
+              poster="/brand/hero-plate.png"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+            >
+              <source src="/brand/hero-loop.webm" type="video/webm" />
+              <source src="/brand/hero-loop.mp4" type="video/mp4" />
+            </video>
+          </div>
+          {/* Scrim. Two axes because the text column is on the left at desktop
+              and directly under the plate on a phone. */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(90deg, var(--page) 12%, color-mix(in oklab, var(--page) 72%, transparent) 46%, transparent 78%), linear-gradient(to top, var(--page) 2%, transparent 42%)",
+                "linear-gradient(92deg, var(--page) 8%, color-mix(in oklab, var(--page) 62%, transparent) 44%, transparent 82%), linear-gradient(to top, var(--page) 4%, transparent 46%)",
             }}
           />
         </div>

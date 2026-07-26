@@ -222,25 +222,38 @@ export function DayView() {
       </section>
 
       {/*
-        Metrics need room for held-out vs day split + selective curve.
-        Full-width pair under the timeline; inspector/controls stay below.
+        Two columns, each packing its own stack — not four equal cells.
+
+        A plain grid row stretches every cell to the tallest one, and these
+        panels differ by a factor of three: the metrics table is ~790px and the
+        selective curve ~350px, so an equal-column row left a quarter of the
+        screen as empty card interior, which reads as a panel that failed to
+        load rather than as whitespace. Pairing a tall panel against a stack of
+        short ones costs nothing and closes the hole.
+
+        The pairing is also the right grouping: what the model concluded on the
+        left of each row, and what you can change about it on the right.
       */}
-      <div className="grid min-w-0 gap-4 lg:grid-cols-2 [&>*]:min-w-0">
+      <div className="grid min-w-0 items-start gap-4 lg:grid-cols-2 [&>*]:min-w-0">
         <MetricsPanel bundle={bundle} />
-        <SelectivePredictionChart bundle={bundle} />
+        <div className="flex min-w-0 flex-col gap-4">
+          <SelectivePredictionChart bundle={bundle} />
+          <PosteriorInspector bundle={bundle} hour={hour} />
+        </div>
       </div>
 
-      <div className="grid min-w-0 gap-4 md:grid-cols-2 xl:grid-cols-4 [&>*]:min-w-0">
+      <div className="grid min-w-0 items-start gap-4 lg:grid-cols-2 [&>*]:min-w-0">
         <RecordingPanel bundle={bundle} />
-        <PosteriorInspector bundle={bundle} hour={hour} />
-        <SensorToggles
-          mask={mask}
-          onChange={(m) => set({ mask: m })}
-        />
-        <EvidenceLayers
-          layers={layers}
-          onChange={(l) => set({ layers: l })}
-        />
+        <div className="flex min-w-0 flex-col gap-4">
+          <SensorToggles
+            mask={mask}
+            onChange={(m) => set({ mask: m })}
+          />
+          <EvidenceLayers
+            layers={layers}
+            onChange={(l) => set({ layers: l })}
+          />
+        </div>
       </div>
 
       {/* Track E — voice note; mounts under day chrome, does not rewrite Timeline */}

@@ -154,7 +154,12 @@ export function JoinView() {
         </div>
       </section>
 
-      <div className="mt-10 grid items-start gap-6 lg:grid-cols-3">
+      {/* Two short cards beside each other, and the tall one beneath spanning
+          the full width. Three equal columns put a ~1200px consent panel next
+          to two ~350px ones and left a black void the height of a laptop
+          screen under the left two thirds of the page. Height mismatch is a
+          layout decision, not a content problem. */}
+      <div className="mt-10 grid items-start gap-6 lg:grid-cols-2">
         {/* ── pair a device ──────────────────────────────────────────────── */}
         <section
           className="min-w-0 rounded-lg border p-6 md:p-8"
@@ -286,21 +291,53 @@ export function JoinView() {
             and drop it back in — it is the same recording the demo runs on.
           </p>
         </section>
+      </div>
 
-        {/* ── sign-up ────────────────────────────────────────────────────── */}
-        <section
-          className="min-w-0 rounded-lg border p-6 md:p-8"
-          style={{ borderColor: "var(--axis)", background: "var(--surface)" }}
+      {/* ── sign-up ──────────────────────────────────────────────────────── */}
+      <section
+        className="mt-6 min-w-0 rounded-lg border p-6 md:p-8"
+        style={{ borderColor: "var(--axis)", background: "var(--surface)" }}
+      >
+        <h2 className="text-[20px] font-medium" style={{ color: "var(--ink)" }}>
+          Keep in touch
+        </h2>
+        <p className="mt-2 max-w-[62ch] text-[16px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+          Email only. No name, no date of birth, nothing that would make this a
+          health record.
+        </p>
+
+        <form
+          onSubmit={submit}
+          className="mt-6 grid items-start gap-x-10 gap-y-4 lg:grid-cols-2"
         >
-          <h2 className="text-[20px] font-medium" style={{ color: "var(--ink)" }}>
-            Keep in touch
-          </h2>
-          <p className="mt-2 text-[16px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
-            Email only. No name, no date of birth, nothing that would make this a
-            health record.
-          </p>
+          {/* Terms first in the DOM, and first on the page in both directions —
+              left of the form on a wide screen, above it on a narrow one. A
+              consent checkbox that reads before the thing being consented to
+              is a dark pattern by layout accident. */}
+          <div
+            className="min-w-0 rounded-md border p-4 md:p-5"
+            style={{ borderColor: "var(--axis)", background: "var(--page)" }}
+          >
+            <p className="text-[15px] font-medium" style={{ color: "var(--ink)" }}>
+              Before you agree
+            </p>
+            <ul className="mt-3 flex flex-col gap-2.5">
+              {TERMS.map((t) => (
+                <li
+                  key={t.slice(0, 24)}
+                  className="flex gap-2.5 text-[15px] leading-relaxed"
+                  style={{ color: "var(--ink-2)" }}
+                >
+                  <span aria-hidden style={{ color: "var(--brass)" }}>
+                    —
+                  </span>
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          <form onSubmit={submit} className="mt-6 flex flex-col gap-4">
+          <div className="flex min-w-0 flex-col gap-4">
             <label className="flex flex-col gap-1.5">
               <span className="text-[15px]" style={{ color: "var(--ink-2)" }}>
                 Email
@@ -322,12 +359,16 @@ export function JoinView() {
 
             <label className="flex flex-col gap-1.5">
               <span className="text-[15px]" style={{ color: "var(--ink-2)" }}>
-                Which of these are you? <span className="opacity-70">(optional)</span>
+                Living with Parkinson&apos;s, a carer, a clinician, a
+                researcher? <span className="opacity-70">(optional)</span>
               </span>
+              {/* The four roles were the placeholder and clipped mid-word at
+                  every width narrower than the field. A placeholder that has to
+                  fit is a label. */}
               <input
                 name="role"
                 type="text"
-                placeholder="living with Parkinson's · carer · clinician · researcher"
+                placeholder="Whichever fits"
                 className="min-h-[44px] rounded-md border px-3 text-[16px]"
                 style={{
                   borderColor: "var(--axis)",
@@ -354,32 +395,7 @@ export function JoinView() {
               />
             </label>
 
-            {/* Terms are on the page, not behind a link. A link nobody opens is
-                not informed consent; it is a liability gesture. */}
-            <div
-              className="rounded-md border p-4"
-              style={{ borderColor: "var(--axis)", background: "var(--page)" }}
-            >
-              <p className="text-[15px] font-medium" style={{ color: "var(--ink)" }}>
-                Before you agree
-              </p>
-              <ul className="mt-3 flex flex-col gap-2">
-                {TERMS.map((t) => (
-                  <li
-                    key={t.slice(0, 24)}
-                    className="flex gap-2.5 text-[15px] leading-relaxed"
-                    style={{ color: "var(--ink-2)" }}
-                  >
-                    <span aria-hidden style={{ color: "var(--brass)" }}>
-                      —
-                    </span>
-                    <span>{t}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <label className="flex items-start gap-3">
+            <label className="mt-1 flex items-start gap-3">
               <input
                 type="checkbox"
                 checked={accepted}
@@ -388,8 +404,8 @@ export function JoinView() {
                 style={{ accentColor: "var(--brass)" }}
               />
               <span className="text-[16px] leading-relaxed" style={{ color: "var(--ink)" }}>
-                I have read the four points above and understand this is a
-                prototype that makes no clinical claim.
+                I have read the four points and understand this is a prototype
+                that makes no clinical claim.
               </span>
             </label>
 
@@ -417,9 +433,9 @@ export function JoinView() {
                 {status.msg}
               </p>
             )}
-          </form>
-        </section>
-      </div>
+          </div>
+        </form>
+      </section>
     </main>
   );
 }

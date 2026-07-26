@@ -406,27 +406,67 @@ body {
   animation: astro-chip-in 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* The hero loop is atmosphere. Kept dim so type holds over it, and stopped
-   entirely for anyone who asked for less motion — a background video is exactly
-   the kind of thing that setting exists for. */
-.astro-hero-video {
-  opacity: 0.34;
-  filter: saturate(0.85) contrast(1.05);
-  /* The plate's interest is upper-right, where the headline is not. Anchoring
-     there keeps the crop meaningful as the viewport narrows instead of centring
-     on empty darkness. */
-  object-position: 78% 22%;
+/* ── The hero plate ────────────────────────────────────────────────────────
+   The astrolabe photograph is a composition, not a wall texture.
+
+   It used to be stretched across the whole hero box with object-cover, which
+   meant the browser chose a different crop at every breakpoint — because the
+   hero is roughly 900px tall on a desktop and nearly 2600px tall on a phone,
+   the same rule that framed an elegant arc at 1920 framed a brown smear behind
+   the third statistic at 768 and featureless dark metal at 390. A background
+   that becomes a different picture at every width is not a responsive
+   background; it is three unreviewed ones.
+
+   So the plate is now a sized OBJECT: its own 2:1 aspect, width driven by the
+   viewport, anchored to the top-right corner it bleeds off. The crop is
+   identical at every width — only its scale changes — and the elliptical mask
+   dissolves it into the page instead of ending it on an invisible rectangle.
+   ────────────────────────────────────────────────────────────────────────── */
+.astro-plate {
+  position: absolute;
+  /* Fixed offsets, not percentages: a percentage `top` resolves against the
+     hero's height, which triples on a phone and would drag the plate off the
+     screen entirely. */
+  top: -2.5rem;
+  right: -5rem;
+  width: min(1180px, 148vw);
+  aspect-ratio: 2 / 1;
+  -webkit-mask-image: radial-gradient(
+    ellipse 66% 72% at 56% 46%,
+    #000 38%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 66% 72% at 56% 46%,
+    #000 38%,
+    transparent 100%
+  );
+  /* Atmosphere, not information. The opacity lives on the WRAPPER so the still
+     and the loop stacked inside it never compound to a brighter plate than
+     either alone. */
+  opacity: 0.4;
+  filter: saturate(0.88) contrast(1.06);
+}
+
+.astro-plate > * {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* On a phone the loop is decoration competing with the only column of text
    there is, and it is the largest thing on the page to download. The still
-   plate carries the same atmosphere for a hundredth of the bytes. */
-@media (max-width: 767px) {
-  .astro-hero-video {
-    opacity: 0.22;
-    object-position: 70% 30%;
+   carries the same composition for a hundredth of the bytes, dimmer because
+   the text runs full-width underneath it rather than beside it. */
+@media (max-width: 639px) {
+  .astro-plate {
+    top: -1.5rem;
+    right: -4rem;
+    opacity: 0.32;
   }
 }
+
 @media (prefers-reduced-motion: reduce) {
   .astro-hero-video { display: none; }
 }
