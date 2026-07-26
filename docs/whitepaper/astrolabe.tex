@@ -1,58 +1,86 @@
 % Astrolabe — technical report.
-% Build:  ../../.tooling/tectonic astrolabe.tex
+% Build:  ../../.tooling/tectonic -X compile astrolabe.tex
 %
-% Every number in this document is produced by a script in ml/scripts and is
-% named at the point of use, so a reader can regenerate it rather than trust it.
+% Dark-mode on purpose: this is read on screen beside the product it documents,
+% and a white page next to a near-black interface reads as a different artefact.
+% Every number is produced by a script in ml/scripts, named at the point of use,
+% so a reader can regenerate it rather than trust it.
 \documentclass[11pt,a4paper]{article}
 
-\usepackage[margin=2.4cm]{geometry}
+\usepackage[margin=2.3cm]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
+\usepackage{colortbl}
 \usepackage{xcolor}
 \usepackage[colorlinks=true]{hyperref}
 \usepackage{titlesec}
 \usepackage{caption}
 \usepackage{enumitem}
 \usepackage{microtype}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, patterns}
+\pgfplotsset{compat=1.18}
 
-% ── Astrolabe palette ───────────────────────────────────────────────────────
-\definecolor{brass}{HTML}{9A6F1E}
-\definecolor{ink}{HTML}{12151C}
-\definecolor{ink2}{HTML}{585F6E}
-\definecolor{truth}{HTML}{0F7F72}
-\definecolor{rule}{HTML}{CFC9BA}
+% ── Astrolabe palette, exactly as the product uses it ───────────────────────
+\definecolor{page}{HTML}{080B11}
+\definecolor{surface}{HTML}{10151F}
+\definecolor{ink}{HTML}{ECE7DB}
+\definecolor{ink2}{HTML}{8D97AB}
+\definecolor{axis}{HTML}{2A3244}
+\definecolor{brass}{HTML}{C8963E}
+\definecolor{brasshi}{HTML}{EFD39B}
+\definecolor{truth}{HTML}{16A897}
+\definecolor{violet}{HTML}{C287EC}
+\definecolor{violetdim}{HTML}{783E9D}
 
-\hypersetup{linkcolor=brass, urlcolor=brass, citecolor=brass}
+\pagecolor{page}
 \color{ink}
+\hypersetup{linkcolor=brasshi, urlcolor=brasshi, citecolor=brasshi}
 
 \titleformat{\section}{\large\bfseries\color{brass}}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.6em}{}
-\captionsetup{font=small, labelfont={bf,color=brass}}
+\captionsetup{font={small,color=ink2}, labelfont={bf,color=brass}}
 \setlist{itemsep=2pt, topsep=4pt}
+\arrayrulecolor{axis}
+
+% Plot defaults so every figure is one system rather than four.
+\pgfplotsset{
+  astro/.style={
+    width=\linewidth, height=5.1cm,
+    axis background/.style={fill=surface},
+    axis line style={axis}, grid style={axis, opacity=0.55},
+    tick label style={color=ink2, font=\scriptsize},
+    label style={color=ink2, font=\small},
+    title style={color=ink, font=\small\bfseries},
+    legend style={fill=surface, draw=axis, text=ink, font=\scriptsize},
+    every axis plot/.append style={line width=1.1pt},
+  }
+}
 
 \newcommand{\astro}{\textsc{Astrolabe}}
 
-\title{\vspace{-1.4cm}\textbf{\astro}\\[0.25em]
-\large Calibrated reconstruction of a Parkinson's motor diary\\
-\large from bilateral wrist accelerometry\vspace{-0.2em}}
-\author{\normalsize Mohammad Sadegh Salehi}
-\date{\normalsize 26 July 2026 \quad$\cdot$\quad
+\title{\vspace{-1.3cm}\textcolor{ink}{\textbf{\astro}}\\[0.25em]
+\large\textcolor{ink}{Calibrated reconstruction of a Parkinson's motor diary}\\
+\large\textcolor{ink}{from bilateral wrist accelerometry}\vspace{-0.2em}}
+\author{\normalsize\textcolor{ink2}{Mohammad Sadegh Salehi}}
+\date{\normalsize\textcolor{ink2}{26 July 2026 \quad$\cdot$\quad
 \href{https://astrolabe-flame.vercel.app}{astrolabe-flame.vercel.app} \quad$\cdot$\quad
-\href{https://github.com/MohammadSadeghSalehi/astrolabe}{source}}
+\href{https://github.com/MohammadSadeghSalehi/astrolabe}{source}}}
 
 \begin{document}
 \maketitle
 \thispagestyle{empty}
 
-\noindent\textcolor{rule}{\rule{\textwidth}{0.6pt}}
+\noindent\textcolor{axis}{\rule{\textwidth}{0.6pt}}
 
 \begin{abstract}
-\noindent
+\noindent\color{ink2}
 Parkinson's symptoms fluctuate hour to hour, but the paper diary intended to
 capture that is abandoned within days: in the cohort studied here only
 $61.6\%$ of possible hours carry an entry, \emph{with} research staff
-supporting the process. We ask whether wrist accelerometry can fill the gaps,
-and — more importantly — whether a system can know when it cannot.
+supporting the process. We ask whether wrist accelerometry can fill the gaps
+and, more importantly, whether a system can know when it cannot.
 
 We report two results of opposite sign. Tremor presence is recoverable across
 people (held-out $\mathrm{AUC}=0.697\pm0.075$). The seven-point subjective
@@ -63,7 +91,7 @@ capacity. We therefore do not predict it.
 
 The contribution is the uncertainty machinery around both. Credible intervals
 are widened on held-out participants until empirical coverage matches the
-nominal level ($0.903$ against a $0.90$ target), abstention is tuned to a fixed
+nominal level ($0.903$ against $0.90$), abstention is tuned to a fixed
 \emph{error budget} rather than a fixed rate, and selective prediction is
 measured rather than asserted: accuracy rises from $0.713$ to $0.825$ as the
 answered fraction falls to a quarter. Removing one wrist forces abstention from
@@ -71,8 +99,8 @@ $12.4\%$ to $77.3\%$ to hold the same budget --- degradation the system
 discovers rather than is told.
 \end{abstract}
 
-\noindent\textcolor{rule}{\rule{\textwidth}{0.6pt}}
-\vspace{0.4em}
+\noindent\textcolor{axis}{\rule{\textwidth}{0.6pt}}
+\vspace{0.3em}
 
 \section{Data}
 
@@ -93,19 +121,28 @@ stimulation. This is an advanced, device-treated population; both the movement
 signature and the fluctuation pattern differ from newly diagnosed patients, and
 nothing here should be assumed to transfer unchanged.
 
-\section{Features}
-
-Each wrist signal is band-passed into the two bands the COPS authors themselves
-use: a movement band $0.1\text{--}3\,\mathrm{Hz}$ and a tremor band
-$4\text{--}8\,\mathrm{Hz}$. Band power, spectral ratios, and bilateral
-asymmetries are computed over $10$-minute windows, giving $122$ features.
-
-Butterworth filters of order $8$ are applied as second-order sections; the
-transfer-function form is numerically unstable at this order and returns
-\texttt{NaN} silently, which is a failure that propagates invisibly to the
-model rather than crashing.
-
 \section{Method}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[
+  font=\scriptsize, node distance=3mm,
+  box/.style={draw=axis, fill=surface, text=ink, rounded corners=2pt,
+              minimum height=9mm, inner xsep=3mm, align=center},
+  arrow/.style={-{Stealth[length=4pt]}, draw=brass, line width=0.7pt}
+]
+\node[box] (a) {two wrists\\\textcolor{ink2}{$100\,$Hz}};
+\node[box, right=of a] (b) {band split\\\textcolor{ink2}{$0.1$--$3$, $4$--$8\,$Hz}};
+\node[box, right=of b] (c) {ordinal\\\textcolor{ink2}{emissions}};
+\node[box, right=of c] (d) {HMM\\\textcolor{ink2}{forward--backward}};
+\node[box, right=of d] (e) {credible\\\textcolor{ink2}{interval}};
+\node[box, right=of e, draw=ink2, dashed] (f) {\textcolor{ink}{answer}\\\textcolor{ink2}{or decline}};
+\draw[arrow] (a)--(b); \draw[arrow] (b)--(c); \draw[arrow] (c)--(d);
+\draw[arrow] (d)--(e); \draw[arrow] (e)--(f);
+\end{tikzpicture}
+\caption{The inference chain. The final stage is a decision, not a prediction:
+where the interval is too wide to stand behind, nothing is emitted.}
+\end{figure}
 
 \subsection{Ordinal emissions}
 
@@ -121,57 +158,52 @@ differencing, so no negative mass can appear.
 \subsection{Dividing out the prior}
 
 A discriminative classifier returns $p(z \mid x)$, but the state-space model
-below requires an emission likelihood $p(x \mid z)$. By Bayes' rule, up to a
-factor constant in $z$,
+requires an emission likelihood $p(x \mid z)$. By Bayes' rule, up to a factor
+constant in $z$,
 \begin{equation}
 p(x \mid z) \;\propto\; \frac{p(z \mid x)}{p(z)} .
 \end{equation}
 Omitting the division counts the class prior twice --- once in the classifier
-and once in the chain --- which biases the posterior toward the majority state
-in a way that looks like smoothing working well.
+and once in the chain --- biasing the posterior toward the majority state in a
+way that resembles smoothing working well.
 
 \subsection{Temporal model}
 
 Motor state is persistent, so we place a hidden Markov model over the day and
-recover the posterior by forward--backward in log space. The transition matrix
-is built as a convex combination rather than a matrix root,
+recover $\gamma_t(z) = \Pr(z_t = z \mid x_{1:T})$ by forward--backward in log
+space. The transition matrix is a convex combination rather than a matrix root,
 \begin{equation}
-T \;=\; (1-s)\,I + s\,B ,
+T \;=\; (1-s)\,I + s\,B , \qquad s = 0.02,
 \end{equation}
-with $B$ the empirical hour-to-hour transition matrix and switch rate
-$s=0.02$. A matrix root of $B$ can contain negative entries and is not a valid
-stochastic matrix at fine time steps.
-
-Likelihoods are tempered before smoothing,
-\begin{equation}
-\tilde\ell(x \mid z) \;=\; \frac{1}{\tau}\,\log p(x \mid z), \qquad \tau = 25,
-\end{equation}
-selected on a held-out fold. Without tempering the chain is over-confident and
-the entire day collapses onto a single state.
+with $B$ the empirical hour-to-hour transition matrix. A matrix root of $B$ can
+contain negative entries and is not a valid stochastic matrix at fine steps.
+Likelihoods are tempered before smoothing, $\tilde\ell = \tau^{-1}\log p(x\mid z)$
+with $\tau=25$ selected on a held-out fold; without it the day collapses onto a
+single state.
 
 \subsection{Calibrated credible intervals}
 
-For posterior $\gamma$ at a step we take the shortest contiguous interval
-carrying mass $m$,
+For posterior $\gamma$ we take the shortest contiguous interval carrying mass
+$m$:
 \begin{equation}
-[\,\ell, u\,] \;=\; \arg\min_{u-\ell} \;\Big\{\, \textstyle\sum_{k=\ell}^{u} \gamma_k \;\ge\; m \,\Big\}.
+[\,\ell, u\,] \;=\; \arg\min_{u-\ell} \Big\{\, \textstyle\sum_{k=\ell}^{u} \gamma_k \ge m \,\Big\}.
 \end{equation}
 Crucially $m$ is \emph{not} set to the nominal $0.90$. Requesting $90\%$ of
 posterior mass does not deliver $90\%$ empirical coverage, and asserting
-otherwise is precisely the unfalsifiable claim this system exists to avoid.
+otherwise is exactly the unfalsifiable claim this system exists to avoid.
 Instead $m$ is swept on participants held out of \emph{both} the emission fit
-and the test fold until achieved coverage reaches the target:
+and the test fold until achieved coverage reaches target:
 \begin{equation}
-m^{\star} \;=\; \min\Big\{ m : \tfrac{1}{n}\textstyle\sum_i \mathbf{1}\big[\, z_i \in [\ell_i(m), u_i(m)] \,\big] \;\ge\; 0.90 \Big\}.
+m^{\star} = \min\Big\{ m : \tfrac{1}{n}\textstyle\sum_i \mathbf{1}\big[ z_i \in [\ell_i(m), u_i(m)] \big] \ge 0.90 \Big\},
 \end{equation}
-This yields $m^{\star}=0.72$ and achieved coverage $0.903$.
+giving $m^{\star}=0.72$ and achieved coverage $0.903$.
 
-\paragraph{A bug worth reporting.} Interval mass was initially fitted on the
-raw emission posterior and applied to the smoothed HMM output. The two
-distributions have entirely different sharpness, and coverage landed at
-$0.535$ against a $0.90$ target --- which the interface would have displayed as
-``90\%''. Calibration and inference now share one code path
-(\texttt{infer\_posterior}) so the two cannot diverge.
+\paragraph{A bug worth reporting.} Interval mass was initially fitted on the raw
+emission posterior and applied to the smoothed HMM output. The two
+distributions have entirely different sharpness, and coverage landed at $0.535$
+against a $0.90$ target --- which the interface would have displayed as
+``90\%''. Calibration and inference now share one code path so they cannot
+diverge.
 
 \subsection{Abstention as a fixed error budget}
 
@@ -180,45 +212,42 @@ A step is declined when the posterior is uninformative:
 \text{abstain} \iff \max_k \gamma_k < \pi \;\;\lor\;\; (u - \ell + 1) \ge w .
 \end{equation}
 The threshold $\pi$ is \emph{not} tuned to a target abstention rate. Doing so
-guarantees that every sensor configuration declines equally often, so a
-degraded configuration cannot exhibit degradation --- the threshold simply
-absorbs it. We observed exactly this: with one wrist blanked, abstention
-\emph{fell} from $12\%$ to $46\%$ in the wrong direction, because
-gradient-boosted trees route missing features down a default branch and return
-a \emph{sharper} posterior on strictly less evidence.
+guarantees every sensor configuration declines equally often, so a degraded
+configuration cannot exhibit degradation. We observed exactly this: with one
+wrist blanked, abstention moved the wrong way, because gradient-boosted trees
+route missing features down a default branch and return a \emph{sharper}
+posterior on strictly less evidence.
 
-Instead $\pi$ holds a fixed risk on answered steps. Writing
-$\mathcal{A}(\pi)$ for the answered set and $\hat z_i = \gamma_i^\top(0,\dots,6)$,
+Instead $\pi$ holds a fixed risk on answered steps. With $\mathcal{A}(\pi)$ the
+answered set and $\hat z_i = \gamma_i^\top(0,\dots,6)$,
 \begin{equation}
-\pi^{\star} \;=\; \min\Big\{ \pi : \tfrac{1}{|\mathcal{A}(\pi)|}\textstyle\sum_{i \in \mathcal{A}(\pi)} |\hat z_i - z_i| \;\le\; \beta \Big\},
+\pi^{\star} = \min\Big\{ \pi : \tfrac{1}{|\mathcal{A}(\pi)|}\textstyle\sum_{i \in \mathcal{A}(\pi)} |\hat z_i - z_i| \le \beta \Big\}.
 \end{equation}
-with budget $\beta$ set by the reference configuration. A worse configuration
-can only meet $\beta$ by answering less, so the abstention rate becomes a
-consequence of measured accuracy.
+A worse configuration can only meet $\beta$ by answering less, so the
+abstention rate becomes a consequence of measured accuracy.
 
-\begin{table}[t]
+\begin{figure}[h]
 \centering
-\small
-\begin{tabular}{lcccc}
-\toprule
-\textbf{Configuration} & \textbf{Mass $m^\star$} & \textbf{Coverage} & \textbf{Abstains} & \textbf{MAE answered} \\
-\midrule
-Both wrists        & $0.72$ & $0.903$ & $12.4\%$ & $0.226$ \\
-Left wrist dropped & $0.89$ & $0.904$ & $\mathbf{77.3\%}$ & $0.218$ \\
-\bottomrule
-\end{tabular}
-\caption{Calibration is fitted \emph{per sensor configuration} on $6{,}838$
-hours from $11$ held-out participants. Both hold the same error budget; the
-answer rate is what moves.}
-\end{table}
+\begin{tikzpicture}
+\begin{axis}[astro, ybar, bar width=13pt,
+  symbolic x coords={both wrists, one wrist},
+  xtick=data, ymin=0, ymax=100,
+  ylabel={\% of hours declined},
+  title={Same error budget, different evidence},
+  nodes near coords, nodes near coords style={color=ink, font=\scriptsize},
+  height=4.6cm]
+\addplot[draw=brass, fill=brass, fill opacity=0.75] coordinates {(both wrists,12.4) (one wrist,77.3)};
+\end{axis}
+\end{tikzpicture}
+\caption{Holding MAE on answered steps fixed at $\beta\!\approx\!0.22$, removing
+one wrist forces the system to decline six times as many hours. Measured on
+$6{,}838$ hours from $11$ held-out participants.}
+\end{figure}
 
 \section{Results}
 
-\subsection{Tremor generalises; subjective state does not}
-
 \begin{table}[h]
-\centering
-\small
+\centering\small\color{ink}
 \begin{tabular}{lcc}
 \toprule
 \textbf{Target} & \textbf{Metric} & \textbf{Held-out} \\
@@ -230,17 +259,38 @@ Kinesia, 7-state reconstruction           & ordinal MAE & $0.684$ \\
 \quad per-participant oracle              & ordinal MAE & $0.380$ \\
 \bottomrule
 \end{tabular}
-\caption{Tremor is a $4\text{--}8\,\mathrm{Hz}$ mechanical oscillation the
+\caption{Tremor is a $4$--$8\,\mathrm{Hz}$ mechanical oscillation the
 accelerometer measures directly. How well an hour \emph{felt} is a judgement
 the sensor has no access to.}
 \end{table}
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[astro, xlabel={fraction of hours answered}, ylabel={accuracy},
+  x dir=reverse, xmin=0.2, xmax=1.05, ymin=0.68, ymax=0.85,
+  grid=major, title={Selective prediction}, height=5cm,
+  legend pos=north west]
+\addplot[color=violet, mark=*, mark options={fill=violet, draw=surface}]
+  coordinates {(1.0,0.713) (0.75,0.758) (0.5,0.785) (0.35,0.787) (0.25,0.825)};
+\addlegendentry{accuracy}
+\addplot[color=truth, dashed, mark=square*, mark options={fill=truth, draw=surface}]
+  coordinates {(1.0,0.610) (0.75,0.649) (0.5,0.687) (0.35,0.700) (0.25,0.708)};
+\addlegendentry{balanced accuracy}
+\end{axis}
+\end{tikzpicture}
+\caption{Accuracy rises as the answered fraction falls: the hours the model
+declines really are the ones it would have got wrong. Balanced accuracy is
+shown because at $30.5\%$ prevalence raw accuracy can be bought by predicting
+the majority class.}
+\end{figure}
+
 \subsection{Why the subjective scale fails}
 
-The cumulative classifiers reveal the mechanism. Held-out AUCs for
-$\Pr(z>k)$ are $0.428$, $0.530$, $0.587$, $0.324$, $0.455$ --- three of five
-\emph{below chance}. A classifier at $0.5$ has no signal; one at $0.324$ has
-signal pointing the wrong way. The feature-to-state mapping inverts between
+The cumulative classifiers reveal the mechanism. Held-out AUCs for $\Pr(z>k)$
+are $0.428$, $0.530$, $0.587$, $0.324$, $0.455$ --- three of five \emph{below
+chance}. A classifier at $0.5$ has no signal; one at $0.324$ has signal
+pointing the wrong way. The feature-to-state mapping inverts between
 individuals, and no amount of regularisation repairs a sign that flips.
 
 Personalisation does not rescue it. Given identical hours and the \emph{same}
@@ -248,49 +298,25 @@ calibration labels, a participant's own constant scores ordinal MAE $0.400$
 while the global model plus a per-participant offset scores $0.474$. The offset
 was learning the person's mean; the global mapping it shifted added nothing.
 
-\subsection{The model was over-featured}
-
-\begin{table}[h]
+\begin{figure}[h]
 \centering
-\small
-\begin{tabular}{lc}
-\toprule
-\textbf{Feature set} & \textbf{Held-out tremor AUC} \\
-\midrule
-All $122$ features & $0.672$ \\
-minus medication timing & $0.688$ \\
-minus medication timing and environment & $0.702$ \\
-$50$ band-power features only & $\mathbf{0.722}$ \\
-\bottomrule
-\end{tabular}
-\caption{Medication-timing features alone score $\mathrm{AUC}=0.433$ ---
-\emph{below} chance. Who takes which drug on what schedule is close to a
-participant fingerprint and cannot transfer. The shipped detector reserves a
-fifth of the training participants to fit its calibrator, costing about
-$0.025$ AUC and yielding the $0.697$ quoted throughout.}
-\end{table}
-
-\subsection{Selective prediction}
-
-Abstention earns its place only if the declined hours are the ones that would
-have been wrong.
-
-\begin{table}[h]
-\centering
-\small
-\begin{tabular}{lccc}
-\toprule
-\textbf{Answered fraction} & \textbf{$n$} & \textbf{Accuracy} & \textbf{Balanced acc.} \\
-\midrule
-$1.00$ & $6{,}291$ & $0.713$ & $0.610$ \\
-$0.75$ & $4{,}916$ & $0.758$ & $0.649$ \\
-$0.50$ & $3{,}312$ & $0.785$ & $0.687$ \\
-$0.25$ & $1{,}624$ & $\mathbf{0.825}$ & $\mathbf{0.708}$ \\
-\bottomrule
-\end{tabular}
-\caption{Balanced accuracy is reported because at $30.5\%$ prevalence raw
-accuracy can be bought by predicting the majority class.}
-\end{table}
+\begin{tikzpicture}
+\begin{axis}[astro, xbar, bar width=10pt, xmin=0.6, xmax=0.75,
+  symbolic y coords={all 122, less med timing, less med and env, band only},
+  ytick=data, xlabel={held-out tremor AUC},
+  title={Removing features improved generalisation},
+  nodes near coords, nodes near coords style={color=ink, font=\scriptsize},
+  height=4.4cm]
+\addplot[draw=violet, fill=violetdim, fill opacity=0.85]
+  coordinates {(0.672,all 122) (0.688,less med timing) (0.702,less med and env) (0.722,band only)};
+\end{axis}
+\end{tikzpicture}
+\caption{Medication-timing features alone score $\mathrm{AUC}=0.433$, below
+chance: who takes which drug on what schedule is close to a participant
+fingerprint. The shipped detector reserves a fifth of training participants for
+calibration, costing $\approx 0.025$ AUC and giving the $0.697$ quoted
+throughout.}
+\end{figure}
 
 \subsection{The caveat that must be stated}
 
@@ -305,7 +331,7 @@ contract.
 
 The seven-point motor scale is never inferred. It is displayed as reported by
 the patient, or as an explicit abstention. On the demonstration
-participant-day, the model declines all $114$ steps, its peak posterior never
+participant-day the model declines all $114$ steps, its peak posterior never
 exceeding $0.549$ against a threshold of $0.58$ fixed on other participants.
 That is the system behaving correctly.
 
@@ -313,11 +339,55 @@ No causal claim is made. Trajectory shape around recorded medication times is
 temporal alignment, not treatment response; establishing response requires a
 controlled protocol. This is not a medical device.
 
+\section{Where this goes next}
+
+The negative result is the most informative thing we have, and it points at
+specific work rather than at more capacity.
+
+\paragraph{Per-person recalibration from a handful of labels.}
+The detector is calibrated to a cohort prevalence of $0.30$; a participant at
+$0.74$ receives probabilities systematically below their own base rate, so
+ranking is preserved while the operating point is wrong. Asking a user to label
+five to ten hours once would let an isotonic fit be re-estimated per person.
+This is the cheapest available improvement and it converts the within-person
+weakness from a caveat into a workflow.
+
+\paragraph{Hierarchical priors instead of one global model.}
+The sign flip in $\Pr(z>k)$ between individuals is exactly the structure a
+partially-pooled model addresses: person-level coefficients drawn from a cohort
+prior, so each participant borrows strength without being forced onto a shared
+mapping that does not exist for them. A hierarchical ordinal model is the
+principled version of the per-participant offset that failed here.
+
+\paragraph{Conformal prediction in place of the coverage sweep.}
+Our interval mass is fitted empirically, which yields marginal coverage but
+carries no finite-sample guarantee. Split conformal over participant-level
+folds would give distribution-free validity, and \emph{Mondrian} conformal ---
+conditioning on sensor configuration --- would deliver the per-configuration
+guarantee we currently obtain by refitting.
+
+\paragraph{Learning the abstention rule rather than thresholding it.}
+Selective prediction is currently a threshold on peak posterior. Training a
+selector jointly with the predictor, against a cost that prices a wrong answer
+above a refusal, would let the model learn \emph{which kinds} of hour to
+decline rather than only how confident to be.
+
+\paragraph{Targets the sensor can actually reach.}
+Dyskinesia has a distinct spectral signature and is plausibly recoverable by the
+same machinery. Medication-state transitions --- the onset of an ON period ---
+are a change-point problem rather than a classification one, and matter more
+clinically than an absolute state. Both are better uses of this signal than
+another attempt at the subjective scale.
+
+\paragraph{Prospective validation.} Everything here is retrospective on one
+cohort of advanced, largely DBS-treated patients. The claim that matters ---
+that a diary which refuses is more useful than one that guesses --- is a claim
+about clinical workflow, and only a prospective study with clinicians using it
+can test it.
+
 \section{Reproducibility}
 
-Every figure above is regenerated by a named script.
-
-\begin{center}\small
+\begin{center}\small\color{ink}
 \begin{tabular}{ll}
 \toprule
 \textbf{Script} & \textbf{Establishes} \\
@@ -333,11 +403,11 @@ Every figure above is regenerated by a named script.
 \end{tabular}
 \end{center}
 
-\vspace{0.6em}
-\noindent\textcolor{rule}{\rule{\textwidth}{0.6pt}}\\[0.3em]
+\vspace{0.5em}
+\noindent\textcolor{axis}{\rule{\textwidth}{0.6pt}}\\[0.3em]
 {\small\color{ink2}
-Data: Nesser, T.\ et al., \emph{COPS --- Continuous Observation of
-Parkinsonian Symptoms}, OSF (2025), \texttt{10.17605/OSF.IO/5XVWN}, CC-BY 4.0.
+Data: Nesser, T.\ et al., \emph{COPS --- Continuous Observation of Parkinsonian
+Symptoms}, OSF (2025), \texttt{10.17605/OSF.IO/5XVWN}, CC-BY 4.0.
 Code: MIT. Not a medical device; no diagnostic, dosing or treatment claim is
 made.}
 

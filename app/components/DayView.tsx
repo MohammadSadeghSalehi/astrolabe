@@ -9,6 +9,7 @@ import { TremorRow } from "./TremorRow";
 import { PosteriorInspector } from "./PosteriorInspector";
 import { SensorToggles } from "./SensorToggles";
 import { MetricsPanel } from "./MetricsPanel";
+import { RecordingPanel } from "./RecordingPanel";
 import { SelectivePredictionChart } from "./SelectivePredictionChart";
 import { EvidenceLayers } from "./EvidenceLayers";
 import { VoiceNote } from "./VoiceNote";
@@ -229,7 +230,8 @@ export function DayView() {
         <SelectivePredictionChart bundle={bundle} />
       </div>
 
-      <div className="grid min-w-0 gap-4 md:grid-cols-2 lg:grid-cols-3 [&>*]:min-w-0">
+      <div className="grid min-w-0 gap-4 md:grid-cols-2 xl:grid-cols-4 [&>*]:min-w-0">
+        <RecordingPanel bundle={bundle} />
         <PosteriorInspector bundle={bundle} hour={hour} />
         <SensorToggles
           mask={mask}
