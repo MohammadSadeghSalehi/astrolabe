@@ -6,6 +6,7 @@ import {
   DeviceStrip,
   LandingScroll,
   PlateRule,
+  SponsorStrip,
 } from "@/components/LandingScroll";
 
 export const metadata = {
@@ -586,6 +587,10 @@ export default function Home() {
           </p>
         </section>
       </main>
+
+      <div className="mx-auto w-full max-w-[1280px] px-5 md:px-6">
+        <SponsorStrip />
+      </div>
 
       <footer className="mx-auto w-full max-w-[1280px] px-5 py-8 text-[15px] md:px-6" style={{ color: "var(--ink-2)" }}>
         Not a medical device. No diagnostic, dosing or treatment claim is made

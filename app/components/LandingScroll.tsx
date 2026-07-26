@@ -34,6 +34,10 @@ export function LandingScroll({ children }: { children: ReactNode }) {
       const p = Math.min(1, Math.max(0, y / max));
       root.style.setProperty("--land-scroll", String(p));
       root.style.setProperty("--land-y", `${y}px`);
+      // Whisper-quiet field: a touch stronger in the hero, calmer as you read.
+      // Never high enough to fight body type (max ~0.11, min ~0.04).
+      const fieldOp = 0.11 - p * 0.07;
+      root.style.setProperty("--land-field-op", String(fieldOp));
       // Hero plate parallax (capped so it never feels floaty)
       const plate = root.querySelector<HTMLElement>("[data-parallax-plate]");
       if (plate && !reduced) {
@@ -82,10 +86,18 @@ export function LandingScroll({ children }: { children: ReactNode }) {
       <div className="land-progress" aria-hidden>
         <div className="land-progress__bar" />
       </div>
-      {/* Ambient field that drifts with scroll (SVG plate, not a fake UI) */}
+      {/* Dual ambient field — two drift rates, opacity tied to scroll depth */}
       <div className="land-field" aria-hidden>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/hero-field.svg" alt="" />
+        <div className="land-field__layer land-field__layer--a">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/hero-field.svg" alt="" />
+        </div>
+        <div className="land-field__layer land-field__layer--b">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/hero-field.svg" alt="" />
+        </div>
+        {/* Soft vignette so the field never competes with centred type */}
+        <div className="land-field__vignette" />
       </div>
       {children}
     </div>
@@ -123,5 +135,50 @@ export function DeviceStrip() {
         <img src="/brand/render-ring.png" alt="" width={140} height={170} />
       </div>
     </div>
+  );
+}
+
+const SPONSORS: {
+  name: string;
+  href: string;
+  role: string;
+}[] = [
+  { name: "Vercel", href: "https://vercel.com", role: "Deploy" },
+  { name: "Supabase", href: "https://supabase.com", role: "Data" },
+  { name: "ElevenLabs", href: "https://elevenlabs.io", role: "Voice" },
+  { name: "Anthropic", href: "https://www.anthropic.com", role: "Language" },
+  { name: "OpenAI", href: "https://openai.com", role: "Language" },
+];
+
+/**
+ * Footer-style sponsor credits. Tools used in this build — not partnerships.
+ * Both Anthropic and OpenAI are listed because both appear in the app routes.
+ */
+export function SponsorStrip() {
+  return (
+    <footer className="land-sponsors" data-reveal>
+      <div className="land-sponsors__inner">
+        <p className="land-sponsors__kicker">Built with</p>
+        <p className="land-sponsors__note">
+          Tools used in this hackathon build — not product partnerships or
+          endorsements.
+        </p>
+        <ul className="land-sponsors__row">
+          {SPONSORS.map((s, i) => (
+            <li key={s.name} style={{ animationDelay: `${i * 50}ms` }}>
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noreferrer"
+                className="land-sponsor-badge"
+              >
+                <span className="land-sponsor-badge__name">{s.name}</span>
+                <span className="land-sponsor-badge__role">{s.role}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </footer>
   );
 }
