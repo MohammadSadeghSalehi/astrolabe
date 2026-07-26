@@ -34,23 +34,31 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   ),
   title: "Astrolabe — read the hours you couldn't record",
+  // 0.903, everywhere. This said 0.904 in three places while the landing page,
+  // the README and the report all said 0.903 — a rounding drift nobody would
+  // notice and exactly the kind of thing this project claims not to do.
   description:
-    "Reconstruct Parkinson's motor diary from wrist accelerometry with calibrated uncertainty. Coverage 0.904; declines 77.3% when one wrist is dropped.",
+    "Reconstruct Parkinson's motor diary from wrist accelerometry with calibrated uncertainty. Coverage 0.903; declines 77.3% when one wrist is dropped.",
   icons: {
     icon: "/brand/astrolabe-mark-brass.svg",
   },
+  // PNG, not the SVG this pointed at. No major platform renders an SVG social
+  // card — Slack, X, LinkedIn, Discord and iMessage all drop it — so the link
+  // previewed as a blank rectangle everywhere it was actually shared.
   openGraph: {
-    title: "Astrolabe",
+    type: "website",
+    siteName: "Astrolabe",
+    title: "Astrolabe — read the hours you couldn't record",
     description:
-      "Read the hours you couldn't record. Coverage 0.904 · declines 77.3% on one wrist.",
-    images: [{ url: "/brand/og-image.svg", width: 1200, height: 630 }],
+      "A Parkinson's motor diary that tells you when it doesn't know. Coverage 0.903 · declines 77.3% on one wrist.",
+    images: [{ url: "/brand/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Astrolabe",
+    title: "Astrolabe — read the hours you couldn't record",
     description:
-      "Read the hours you couldn't record. Coverage 0.904 · declines 77.3% on one wrist.",
-    images: ["/brand/og-image.svg"],
+      "A Parkinson's motor diary that tells you when it doesn't know. Coverage 0.903 · declines 77.3% on one wrist.",
+    images: ["/brand/og-image.png"],
   },
 };
 
