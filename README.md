@@ -7,6 +7,7 @@
 **A Parkinson's motor diary that tells you when it doesn't know.**
 
 [**Live demo**](https://astrolabe-flame.vercel.app) ·
+[**Watch (2 min)**](https://astrolabe-flame.vercel.app/astrolabe-demo.mp4) ·
 [**Technical report (PDF)**](https://astrolabe-flame.vercel.app/astrolabe-technical-report.pdf) ·
 [**Findings**](docs/FINDINGS.md)
 

@@ -1,0 +1,12 @@
+{
+  "name": "astrolabe-film-capture",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "capture": "node capture.mjs",
+    "capture:checkpoint": "node capture.mjs hero reveal refusal"
+  },
+  "dependencies": {
+    "playwright": "^1.55.0"
+  }
+}

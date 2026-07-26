@@ -45,6 +45,7 @@ export function DayView() {
         const { bundle: b, origin, fellBack } = await getBundle(p, { nowrist });
         if (seq !== loadSeq.current) return;
         set({
+          participant: b.participant,
           bundle: b,
           origin,
           fellBack,
@@ -64,6 +65,14 @@ export function DayView() {
   useEffect(() => {
     void load(participant, mask);
   }, [participant, mask, load]);
+
+  useEffect(() => {
+    if (!bundle) return;
+    window.__astroReady = true;
+    return () => {
+      delete window.__astroReady;
+    };
+  }, [bundle]);
 
   // Supabase realtime: voice/typed events inserted elsewhere appear as diamonds.
   // Offline DEMO_MODE skips the subscription entirely.

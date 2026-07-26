@@ -23,9 +23,20 @@ export function LandingScroll({ children }: { children: ReactNode }) {
     const root = rootRef.current;
     if (!root) return;
 
+    const capture =
+      typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).get("capture") === "1";
     const reduced =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (capture) {
+      root.dataset.capture = "true";
+      root.querySelectorAll<HTMLVideoElement>("video").forEach((video) => {
+        video.pause();
+        video.currentTime = 0;
+      });
+    }
 
     const onScroll = () => {
       const doc = document.documentElement;

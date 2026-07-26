@@ -678,7 +678,28 @@ export default function Home() {
             The method, the maths and the results that went against us.
           </p>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {/* Two minutes of the product working is a faster answer to "what
+                is this" than either of the two documents beside it, so it goes
+                first. Linked rather than embedded: an 18 MB autoplay on a
+                landing page is a cost paid by everyone who did not want it. */}
+            <a
+              href="/astrolabe-demo.mp4"
+              className="glass glass-lit flex items-center gap-4 rounded-xl px-5 py-4"
+              style={{ color: "var(--ink)" }}
+            >
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden style={{ color: "var(--brass)" }}>
+                <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" stroke="currentColor" strokeWidth="1.7" />
+                <path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor" />
+              </svg>
+              <span className="min-w-0">
+                <span className="block text-[17px]">Watch the demo</span>
+                <span className="block text-[15px]" style={{ color: "var(--ink-2)" }}>
+                  2 min · the whole pipeline, end to end
+                </span>
+              </span>
+            </a>
+
             <a
               href="/astrolabe-technical-report.pdf"
               className="glass glass-lit flex items-center gap-4 rounded-xl px-5 py-4"

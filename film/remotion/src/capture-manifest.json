@@ -1,0 +1,299 @@
+{
+  "capturedAt": "2026-07-26T10:20:10.486Z",
+  "scenes": [
+    {
+      "id": "hero",
+      "route": "/",
+      "cuts": [
+        "submission-60",
+        "showcase-120"
+      ],
+      "hold": 4,
+      "submissionHold": 3,
+      "callouts": [
+        {
+          "at": 0.5,
+          "big": "MOST OF THE DAY GOES UNRECORDED"
+        }
+      ],
+      "file": "scene-01-hero.webm",
+      "duration": 9.565,
+      "trimHead": 3.008,
+      "actionDuration": 4.038
+    },
+    {
+      "id": "problem",
+      "route": "/",
+      "cuts": [
+        "submission-60",
+        "showcase-120"
+      ],
+      "hold": 3,
+      "callouts": [
+        {
+          "at": 0.25,
+          "big": "61.6% OF HOURS",
+          "sub": "AND THAT IS WITH RESEARCH STAFF HELPING"
+        }
+      ],
+      "file": "scene-02-problem.webm",
+      "duration": 10.112,
+      "trimHead": 3.471,
+      "actionDuration": 3.002
+    },
+    {
+      "id": "epidemiology",
+      "route": "/",
+      "cuts": [
+        "showcase-120"
+      ],
+      "hold": 8,
+      "callouts": [
+        {
+          "at": 1,
+          "big": "11.8M · +274% SINCE 1990"
+        }
+      ],
+      "file": "scene-epidemiology.webm",
+      "duration": 16.629,
+      "trimHead": 3.54,
+      "actionDuration": 8.002
+    },
+    {
+      "id": "pipeline",
+      "route": "/",
+      "cuts": [
+        "showcase-120"
+      ],
+      "hold": 7,
+      "callouts": [
+        {
+          "at": 1,
+          "big": "FIVE STAGES, AND A REFUSAL"
+        }
+      ],
+      "pushIn": {
+        "from": 1,
+        "to": 1.14,
+        "origin": "62% 40%"
+      },
+      "file": "scene-pipeline.webm",
+      "duration": 15.72,
+      "trimHead": 3.533,
+      "actionDuration": 7.003
+    },
+    {
+      "id": "pick",
+      "route": "/join",
+      "cuts": [
+        "showcase-120"
+      ],
+      "hold": 5,
+      "callouts": [
+        {
+          "at": 0.5,
+          "big": "A PARTICIPANT THE MODEL NEVER SAW"
+        }
+      ],
+      "file": "scene-pick.webm",
+      "duration": 8.605,
+      "trimHead": 3.064,
+      "actionDuration": 3.029
+    },
+    {
+      "id": "reveal",
+      "route": "/day",
+      "cuts": [
+        "submission-60",
+        "showcase-120"
+      ],
+      "hold": 10,
+      "participant": "COPS-28",
+      "callouts": [
+        {
+          "at": 0.8,
+          "big": "DRAG TO REVEAL THE TRUTH"
+        }
+      ],
+      "file": "scene-03-reveal.webm",
+      "duration": 20.847,
+      "trimHead": 3.338,
+      "actionDuration": 15.17
+    },
+    {
+      "id": "posterior",
+      "route": "/day",
+      "cuts": [
+        "showcase-120"
+      ],
+      "hold": 6,
+      "participant": "COPS-28",
+      "callouts": [
+        {
+          "at": 0.5,
+          "big": "EVERY HOUR CARRIES ITS OWN DISTRIBUTION"
+        }
+      ],
+      "file": "scene-posterior.webm",
+      "duration": 14.362,
+      "trimHead": 3.342,
+      "actionDuration": 8.659
+    },
+    {
+      "id": "refusal",
+      "route": "/day",
+      "cuts": [
+        "submission-60",
+        "showcase-120"
+      ],
+      "hold": 9,
+      "participant": "COPS-29",
+      "callouts": [
+        {
+          "at": 3.2,
+          "big": "114 OF 114 DECLINED"
+        }
+      ],
+      "file": "scene-04-refusal.webm",
+      "duration": 20.619,
+      "trimHead": 3.347,
+      "actionDuration": 9.906
+    },
+    {
+      "id": "sensors",
+      "route": "/day",
+      "cuts": [
+        "submission-60",
+        "showcase-120"
+      ],
+      "hold": 7,
+      "submissionHold": 6,
+      "callouts": [
+        {
+          "at": 0.8,
+          "big": "LOSE A WRIST, IT GETS QUIETER — NOT WRONGER"
+        }
+      ],
+      "pushIn": {
+        "from": 1,
+        "to": 1.14,
+        "origin": "72% 60%"
+      },
+      "file": "scene-sensors.webm",
+      "duration": 14.847,
+      "trimHead": 3.159,
+      "actionDuration": 7.941
+    },
+    {
+      "id": "layers",
+      "route": "/day",
+      "cuts": [
+        "showcase-120"
+      ],
+      "hold": 5,
+      "participant": "COPS-28",
+      "callouts": [
+        {
+          "at": 0.5,
+          "big": "TURN THE MODEL OFF. SEE WHAT WAS MEASURED."
+        }
+      ],
+      "file": "scene-layers.webm",
+      "duration": 12.974,
+      "trimHead": 3.183,
+      "actionDuration": 5.974
+    },
+    {
+      "id": "voice",
+      "route": "/day",
+      "cuts": [
+        "submission-60",
+        "showcase-120"
+      ],
+      "hold": 16,
+      "submissionHold": 12,
+      "participant": "COPS-29",
+      "live": true,
+      "callouts": [
+        {
+          "at": 8.8,
+          "big": "ELEVENLABS · SCRIBE V2"
+        },
+        {
+          "at": 11.2,
+          "big": "NOTHING IS WRITTEN UNTIL YOU CONFIRM"
+        },
+        {
+          "at": 14.2,
+          "big": "YOU FILLED IT. THE MODEL STILL DECLINES IT."
+        }
+      ],
+      "file": "scene-06-voice.webm",
+      "duration": 23.53,
+      "trimHead": 3.149,
+      "actionDuration": 17.025
+    },
+    {
+      "id": "selective",
+      "route": "/day",
+      "cuts": [
+        "showcase-120"
+      ],
+      "hold": 6,
+      "participant": "COPS-28",
+      "callouts": [
+        {
+          "at": 0.5,
+          "big": "0.713 → 0.825 AS IT ANSWERS LESS"
+        }
+      ],
+      "pushIn": {
+        "from": 1,
+        "to": 1.14,
+        "origin": "72% 55%"
+      },
+      "file": "scene-selective.webm",
+      "duration": 11.225,
+      "trimHead": 2.907,
+      "actionDuration": 6.003
+    },
+    {
+      "id": "devices",
+      "route": "/devices",
+      "cuts": [
+        "showcase-120"
+      ],
+      "hold": 6,
+      "callouts": [
+        {
+          "at": 0.5,
+          "big": "ONLY ONE EXPOSES RAW ACCELERATION"
+        }
+      ],
+      "file": "scene-devices.webm",
+      "duration": 14.093,
+      "trimHead": 3.053,
+      "actionDuration": 6.015
+    },
+    {
+      "id": "clinician",
+      "route": "/clinician",
+      "cuts": [
+        "submission-60",
+        "showcase-120"
+      ],
+      "hold": 5,
+      "submissionHold": 4,
+      "callouts": [
+        {
+          "at": 0.4,
+          "big": "IT PRINTS FOR THE APPOINTMENT"
+        }
+      ],
+      "file": "scene-07-clinician.webm",
+      "duration": 11.558,
+      "trimHead": 2.711,
+      "actionDuration": 5.012
+    }
+  ]
+}

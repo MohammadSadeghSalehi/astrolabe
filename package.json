@@ -1,0 +1,11 @@
+{
+  "name": "astrolabe",
+  "private": true,
+  "scripts": {
+    "film:capture": "npm.cmd --prefix film/capture run capture",
+    "film:sync": "node film/capture/sync.mjs",
+    "film:render": "npm.cmd --prefix film/remotion run render:all",
+    "film:normalize": "node film/normalize.mjs",
+    "film": "npm.cmd run film:capture && npm.cmd run film:sync && npm.cmd run film:render && npm.cmd run film:normalize"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "astrolabe-film",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "render:60": "remotion render src/index.ts submission-60 ../out/submission-60.mp4 --codec=h264 --crf=18",
+    "render:120": "remotion render src/index.ts showcase-120 ../out/showcase-120.mp4 --codec=h264 --crf=18",
+    "render:all": "npm.cmd run render:60 && npm.cmd run render:120"
+  },
+  "dependencies": {
+    "@remotion/cli": "latest",
+    "@remotion/media-utils": "latest",
+    "@remotion/transitions": "latest",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.4",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5.9.3"
+  }
+}

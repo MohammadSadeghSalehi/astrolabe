@@ -1,0 +1,27 @@
+{
+  "provider": "ElevenLabs",
+  "model": "eleven_turbo_v2_5",
+  "voice": "ElevenLabs narrator",
+  "voiceId": "Xb7hH8MSUJpSbSDYk0k2",
+  "generatedAt": "2026-07-26T10:20:44.308Z",
+  "segments": {
+    "intro": "Eleven point eight million people live with Parkinson's. Treatment depends on an hour-by-hour paper diary. Most hours stay blank.",
+    "hero": "Astrolabe reconstructs the missing hours from two wrist sensors.",
+    "problem": "Even with research staff, just sixty-one point six percent were completed.",
+    "reveal": "Drag, and the patient's diary appears behind the reconstruction. This participant was held out of training; coverage is measured on held-out people.",
+    "refusal": "Here is what most demos hide. On this day, the evidence was too weak. So Astrolabe declined all one hundred and fourteen windows.",
+    "sensors": "Remove one wrist and it does not bluff. It refuses more, holding the same error budget.",
+    "voice-before": "So tell it what the sensor missed.",
+    "voice-after": "Transcribed, structured, and confirmed by you. The diary changes. The model's refusal does not.",
+    "clinician": "It prints for the appointment, and never fills a row it cannot defend.",
+    "epidemiology": "Parkinson's is the world's fastest-growing neurological condition, and motor fluctuations turn care into a timing problem.",
+    "pipeline": "Five stages align, extract, model, calibrate, and finally refuse when the evidence is weak.",
+    "pick": "Choose a participant the model never saw.",
+    "posterior": "Every hour carries a full probability distribution, not a single confident number.",
+    "layers": "Turn off inference and see exactly what was observed and reported.",
+    "selective": "As the detector answers less, accuracy rises from seventy-one point three to eighty-two point five percent.",
+    "devices": "Only research-grade bilateral wrists expose the raw acceleration this method requires.",
+    "report": "Every figure in the report regenerates from a named script.",
+    "end": "Astrolabe. A diary that tells you when it doesn't know."
+  }
+}

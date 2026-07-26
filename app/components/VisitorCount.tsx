@@ -12,8 +12,12 @@ import { useEffect, useState } from "react";
  */
 export function VisitorCount() {
   const [n, setN] = useState<number | null>(null);
+  const capture =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("capture") === "1";
 
   useEffect(() => {
+    if (capture) return;
     let live = true;
     fetch("/api/visit", { method: "POST" })
       .then((r) => r.json())
@@ -22,9 +26,9 @@ export function VisitorCount() {
     return () => {
       live = false;
     };
-  }, []);
+  }, [capture]);
 
-  if (n == null) return null;
+  if (capture || n == null) return null;
 
   return (
     <p className="font-mono text-[15px]" style={{ color: "var(--ink-2)" }}>
