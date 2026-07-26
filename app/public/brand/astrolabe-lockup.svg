@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 40" fill="none" role="img" aria-label="Astrolabe">
+  <!-- mark + wordmark, horizontal, baseline-aligned -->
+  <g transform="translate(2 4)" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 21 A10 10 0 1 1 25 19"/>
+    <path d="M11 18.5 A5.5 5.5 0 1 1 21 17"/>
+    <line x1="6" y1="24" x2="26" y2="8" stroke-width="2.25"/>
+    <circle cx="16" cy="16" r="1.35" fill="currentColor" stroke="none"/>
+  </g>
+  <text
+    x="44"
+    y="27"
+    fill="currentColor"
+    font-family="IBM Plex Sans, system-ui, sans-serif"
+    font-size="18"
+    font-weight="500"
+    letter-spacing="0.14em"
+  >ASTROLABE</text>
+</svg>

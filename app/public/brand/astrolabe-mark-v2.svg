@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+  <!--
+    Astrolabe mark v2 — reads at 20px.
+    Two open arcs (not a closed target) + high-contrast sight-line + pivot.
+  -->
+  <g stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- outer arc: open SW–SE, breaks so it is not a circle -->
+    <path d="M7 21 A10 10 0 1 1 25 19"/>
+    <!-- inner arc: shorter open arc, offset -->
+    <path d="M11 18.5 A5.5 5.5 0 1 1 21 17"/>
+    <!-- sight / alidade — heavier visual weight -->
+    <line x1="6" y1="24" x2="26" y2="8" stroke-width="2.25"/>
+    <!-- pivot -->
+    <circle cx="16" cy="16" r="1.35" fill="currentColor" stroke="none"/>
+  </g>
+</svg>
