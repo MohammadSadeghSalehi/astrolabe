@@ -20,9 +20,10 @@ import type { Bundle } from "@/lib/contract";
 export const DEMO_PARTICIPANT = "COPS-28";
 
 const H = 300;
-// Left pad must fit "dyskinesia" / "akinesia" in mono 11px without clipping
-// against the overflow:hidden frame (textAnchor=end sits just left of the plot).
-const PAD = { t: 26, r: 20, b: 42, l: 88 };
+// Left pad must fit "dyskinesia" at the 14px type floor without clipping against
+// the overflow:hidden frame (textAnchor=end sits just left of the plot).
+// 10 chars x ~0.6em advance in Plex Mono = 84px, plus the 10px tick offset.
+const PAD = { t: 26, r: 20, b: 42, l: 102 };
 
 export function HeroDay() {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -275,7 +276,7 @@ export function HeroDay() {
                       x={-10}
                       y={model.y(v) + 4}
                       textAnchor="end"
-                      fontSize={12}
+                      fontSize={14}
                       fill="var(--ink-2)"
                       fontFamily="var(--font-mono)"
                       style={{ dominantBaseline: "middle" }}

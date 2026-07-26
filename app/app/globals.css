@@ -567,9 +567,20 @@ body {
   pointer-events: none;
   background: transparent;
 }
+/* scaleX, not width.
+ *
+ * The scroll handler writes --land-scroll on every scroll event, so animating
+ * `width` put a layout pass and a repaint on every frame of every scroll of the
+ * longest page in the product — the one place a dropped frame is guaranteed to
+ * be seen. transform is compositor-only, and because the gradient is painted
+ * across the element box either way, the two are visually identical: the ramp
+ * compresses toward the left edge at low progress exactly as before. */
 .land-progress__bar {
   height: 100%;
-  width: calc(var(--land-scroll) * 100%);
+  width: 100%;
+  transform: scaleX(var(--land-scroll, 0));
+  transform-origin: left center;
+  will-change: transform;
   background: linear-gradient(
     90deg,
     var(--brass) 0%,
@@ -577,7 +588,7 @@ body {
     var(--verdigris) 100%
   );
   box-shadow: 0 0 12px color-mix(in oklab, var(--brass) 45%, transparent);
-  transition: width 60ms linear;
+  transition: transform 60ms linear;
 }
 
 /* Ambient instrument field — stays present past the hero so long sections
