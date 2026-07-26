@@ -1,14 +1,8 @@
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { HeroStrip } from "@/components/HeroStrip";
+import { MethodPipeline } from "@/components/MethodPipeline";
 import { AstrolabeGlyph } from "@/components/AstrolabeGlyph";
-import {
-  IconDegraded,
-  IconFrequency,
-  IconInterval,
-  IconRefusal,
-  IconSensor,
-} from "@/components/icons/ScienceIcons";
 
 export const metadata = {
   title: "Astrolabe — read the hours you couldn't record",
@@ -25,46 +19,43 @@ export const metadata = {
  * visual weight as the rest rather than being buried in a footnote.
  */
 
-const SCIENCE = [
+const RESULTS: {
+  claim: string;
+  value: string;
+  against: string;
+  holds: boolean;
+  note?: string;
+}[] = [
   {
-    n: "01",
-    title: "What the sensors see",
-    Icon: IconSensor,
-    body:
-      "Two wrist accelerometers at 100 Hz, split into a movement band (0.1–3 Hz) and a tremor band (4–8 Hz). Tremor is a mechanical oscillation an accelerometer measures directly — not something inferred from steps or heart rate.",
-    stat: null as null | { value: string; unit: string; label: string },
+    claim: "The 90% interval really contains the truth",
+    value: "0.903",
+    against: "a 0.90 target, on 11 held-out participants",
+    holds: true,
   },
   {
-    n: "02",
-    title: "What it predicts",
-    Icon: IconFrequency,
-    body:
-      "For every hour, the probability that tremor was present. Measured on 55 participants it never trained on.",
-    stat: { value: "0.697", unit: "± 0.075 AUC", label: "held-out, across people" },
+    claim: "Tremor is detectable across people",
+    value: "0.697",
+    against: "AUC, ± 0.075 over 55 held-out participants",
+    holds: true,
   },
   {
-    n: "03",
-    title: "How it knows when it might be wrong",
-    Icon: IconInterval,
-    body:
-      "The 90% interval is not asserted, it is earned. Its width is fitted on participants held out of both training and calibration, widened until the truth genuinely falls inside it nine times in ten.",
-    stat: { value: "0.903", unit: "achieved coverage", label: "against a 0.90 target" },
+    claim: "Refusing improves what remains",
+    value: "0.713 → 0.825",
+    against: "accuracy, answering all hours vs the most confident quarter",
+    holds: true,
   },
   {
-    n: "04",
-    title: "Why it refuses",
-    Icon: IconRefusal,
-    body:
-      "Answering only the most confident quarter of hours raises accuracy from 0.713 to 0.825. The hours it declines really are the hours it would have got wrong — so a refusal is information, not a gap.",
-    stat: { value: "0.713 → 0.825", unit: "accuracy", label: "as it answers fewer hours" },
+    claim: "Losing a wrist costs answers, not accuracy",
+    value: "12.4% → 77.3%",
+    against: "hours declined, holding the same error budget",
+    holds: true,
   },
   {
-    n: "05",
-    title: "What happens when evidence degrades",
-    Icon: IconDegraded,
-    body:
-      "Both sensor configurations are held to the same error budget. Take one wrist away and the only way to stay inside that budget is to answer less — so it does, without being told to.",
-    stat: { value: "12.4% → 77.3%", unit: "hours declined", label: "when a wrist is removed" },
+    claim: "Within one person, tremor is much weaker",
+    value: "0.550",
+    against: "median per-participant AUC — the figure a diary is judged on",
+    holds: false,
+    note: "The pooled 0.697 largely separates tremor-dominant people from everyone else.",
   },
 ];
 
@@ -195,67 +186,100 @@ export default function Home() {
           </p>
         </section>
 
-        {/* ── how it works ───────────────────────────────────────────────── */}
+        {/* ── how it works ───────────────────────────────────────────────
+            One figure, not six cards. The method is a sequence a signal moves
+            through, and a sequence drawn as a grid of equal cards loses the
+            one thing worth showing: that the last stage is a refusal. The
+            measured results sit beneath in a table, because every one of them
+            is a value against a comparator and that is what a table is for. */}
         <section className="mt-16 md:mt-24">
           <h2
             className="font-display text-[26px] font-light md:text-[32px]"
             style={{ color: "var(--ink)" }}
           >
-            How it works
+            One signal, five stages, and a refusal
           </h2>
           <p
             className="mt-3 max-w-[62ch] text-[17px] leading-relaxed"
             style={{ color: "var(--ink-2)" }}
           >
-            Every number below is measured on people the model never trained
-            on. None of them is a simulation or a target.
+            Bilateral acceleration goes in. What comes out is an hourly
+            probability wrapped in an interval that has been widened until it
+            tells the truth — and, wherever that interval is too wide to stand
+            behind, nothing at all.
           </p>
 
-          <ol className="mt-10 grid gap-x-10 gap-y-10 md:grid-cols-2">
-            {SCIENCE.map((s) => (
-              <li key={s.n} className="flex min-w-0 gap-4 sm:gap-5">
-                <div className="flex shrink-0 flex-col items-center gap-2">
-                  <span
-                    className="flex h-11 w-11 items-center justify-center rounded-md border"
-                    style={{ borderColor: "var(--axis)", color: "var(--brass)" }}
-                    aria-hidden
-                  >
-                    <s.Icon />
-                  </span>
-                  <span
-                    className="font-mono text-[14px] leading-none"
-                    style={{ color: "var(--brass)" }}
-                  >
-                    {s.n}
-                  </span>
-                </div>
-                <div className="min-w-0">
-                  <h3 className="text-[19px] font-medium" style={{ color: "var(--ink)" }}>
-                    {s.title}
-                  </h3>
-                  <p
-                    className="mt-2 text-[16px] leading-relaxed"
-                    style={{ color: "var(--ink-2)" }}
-                  >
-                    {s.body}
-                  </p>
-                  {s.stat && (
-                    <p className="mt-3">
-                      <span
-                        className="font-mono text-[22px] tabular-nums"
-                        style={{ color: "var(--brass-hi)" }}
-                      >
-                        {s.stat.value}
-                      </span>{" "}
-                      <span className="text-[15px]" style={{ color: "var(--ink-2)" }}>
-                        {s.stat.unit} · {s.stat.label}
-                      </span>
-                    </p>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ol>
+          <div className="mt-10">
+            <MethodPipeline />
+          </div>
+        </section>
+
+        {/* ── measured results ───────────────────────────────────────────── */}
+        <section className="mt-16 md:mt-24">
+          <h2
+            className="font-display text-[26px] font-light md:text-[32px]"
+            style={{ color: "var(--ink)" }}
+          >
+            What that buys, measured
+          </h2>
+          <p
+            className="mt-3 max-w-[62ch] text-[17px] leading-relaxed"
+            style={{ color: "var(--ink-2)" }}
+          >
+            Every row is measured on participants the model never trained on,
+            and every row names what it is being compared against. A number
+            without its comparator is not a claim.
+          </p>
+
+          <div className="mt-8 min-w-0 overflow-x-auto">
+            <table className="w-full border-collapse text-left" style={{ minWidth: 640 }}>
+              <thead>
+                <tr style={{ color: "var(--ink-2)" }}>
+                  <th className="border-b py-3 pr-6 text-[15px] font-medium" style={{ borderColor: "var(--axis)" }}>
+                    Claim
+                  </th>
+                  <th className="border-b py-3 pr-6 text-[15px] font-medium" style={{ borderColor: "var(--axis)" }}>
+                    Measured
+                  </th>
+                  <th className="border-b py-3 text-[15px] font-medium" style={{ borderColor: "var(--axis)" }}>
+                    Against
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {RESULTS.map((r) => (
+                  <tr key={r.claim}>
+                    <td
+                      className="border-b py-4 pr-6 align-top text-[16px]"
+                      style={{ borderColor: "var(--axis)", color: "var(--ink)" }}
+                    >
+                      {r.claim}
+                      {r.note && (
+                        <span className="mt-1 block text-[15px]" style={{ color: "var(--ink-2)" }}>
+                          {r.note}
+                        </span>
+                      )}
+                    </td>
+                    <td
+                      className="border-b py-4 pr-6 align-top font-mono text-[19px] tabular-nums"
+                      style={{
+                        borderColor: "var(--axis)",
+                        color: r.holds ? "var(--brass-hi)" : "var(--ink-2)",
+                      }}
+                    >
+                      {r.value}
+                    </td>
+                    <td
+                      className="border-b py-4 align-top text-[16px]"
+                      style={{ borderColor: "var(--axis)", color: "var(--ink-2)" }}
+                    >
+                      {r.against}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
 
         {/* ── the negative result, at full weight ──────────────────────────
@@ -270,7 +294,7 @@ export default function Home() {
             className="font-mono text-[14px] uppercase tracking-[0.12em]"
             style={{ color: "var(--brass)" }}
           >
-            06 · What it will not claim
+            What it will not claim
           </p>
           <h2
             className="font-display mt-3 max-w-[52ch] text-[24px] font-light leading-snug md:text-[30px]"

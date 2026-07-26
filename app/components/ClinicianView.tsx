@@ -131,6 +131,14 @@ export function ClinicianView() {
               uncertainty. Not a medical device — temporal alignment only; no
               causal claim about medication effect.
             </p>
+            <p
+              className="mt-2 max-w-xl text-[15px] leading-snug"
+              style={{ color: "var(--ink-2)" }}
+            >
+              Set light and print-first on purpose: this is the sheet that gets
+              handed across a desk under clinic lighting, not the screen the
+              patient explores.
+            </p>
           </div>
           <div className="no-print flex flex-col items-end gap-2 text-[15px]">
             <Link
