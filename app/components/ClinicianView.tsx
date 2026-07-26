@@ -21,6 +21,51 @@ import { Separator } from "@/components/ui/separator";
 
 const PARTICIPANT = "COPS-29";
 
+type AbstainGroup = {
+  kind: string;
+  count: number;
+  first: string;
+  last: string;
+  detail: string | null;
+};
+
+/**
+ * Collapse per-window reasons into their kind.
+ *
+ * The bundle's reasons carry a per-window number — "no state preferred (peak
+ * probability 0.37)" — so a naive group-by never merges anything. Strip the
+ * parenthetical to get the kind, then report the range of those numbers once,
+ * which is the part that actually informs.
+ */
+function groupAbstentions(rows: { t: string; reason: string }[]): AbstainGroup[] {
+  const by = new Map<string, { rows: typeof rows; nums: number[] }>();
+  for (const r of rows) {
+    const kind = r.reason.replace(/\s*\([^)]*\)\s*$/, "").trim() || "unspecified";
+    const m = r.reason.match(/([0-9]*\.?[0-9]+)\s*\)?\s*$/);
+    const g = by.get(kind) ?? { rows: [], nums: [] };
+    g.rows.push(r);
+    if (m) g.nums.push(Number(m[1]));
+    by.set(kind, g);
+  }
+  return [...by.entries()]
+    .map(([kind, g]) => {
+      const times = g.rows.map((r) => r.t).sort();
+      const lo = g.nums.length ? Math.min(...g.nums) : null;
+      const hi = g.nums.length ? Math.max(...g.nums) : null;
+      return {
+        kind: kind.charAt(0).toUpperCase() + kind.slice(1),
+        count: g.rows.length,
+        first: times[0] ?? "",
+        last: times[times.length - 1] ?? "",
+        detail:
+          lo != null && hi != null
+            ? `peak probability ${lo.toFixed(2)}–${hi.toFixed(2)}`
+            : null,
+      };
+    })
+    .sort((a, b) => b.count - a.count);
+}
+
 export function ClinicianView() {
   const [bundle, setBundle] = useState<Bundle | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -70,7 +115,7 @@ export function ClinicianView() {
 
   if (loading) {
     return (
-      <div className="clinician-light min-h-screen">
+      <div className="clinician-sheet-inner">
         <div className="mx-auto max-w-[880px] px-6 py-10">
           <p className="text-[15px]" style={{ color: "var(--ink-2)" }}>
             Loading clinician handoff…
@@ -82,7 +127,7 @@ export function ClinicianView() {
 
   if (error || !bundle || !derived) {
     return (
-      <div className="clinician-light min-h-screen">
+      <div className="clinician-sheet-inner">
         <div className="mx-auto max-w-[880px] px-6 py-10">
           <p className="text-[15px]" style={{ color: "var(--ink)" }}>
             {error ?? "No bundle"}
@@ -107,8 +152,8 @@ export function ClinicianView() {
       : "—";
 
   return (
-    <div className="clinician-light min-h-screen">
-      <div className="mx-auto flex w-full max-w-[880px] flex-col gap-6 px-6 py-8 md:py-10">
+    <div className="clinician-sheet-inner">
+      <div className="mx-auto flex w-full max-w-[880px] flex-col gap-6 px-5 py-8 md:px-8 md:py-10">
         {/* Header */}
         <header className="print-break flex flex-wrap items-start justify-between gap-4">
           <div>
@@ -240,28 +285,43 @@ export function ClinicianView() {
                 No abstained windows in this bundle.
               </p>
             ) : (
-              <ul className="flex flex-col gap-3">
-                {derived.abstained.map((a) => (
-                  <li
-                    key={`${a.t}-${a.reason}`}
-                    className="flex flex-wrap gap-x-4 gap-y-1 border-b pb-3 last:border-0 last:pb-0"
-                    style={{ borderColor: "var(--border)" }}
-                  >
-                    <span
-                      className="font-mono text-[14px] tabular-nums"
-                      style={{ color: "var(--ink)" }}
+              /* Grouped by reason, not listed one per window. On a day the
+                 model declines entirely that list is 114 near-identical rows,
+                 which buries the finding it is supposed to deliver: that the
+                 refusals share one cause. A clinician needs the cause, the
+                 count and the span — the per-window detail is on the day view,
+                 where hovering a hole shows its own reason. */
+              <>
+                <ul className="flex flex-col gap-4">
+                  {groupAbstentions(derived.abstained).map((g) => (
+                    <li
+                      key={g.kind}
+                      className="border-b pb-4 last:border-0 last:pb-0"
+                      style={{ borderColor: "var(--border)" }}
                     >
-                      {a.t}
-                    </span>
-                    <span
-                      className="min-w-0 flex-1 text-[14px] leading-snug"
-                      style={{ color: "var(--ink-2)" }}
-                    >
-                      {a.reason}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+                      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                        <span className="text-[16px]" style={{ color: "var(--ink)" }}>
+                          {g.kind}
+                        </span>
+                        <span
+                          className="font-mono text-[15px] tabular-nums"
+                          style={{ color: "var(--ink-2)" }}
+                        >
+                          {g.count} window{g.count === 1 ? "" : "s"}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-[15px]" style={{ color: "var(--ink-2)" }}>
+                        {g.first === g.last ? g.first : `${g.first} – ${g.last}`}
+                        {g.detail && <> · {g.detail}</>}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-5 text-[15px]" style={{ color: "var(--ink-2)" }}>
+                  Per-window reasons are on the day view — hovering any hole
+                  shows the one recorded for that step.
+                </p>
+              </>
             )}
           </CardContent>
         </Card>

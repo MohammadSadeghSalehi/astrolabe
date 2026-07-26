@@ -2,7 +2,7 @@ import type { Bundle } from "./contract";
 import { createBrowserClient } from "./db";
 
 /** Where a bundle actually came from — not where it was configured to come from. */
-export type BundleOrigin = "supabase" | "local";
+export type BundleOrigin = "supabase" | "local" | "upload";
 
 export type LoadedBundle = {
   bundle: Bundle;
@@ -46,6 +46,26 @@ export type LoadedBundle = {
  * requested. So a URL that asks for Supabase and silently falls back still says
  * so on screen.
  */
+/** Where an uploaded bundle lives until the tab is closed. */
+export const UPLOAD_KEY = "astrolabe.uploaded-bundle";
+
+/**
+ * A bundle the visitor handed us this session.
+ *
+ * sessionStorage, not localStorage and not the server: an upload is someone
+ * else's recording, it is only needed for as long as they are looking at it,
+ * and the least we can do with data we did not ask to keep is fail to keep it.
+ */
+function uploadedBundle(): Bundle | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.sessionStorage.getItem(UPLOAD_KEY);
+    return raw ? (JSON.parse(raw) as Bundle) : null;
+  } catch {
+    return null;
+  }
+}
+
 function requestedSource(): "local" | "supabase" | null {
   if (typeof window === "undefined") return null;
   const q = new URLSearchParams(window.location.search).get("source");
@@ -58,6 +78,12 @@ export async function getBundle(
   participant: string,
   opts?: { nowrist?: boolean },
 ): Promise<LoadedBundle> {
+  // An uploaded bundle outranks everything. Someone who just handed us a file
+  // and is then shown the demo participant would reasonably conclude the upload
+  // did nothing, or worse, that this is their data.
+  const uploaded = uploadedBundle();
+  if (uploaded) return { bundle: uploaded, origin: "upload", fellBack: false };
+
   const mode = (process.env.NEXT_PUBLIC_DEMO_MODE ?? "offline").toLowerCase();
   const override = requestedSource();
   const online =

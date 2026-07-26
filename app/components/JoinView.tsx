@@ -1,0 +1,357 @@
+"use client";
+
+import { useCallback, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { UPLOAD_KEY } from "@/lib/source";
+import type { Bundle } from "@/lib/contract";
+
+/**
+ * Sign-up and upload for the hackathon demonstration.
+ *
+ * The status of this page is stated before anything is asked for, not after and
+ * not in a link nobody opens. It was built during a two-day event, the data may
+ * be deleted when the event ends, and it makes no clinical claim. Someone with
+ * Parkinson's deciding whether to hand over a recording deserves to know all
+ * three before they type, and consent is a deliberate action rather than a
+ * pre-ticked box.
+ *
+ * The upload never leaves the browser. It is parsed, validated, and held in
+ * sessionStorage for as long as the tab is open. We do not want a copy.
+ */
+
+const TERMS = [
+  "This is a prototype built during a hackathon. It is not a medical device, and nothing it shows is a diagnosis, a dosing recommendation, or clinical advice.",
+  "Its predictions come with measured uncertainty and it declines to answer where the evidence is weak. Even where it does answer, do not act on it — take nothing here to a treatment decision.",
+  "Sign-up data may be deleted without notice when the event ends. Do not treat this as a service that will still exist next week.",
+  "Uploaded recordings are read in your browser and held only for this session. They are not transmitted to us and not stored on our servers.",
+];
+
+type Status =
+  | { k: "idle" }
+  | { k: "busy" }
+  | { k: "ok"; msg: string }
+  | { k: "err"; msg: string };
+
+/** Structural check. Anything that renders must have these or the day view breaks. */
+function validateBundle(v: unknown): { ok: true; bundle: Bundle } | { ok: false; why: string } {
+  if (!v || typeof v !== "object") return { ok: false, why: "That file is not a JSON object." };
+  const b = v as Record<string, unknown>;
+  if (!Array.isArray(b.series) || b.series.length === 0)
+    return { ok: false, why: "No `series` array — this is not an Astrolabe bundle." };
+  if (typeof b.participant !== "string")
+    return { ok: false, why: "No `participant` field." };
+  if (!b.metrics || typeof b.metrics !== "object")
+    return { ok: false, why: "No `metrics` object." };
+  const first = b.series[0] as Record<string, unknown>;
+  if (typeof first?.t !== "string" || typeof first?.abstain !== "boolean")
+    return { ok: false, why: "Steps need a `t` time and an `abstain` flag." };
+  return { ok: true, bundle: v as Bundle };
+}
+
+export function JoinView() {
+  const router = useRouter();
+  const [accepted, setAccepted] = useState(false);
+  const [status, setStatus] = useState<Status>({ k: "idle" });
+  const [upload, setUpload] = useState<Status>({ k: "idle" });
+  const [dragging, setDragging] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const submit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const fd = new FormData(e.currentTarget);
+      setStatus({ k: "busy" });
+      try {
+        const res = await fetch("/api/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: String(fd.get("email") ?? ""),
+            role: String(fd.get("role") ?? ""),
+            note: String(fd.get("note") ?? ""),
+            acceptedTerms: accepted,
+          }),
+        });
+        const body = await res.json();
+        if (!res.ok) {
+          setStatus({ k: "err", msg: body.error ?? "Could not sign you up." });
+          return;
+        }
+        setStatus({
+          k: "ok",
+          msg: "Thank you — we have your email and nothing else. We will delete it when the event ends.",
+        });
+      } catch {
+        setStatus({ k: "err", msg: "Network error. Nothing was stored." });
+      }
+    },
+    [accepted],
+  );
+
+  const takeFile = useCallback(
+    async (file: File) => {
+      setUpload({ k: "busy" });
+      try {
+        const text = await file.text();
+        const parsed = JSON.parse(text);
+        const check = validateBundle(parsed);
+        if (!check.ok) {
+          setUpload({ k: "err", msg: check.why });
+          return;
+        }
+        sessionStorage.setItem(UPLOAD_KEY, JSON.stringify(check.bundle));
+        const n = check.bundle.series.length;
+        setUpload({
+          k: "ok",
+          msg: `Loaded ${check.bundle.participant} — ${n} steps. Opening it…`,
+        });
+        setTimeout(() => router.push("/day"), 700);
+      } catch {
+        setUpload({ k: "err", msg: "That file is not valid JSON." });
+      }
+    },
+    [router],
+  );
+
+  return (
+    <main className="mx-auto w-full max-w-[1180px] flex-1 px-5 py-12 md:px-6 md:py-16">
+      <header className="max-w-[64ch]">
+        <p
+          className="inline-block rounded border border-dashed px-2.5 py-1 font-mono text-[14px]"
+          style={{ borderColor: "var(--brass)", color: "var(--brass)" }}
+        >
+          Hackathon prototype · not a medical device
+        </p>
+        <h1
+          className="font-display mt-5 text-[32px] font-light leading-[1.1] md:text-[44px]"
+          style={{ color: "var(--ink)" }}
+        >
+          Try it on a recording
+        </h1>
+        <p className="mt-4 text-[17px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+          Upload a bundle and the same pipeline runs on it — the interval, the
+          refusals, the reveal. Or leave an email if you want to hear whether
+          this becomes something real.
+        </p>
+      </header>
+
+      <div className="mt-12 grid gap-6 lg:grid-cols-[1.05fr_1fr]">
+        {/* ── upload ─────────────────────────────────────────────────────── */}
+        <section
+          className="min-w-0 rounded-lg border p-6 md:p-8"
+          style={{ borderColor: "var(--axis)", background: "var(--surface)" }}
+        >
+          <h2 className="text-[20px] font-medium" style={{ color: "var(--ink)" }}>
+            Upload a recording
+          </h2>
+          <p className="mt-2 text-[16px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+            An Astrolabe bundle — the JSON the model emits. It is read in your
+            browser and kept only until you close the tab.
+          </p>
+
+          <div
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragging(true);
+            }}
+            onDragLeave={() => setDragging(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDragging(false);
+              const f = e.dataTransfer.files?.[0];
+              if (f) void takeFile(f);
+            }}
+            className="mt-6 rounded-lg border-2 border-dashed p-8 text-center transition-colors"
+            style={{
+              borderColor: dragging ? "var(--brass)" : "var(--axis)",
+              background: dragging ? "rgba(200,150,62,0.06)" : "transparent",
+            }}
+          >
+            <p className="text-[17px]" style={{ color: "var(--ink)" }}>
+              Drop a <span className="font-mono">.json</span> bundle here
+            </p>
+            <p className="mt-1 text-[15px]" style={{ color: "var(--ink-2)" }}>
+              or
+            </p>
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              className="mt-3 min-h-[44px] rounded-md px-5 text-[16px] font-medium"
+              style={{ background: "var(--brass)", color: "var(--page)" }}
+            >
+              Choose a file
+            </button>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="application/json,.json"
+              className="sr-only"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) void takeFile(f);
+              }}
+            />
+          </div>
+
+          {upload.k !== "idle" && (
+            <p
+              role="status"
+              className="mt-4 text-[16px] leading-relaxed"
+              style={{
+                color:
+                  upload.k === "err"
+                    ? "var(--k5)"
+                    : upload.k === "ok"
+                      ? "var(--s2-truth)"
+                      : "var(--ink-2)",
+              }}
+            >
+              {upload.k === "busy" ? "Reading…" : upload.k === "ok" ? upload.msg : upload.msg}
+            </p>
+          )}
+
+          <p className="mt-6 text-[15px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+            No bundle to hand? The demo participant is in the repository at{" "}
+            <span className="font-mono" style={{ color: "var(--brass)" }}>
+              contract/COPS-29.json
+            </span>{" "}
+            — download it and drop it in.
+          </p>
+        </section>
+
+        {/* ── sign-up ────────────────────────────────────────────────────── */}
+        <section
+          className="min-w-0 rounded-lg border p-6 md:p-8"
+          style={{ borderColor: "var(--axis)", background: "var(--surface)" }}
+        >
+          <h2 className="text-[20px] font-medium" style={{ color: "var(--ink)" }}>
+            Keep in touch
+          </h2>
+          <p className="mt-2 text-[16px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+            Email only. No name, no date of birth, nothing that would make this a
+            health record.
+          </p>
+
+          <form onSubmit={submit} className="mt-6 flex flex-col gap-4">
+            <label className="flex flex-col gap-1.5">
+              <span className="text-[15px]" style={{ color: "var(--ink-2)" }}>
+                Email
+              </span>
+              <input
+                name="email"
+                type="email"
+                required
+                autoComplete="email"
+                placeholder="you@example.com"
+                className="min-h-[44px] rounded-md border px-3 text-[16px]"
+                style={{
+                  borderColor: "var(--axis)",
+                  background: "var(--page)",
+                  color: "var(--ink)",
+                }}
+              />
+            </label>
+
+            <label className="flex flex-col gap-1.5">
+              <span className="text-[15px]" style={{ color: "var(--ink-2)" }}>
+                Which of these are you? <span className="opacity-70">(optional)</span>
+              </span>
+              <input
+                name="role"
+                type="text"
+                placeholder="living with Parkinson's · carer · clinician · researcher"
+                className="min-h-[44px] rounded-md border px-3 text-[16px]"
+                style={{
+                  borderColor: "var(--axis)",
+                  background: "var(--page)",
+                  color: "var(--ink)",
+                }}
+              />
+            </label>
+
+            <label className="flex flex-col gap-1.5">
+              <span className="text-[15px]" style={{ color: "var(--ink-2)" }}>
+                Would a diary that admits when it doesn&apos;t know be useful to
+                you? <span className="opacity-70">(optional)</span>
+              </span>
+              <textarea
+                name="note"
+                rows={3}
+                className="rounded-md border px-3 py-2 text-[16px]"
+                style={{
+                  borderColor: "var(--axis)",
+                  background: "var(--page)",
+                  color: "var(--ink)",
+                }}
+              />
+            </label>
+
+            {/* Terms are on the page, not behind a link. A link nobody opens is
+                not informed consent; it is a liability gesture. */}
+            <div
+              className="rounded-md border p-4"
+              style={{ borderColor: "var(--axis)", background: "var(--page)" }}
+            >
+              <p className="text-[15px] font-medium" style={{ color: "var(--ink)" }}>
+                Before you agree
+              </p>
+              <ul className="mt-3 flex flex-col gap-2">
+                {TERMS.map((t) => (
+                  <li
+                    key={t.slice(0, 24)}
+                    className="flex gap-2.5 text-[15px] leading-relaxed"
+                    style={{ color: "var(--ink-2)" }}
+                  >
+                    <span aria-hidden style={{ color: "var(--brass)" }}>
+                      —
+                    </span>
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <label className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                checked={accepted}
+                onChange={(e) => setAccepted(e.target.checked)}
+                className="mt-1 h-5 w-5 shrink-0"
+                style={{ accentColor: "var(--brass)" }}
+              />
+              <span className="text-[16px] leading-relaxed" style={{ color: "var(--ink)" }}>
+                I have read the four points above and understand this is a
+                prototype that makes no clinical claim.
+              </span>
+            </label>
+
+            <button
+              type="submit"
+              disabled={!accepted || status.k === "busy"}
+              className="min-h-[48px] rounded-md px-6 text-[17px] font-medium transition-opacity"
+              style={{
+                background: accepted ? "var(--brass)" : "var(--grid)",
+                color: accepted ? "var(--page)" : "var(--ink-2)",
+                cursor: accepted ? "pointer" : "not-allowed",
+              }}
+            >
+              {status.k === "busy" ? "Sending…" : "Sign up"}
+            </button>
+
+            {status.k !== "idle" && status.k !== "busy" && (
+              <p
+                role="status"
+                className="text-[16px] leading-relaxed"
+                style={{
+                  color: status.k === "err" ? "var(--k5)" : "var(--s2-truth)",
+                }}
+              >
+                {status.msg}
+              </p>
+            )}
+          </form>
+        </section>
+      </div>
+    </main>
+  );
+}

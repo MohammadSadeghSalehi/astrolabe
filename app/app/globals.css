@@ -73,15 +73,22 @@
   --radius: 0.375rem;
 }
 
-/* Clinician handoff — light hospital/print surface */
+/* Clinician handoff — a paper plate inside the instrument, not a white website.
+ *
+ * The earlier version flipped the whole page to a cream surface, which read as a
+ * different application rather than a different artefact. It is now a warm plate
+ * that sits ON the dark product: the page stays dark, the sheet is light, and
+ * the boundary between them is visible. Print still gets pure white, because
+ * paper is the one place the plate should fill the world.
+ */
 .clinician-light {
-  --page: var(--page-light);
-  --surface: var(--surface-light);
-  --ink: var(--ink-light);
-  --ink-2: var(--ink-2-light);
-  --grid: #e6e2d8;
-  --axis: #cfc9ba;
-  --brass-hi: #8a6420;
+  --page: #f4f1e9;
+  --surface: #fbf9f4;
+  --ink: #14171e;
+  --ink-2: #5a6170;
+  --grid: #e7e3d9;
+  --axis: #cec8ba;
+  --brass-hi: #86601d;
   --k0: var(--k0-light);
   --k1: var(--k1-light);
   --k2: var(--k2-light);
@@ -90,25 +97,40 @@
   --k5: var(--k5-light);
   --k6: var(--k6-light);
 
-  --background: var(--page-light);
-  --foreground: var(--ink-light);
-  --card: var(--surface-light);
-  --card-foreground: var(--ink-light);
+  --background: var(--page);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
   --primary: var(--brass);
-  --primary-foreground: var(--page-light);
-  --border: #cfc9ba;
-  --muted: #e6e2d8;
-  --muted-foreground: var(--ink-2-light);
+  --primary-foreground: var(--page);
+  --border: var(--axis);
+  --muted: var(--grid);
+  --muted-foreground: var(--ink-2);
   --ring: var(--brass);
-  --secondary: #e6e2d8;
-  --secondary-foreground: var(--ink-light);
-  --accent: #e6e2d8;
-  --accent-foreground: var(--ink-light);
-  --input: #cfc9ba;
+  --secondary: var(--grid);
+  --secondary-foreground: var(--ink);
+  --accent: var(--grid);
+  --accent-foreground: var(--ink);
+  --input: var(--axis);
 
-  background: var(--page);
   color: var(--ink);
-  min-height: 100%;
+}
+
+/* The sheet itself: inset from the dark page, with a real edge and a shadow
+   that carries an offset — so it reads as paper resting on the instrument. */
+.clinician-sheet {
+  background: var(--page);
+  border: 1px solid var(--axis);
+  border-radius: 6px;
+  box-shadow: 0 18px 48px -24px rgba(0, 0, 0, 0.75);
+}
+
+@media print {
+  .clinician-sheet {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
 }
 
 @theme inline {

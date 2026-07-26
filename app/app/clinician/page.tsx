@@ -10,13 +10,17 @@ export const metadata: Metadata = {
 
 export default function ClinicianPage() {
   return (
-    <div className="clinician-light flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col" style={{ background: "var(--page)" }}>
       {/* The nav is for navigating, not for the sheet a clinician is handed
           across a desk — so it is on screen and absent from the print. */}
       <div className="no-print">
-        <Nav light />
+        <Nav />
       </div>
-      <ClinicianView />
+      <div className="mx-auto w-full max-w-[980px] flex-1 px-4 py-8 md:px-6 md:py-12">
+        <div className="clinician-light clinician-sheet">
+          <ClinicianView />
+        </div>
+      </div>
     </div>
   );
 }

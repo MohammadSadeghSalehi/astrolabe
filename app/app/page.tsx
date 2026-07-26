@@ -77,7 +77,7 @@ export default function Home() {
         </div>
 
         <div className="relative mx-auto w-full max-w-[1280px] px-5 pb-14 pt-10 md:px-6 md:pb-20 md:pt-16">
-          <div className="max-w-[62ch]">
+          <div className="max-w-[64ch]">
             <p
               className="font-mono text-[14px] uppercase tracking-[0.14em]"
               style={{ color: "var(--brass)" }}
@@ -85,21 +85,59 @@ export default function Home() {
               Parkinson&apos;s motor diary
             </p>
             <h1
-              className="font-display mt-3 text-[34px] font-light leading-[1.12] md:text-[54px]"
+              className="font-display mt-3 text-[34px] font-light leading-[1.08] md:text-[58px]"
               style={{ color: "var(--ink)" }}
             >
-              Read the hours <em className="italic">you couldn&apos;t record</em>
+              Most of the day <em className="italic">goes unrecorded.</em>
             </h1>
             <p
-              className="mt-5 text-[17px] leading-relaxed md:text-[19px]"
+              className="mt-5 text-[18px] leading-relaxed md:text-[21px]"
               style={{ color: "var(--ink-2)" }}
             >
-              The paper diary gets abandoned within days, and nobody remembers
-              last Tuesday afternoon accurately. Astrolabe reconstructs those
-              hours from a pair of wrist sensors — and tells you, hour by
-              hour, when it does not know.
+              Medication decisions rest on a twenty-minute clinic visit and a
+              diary that stops getting filled. Astrolabe reconstructs the missing
+              hours from wrist sensors — and refuses, hour by hour, wherever the
+              evidence cannot carry the answer.
             </p>
           </div>
+
+          {/* The claim, stated as three measured facts rather than adjectives.
+              Each carries its comparator, because a number without one is a
+              decoration. */}
+          <dl className="mt-10 grid max-w-[64ch] gap-x-10 gap-y-6 sm:grid-cols-3">
+            {[
+              {
+                v: "61.6%",
+                k: "of hours have a diary entry",
+                s: "even with study staff supporting it",
+              },
+              {
+                v: "0.903",
+                k: "achieved interval coverage",
+                s: "against a 0.90 target, held out",
+              },
+              {
+                v: "114/114",
+                k: "steps declined on the demo day",
+                s: "the product working, not failing",
+              },
+            ].map((m) => (
+              <div key={m.v} className="min-w-0">
+                <dt
+                  className="font-mono text-[30px] leading-none tabular-nums md:text-[38px]"
+                  style={{ color: "var(--brass-hi)" }}
+                >
+                  {m.v}
+                </dt>
+                <dd className="mt-2 text-[16px] leading-snug" style={{ color: "var(--ink)" }}>
+                  {m.k}
+                  <span className="mt-0.5 block text-[15px]" style={{ color: "var(--ink-2)" }}>
+                    {m.s}
+                  </span>
+                </dd>
+              </div>
+            ))}
+          </dl>
 
           <div className="mt-10 md:mt-12">
             <HeroStrip />
@@ -114,16 +152,16 @@ export default function Home() {
               Open a real day →
             </Link>
             <Link
-              href="/profile"
+              href="/join"
               className="rounded-md border px-6 py-3 text-[17px] transition-opacity hover:opacity-90"
-              style={{ borderColor: "var(--axis)", color: "var(--ink)" }}
+              style={{ borderColor: "var(--brass)", color: "var(--brass)" }}
             >
-              Profile &amp; devices
+              Try it on a recording
             </Link>
           </div>
 
-          {/* Trust bar — provenance, not logos. What a "as seen in" row would
-              be on a page with something more relevant to show. */}
+          {/* Provenance, not logos. What an "as seen in" row would be on a page
+              with something more relevant to show. */}
           <div
             className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 border-t pt-5 font-mono text-[14px]"
             style={{ borderColor: "var(--axis)", color: "var(--ink-2)" }}

@@ -75,6 +75,35 @@ function Card({
   );
 }
 
+type Dose = { t: string; mg: number | null };
+type Grouped = { drug: string; doses: Dose[]; uniformDose: number | null };
+
+/** One row per drug. A dose is only shown per-time when it actually varies. */
+function groupMeds(events: { t: string; drug?: string; dose_mg?: number }[]): Grouped[] {
+  const byDrug = new Map<string, Dose[]>();
+  for (const e of events) {
+    const key = e.drug?.trim() || "Medication";
+    const list = byDrug.get(key) ?? [];
+    list.push({ t: e.t, mg: e.dose_mg ?? null });
+    byDrug.set(key, list);
+  }
+  return [...byDrug.entries()].map(([drug, doses]) => {
+    const mgs = doses.map((d) => d.mg);
+    const uniform =
+      mgs.length > 0 && mgs.every((m) => m != null && m === mgs[0]) ? mgs[0]! : null;
+    return {
+      drug,
+      doses: [...doses].sort((a, b) => a.t.localeCompare(b.t)),
+      uniformDose: uniform,
+    };
+  });
+}
+
+function totalMg(events: { dose_mg?: number }[]): string {
+  const sum = events.reduce((a, e) => a + (e.dose_mg ?? 0), 0);
+  return Number.isInteger(sum) ? String(sum) : sum.toFixed(1);
+}
+
 export function ProfileView() {
   const [bundle, setBundle] = useState<Bundle | null>(null);
   const [failed, setFailed] = useState(false);
@@ -202,29 +231,48 @@ export function ProfileView() {
               —
             </p>
           ) : (
-            <ul className="divide-y" style={{ borderColor: "var(--axis)" }}>
-              {meds.map((e, i) => (
-                <li
-                  key={`${e.t}-${i}`}
-                  className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3"
-                >
-                  <span
-                    className="font-mono text-[17px] tabular-nums"
-                    style={{ color: "var(--ink)" }}
-                  >
-                    {e.t}
-                  </span>
-                  <span className="text-[16px]" style={{ color: "var(--ink-2)" }}>
-                    {e.drug ?? "medication"}
-                    {e.dose_mg != null && (
-                      <span className="ml-2 font-mono" style={{ color: "var(--ink)" }}>
-                        {e.dose_mg} mg
+            <>
+              {/* A dosing schedule is mostly one drug repeated, so listing the
+                  full name nine times spends the reader's attention on the part
+                  that does not change. Group by drug; the times are the
+                  information. */}
+              <ul className="flex flex-col gap-4">
+                {groupMeds(meds).map((g) => (
+                  <li key={g.drug}>
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                      <span className="text-[16px]" style={{ color: "var(--ink)" }}>
+                        {g.drug}
                       </span>
-                    )}
-                  </span>
-                </li>
-              ))}
-            </ul>
+                      <span className="text-[15px]" style={{ color: "var(--ink-2)" }}>
+                        {g.doses.length}&times;
+                        {g.uniformDose != null && (
+                          <span className="ml-1.5 font-mono" style={{ color: "var(--ink)" }}>
+                            {g.uniformDose} mg
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                    <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1">
+                      {g.doses.map((d, i) => (
+                        <span
+                          key={`${d.t}-${i}`}
+                          className="font-mono text-[15px] tabular-nums"
+                          style={{ color: "var(--ink-2)" }}
+                        >
+                          {d.t}
+                          {g.uniformDose == null && d.mg != null && (
+                            <span style={{ color: "var(--ink)" }}>&nbsp;{d.mg}mg</span>
+                          )}
+                        </span>
+                      ))}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 text-[15px]" style={{ color: "var(--ink-2)" }}>
+                {meds.length} doses across the day, {totalMg(meds)} mg total.
+              </p>
+            </>
           )}
         </Card>
 

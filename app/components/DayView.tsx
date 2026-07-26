@@ -253,7 +253,11 @@ export function DayView() {
         in a project whose whole argument is that what is displayed is checkable.
       */}
       <footer className="pb-6 text-[16px]" style={{ color: "var(--ink-2)" }}>
-        {origin === "supabase" ? (
+        {origin === "upload" ? (
+          <>
+            Your uploaded bundle · read in this browser, never sent to us
+          </>
+        ) : origin === "supabase" ? (
           <>
             Online · bundles from Supabase ·{" "}
             <span className="font-mono">realtime events</span>
