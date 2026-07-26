@@ -2,7 +2,11 @@ import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { HeroDay } from "@/components/HeroDay";
 import { MethodPipeline } from "@/components/MethodPipeline";
-import { AstrolabeGlyph } from "@/components/AstrolabeGlyph";
+import {
+  DeviceStrip,
+  LandingScroll,
+  PlateRule,
+} from "@/components/LandingScroll";
 
 export const metadata = {
   title: "Astrolabe — read the hours you couldn't record",
@@ -61,6 +65,7 @@ const RESULTS: {
 
 export default function Home() {
   return (
+    <LandingScroll>
     <div className="flex min-h-screen flex-col" style={{ background: "var(--page)" }}>
       <Nav />
 
@@ -73,8 +78,9 @@ export default function Home() {
             and is hidden from assistive tech — it carries no information. */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           {/* One sized object, one crop, every width — see .astro-plate. Mobile
-              gets the still: same composition, a hundredth of the bytes. */}
-          <div className="astro-plate">
+              gets the still: same composition, a hundredth of the bytes.
+              data-parallax-plate: subtle scroll drift (LandingScroll). */}
+          <div className="astro-plate" data-parallax-plate>
             {/* The still is the base layer, always. The loop lays over it from
                 sm up — so switching the loop off (reduced motion, a phone, a
                 codec nobody supports) falls back to the picture rather than to
@@ -107,7 +113,7 @@ export default function Home() {
         </div>
 
         <div className="relative mx-auto w-full max-w-[1280px] px-5 pb-14 pt-10 md:px-6 md:pb-20 md:pt-16">
-          <div className="max-w-[64ch]">
+          <div className="max-w-[64ch]" data-reveal>
             <p
               className="font-mono text-[17px] uppercase tracking-[0.22em] md:text-[20px]"
               style={{ color: "var(--brass)" }}
@@ -151,8 +157,13 @@ export default function Home() {
                 fig: "+11 pts",
                 foot: "accuracy on the hours it keeps, versus answering everything",
               },
-            ].map((m) => (
-              <div key={m.fig} className="min-w-0">
+            ].map((m, i) => (
+              <div
+                key={m.fig}
+                className="min-w-0"
+                data-reveal
+                data-reveal-delay={String(i + 1)}
+              >
                 <dt className="text-[18px] font-medium leading-snug" style={{ color: "var(--ink)" }}>
                   {m.head}
                 </dt>
@@ -187,11 +198,11 @@ export default function Home() {
             ))}
           </ul>
 
-          <div className="mt-10 md:mt-12">
+          <div className="mt-10 md:mt-12" data-reveal>
             <HeroDay />
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center gap-4">
+          <div className="mt-8 flex flex-wrap items-center gap-4" data-reveal>
             <Link
               href="/day"
               className="astro-btn astro-btn-primary rounded-md px-6 py-3 text-[17px] font-medium"
@@ -213,11 +224,13 @@ export default function Home() {
       </section>
 
       <main className="mx-auto w-full max-w-[1280px] flex-1 px-5 md:px-6">
+        <PlateRule />
+
         {/* ── why this, and why now ────────────────────────────────────────
             Every figure here is sourced and linked. A product page making
             epidemiological claims without citations is asking to be believed
             rather than checked, which is the opposite of the argument. */}
-        <section className="mt-16 md:mt-24">
+        <section className="mt-16 md:mt-24" data-reveal>
           <h2
             className="font-display text-[26px] font-light md:text-[34px]"
             style={{ color: "var(--ink)" }}
@@ -306,8 +319,10 @@ export default function Home() {
           </p>
         </section>
 
+        <PlateRule />
+
         {/* ── the problem ────────────────────────────────────────────────── */}
-        <section className="mt-4 max-w-[62ch] md:mt-8">
+        <section className="mt-4 max-w-[62ch] md:mt-8" data-reveal>
           <h2
             className="font-display text-[26px] font-light md:text-[32px]"
             style={{ color: "var(--ink)" }}
@@ -352,7 +367,19 @@ export default function Home() {
             </code>
             . Unsupervised, real-world completion is unlikely to be higher.
           </p>
+          <div className="mt-8" data-reveal>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/completion.svg"
+              alt="Twenty-four hour slots with roughly three in five filled — diary completion as empty and recorded hours"
+              className="w-full max-w-[520px]"
+            />
+          </div>
         </section>
+
+        <DeviceStrip />
+
+        <PlateRule />
 
         {/* ── how it works ───────────────────────────────────────────────
             One figure, not six cards. The method is a sequence a signal moves
@@ -360,7 +387,7 @@ export default function Home() {
             one thing worth showing: that the last stage is a refusal. The
             measured results sit beneath in a table, because every one of them
             is a value against a comparator and that is what a table is for. */}
-        <section className="mt-16 md:mt-24">
+        <section className="mt-16 md:mt-24" data-reveal>
           <h2
             className="font-display text-[26px] font-light md:text-[32px]"
             style={{ color: "var(--ink)" }}
@@ -382,8 +409,10 @@ export default function Home() {
           </div>
         </section>
 
+        <PlateRule />
+
         {/* ── measured results ───────────────────────────────────────────── */}
-        <section className="mt-16 md:mt-24">
+        <section className="mt-16 md:mt-24" data-reveal>
           <h2
             className="font-display text-[26px] font-light md:text-[32px]"
             style={{ color: "var(--ink)" }}
@@ -454,8 +483,18 @@ export default function Home() {
             Left rule in --k4, the dyskinesia arm of the diverging kinesia
             ramp — the exact colour this panel is about, not a decorative
             accent borrowed from elsewhere. */}
+        <div className="mt-12 flex justify-center" data-reveal aria-hidden>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/bilateral.svg"
+            alt=""
+            className="w-full max-w-[280px] opacity-90"
+          />
+        </div>
+
         <section
           className="glass glass-lit mt-16 rounded-xl p-6 md:mt-24 md:p-12"
+          data-reveal
         >
           <p
             className="font-mono text-[15px] uppercase tracking-[0.16em]"
@@ -488,8 +527,10 @@ export default function Home() {
           </div>
         </section>
 
+        <PlateRule />
+
         {/* ── supplement ────────────────────────────────────────────────── */}
-        <section className="mt-16 max-w-[74ch] md:mt-24">
+        <section className="mt-16 max-w-[74ch] md:mt-24" data-reveal>
           <h2
             className="font-display text-[24px] font-light md:text-[30px]"
             style={{ color: "var(--ink)" }}
@@ -551,5 +592,6 @@ export default function Home() {
         · COPS data CC-BY 4.0
       </footer>
     </div>
+    </LandingScroll>
   );
 }

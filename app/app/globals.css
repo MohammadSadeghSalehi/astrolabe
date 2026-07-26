@@ -543,3 +543,147 @@ body {
   .astro-btn, .astro-btn::after, .astro-btn .astro-arrow { transition: none; }
   .astro-btn:hover { transform: none; }
 }
+
+/* ── Landing scroll layer (LandingScroll.tsx) ───────────────────────────────
+   Progress rail, parallax plate, section reveals, ambient field.
+   Revert: drop LandingScroll wrapper + this block.
+   ────────────────────────────────────────────────────────────────────────── */
+
+.landing-scroll {
+  --land-scroll: 0;
+  --land-y: 0px;
+  position: relative;
+  isolation: isolate;
+}
+
+/* Thin brass progress along the top of the viewport */
+.land-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 80;
+  pointer-events: none;
+  background: transparent;
+}
+.land-progress__bar {
+  height: 100%;
+  width: calc(var(--land-scroll) * 100%);
+  background: linear-gradient(
+    90deg,
+    var(--brass) 0%,
+    var(--brass-hi) 55%,
+    var(--verdigris) 100%
+  );
+  box-shadow: 0 0 12px color-mix(in oklab, var(--brass) 45%, transparent);
+  transition: width 60ms linear;
+}
+
+/* Ambient instrument field — drifts slowly with scroll, never steals focus */
+.land-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.14;
+  overflow: hidden;
+}
+.land-field img {
+  position: absolute;
+  width: 140vw;
+  max-width: none;
+  height: auto;
+  top: -10vh;
+  left: -20vw;
+  transform: translate3d(0, calc(var(--land-y) * -0.04), 0);
+  will-change: transform;
+}
+
+.landing-scroll > *:not(.land-progress):not(.land-field) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Parallax hook on the hero plate object */
+[data-parallax-plate] {
+  will-change: transform;
+  transition: transform 40ms linear;
+}
+
+/* Section enter */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+[data-reveal][data-reveal-delay="1"] { transition-delay: 60ms; }
+[data-reveal][data-reveal-delay="2"] { transition-delay: 120ms; }
+[data-reveal][data-reveal-delay="3"] { transition-delay: 180ms; }
+
+/* Instrument divider */
+.land-rule {
+  margin: 2.5rem 0 0;
+  width: 100%;
+  opacity: 0.7;
+}
+.land-rule img {
+  display: block;
+  width: 100%;
+  height: 12px;
+  object-fit: cover;
+}
+
+/* Device strip on landing */
+.land-devices {
+  margin-top: 2.5rem;
+  padding: 1.5rem 0 0.5rem;
+}
+.land-devices__label {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--ink-2);
+  margin: 0 0 1.25rem;
+  max-width: 48ch;
+}
+.land-devices__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 1.5rem 2.5rem;
+}
+.land-devices__row img {
+  height: 120px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 28px color-mix(in oklab, #000 55%, transparent));
+  transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.land-devices__row img:hover {
+  transform: translateY(-4px);
+}
+
+@media (max-width: 639px) {
+  .land-devices__row img { height: 96px; }
+  .land-field { opacity: 0.08; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .land-progress__bar { transition: none; }
+  .land-field img { transform: none !important; }
+  [data-parallax-plate] { transform: none !important; transition: none; }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .land-devices__row img:hover { transform: none; }
+}
