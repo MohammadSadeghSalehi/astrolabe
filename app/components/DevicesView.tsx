@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { IconSensor } from "@/components/icons/ScienceIcons";
-import { IconBilateral, IconRing } from "@/components/icons/DeviceIcons";
 
 /**
  * Compatible devices.
@@ -51,7 +49,8 @@ const VERDICT_STYLE: Record<Verdict, React.CSSProperties> = {
 type Device = {
   name: string;
   kind: string;
-  Icon: (p: { className?: string }) => React.JSX.Element;
+  /** Filename in public/brand — the drawn silhouette for this device class. */
+  art: string;
   verdict: Verdict;
   rawAccel: Fit;
   sampleRate: Fit;
@@ -63,8 +62,8 @@ type Device = {
 const DEVICES: Device[] = [
   {
     name: "Apple Watch",
+    art: "dev-watch.svg",
     kind: "Wrist · watchOS",
-    Icon: IconSensor,
     verdict: "best",
     rawAccel: "full",
     sampleRate: "unknown",
@@ -74,8 +73,8 @@ const DEVICES: Device[] = [
   },
   {
     name: "Galaxy Watch",
+    art: "dev-watch.svg",
     kind: "Wrist · Wear OS 4+",
-    Icon: IconSensor,
     verdict: "partial",
     rawAccel: "full",
     sampleRate: "partial",
@@ -85,8 +84,8 @@ const DEVICES: Device[] = [
   },
   {
     name: "Oura Ring",
+    art: "dev-ring.svg",
     kind: "Finger · ring",
-    Icon: IconRing,
     verdict: "no",
     rawAccel: "none",
     sampleRate: "none",
@@ -96,8 +95,8 @@ const DEVICES: Device[] = [
   },
   {
     name: "Research actigraphy",
+    art: "dev-band.svg",
     kind: "Both wrists · GENEActiv, Axivity",
-    Icon: IconBilateral,
     verdict: "best",
     rawAccel: "full",
     sampleRate: "full",
@@ -178,7 +177,7 @@ function SampleRateGauge() {
     return () => ro.disconnect();
   }, []);
 
-  const H = 92;
+  const H = 112;
   const padL = 8;
   const padR = 8;
   const trackW = Math.max(1, width - padL - padR);
@@ -239,7 +238,7 @@ function SampleRateGauge() {
             />
             <text
               x={x(d.hz)}
-              y={82}
+              y={80}
               textAnchor="middle"
               className="font-mono"
               fontSize={14}
@@ -249,7 +248,7 @@ function SampleRateGauge() {
             </text>
             <text
               x={x(d.hz)}
-              y={H - 2}
+              y={H - 6}
               textAnchor="middle"
               fontSize={14}
               fill="var(--ink-2)"
@@ -330,11 +329,19 @@ export function DevicesView() {
           >
             <div className="flex items-start justify-between gap-2">
               <span
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border"
-                style={{ borderColor: "var(--axis)", color: "var(--ink-2)" }}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border"
+                style={{ borderColor: "var(--axis)" }}
                 aria-hidden
               >
-                <d.Icon />
+                <span
+                  className="block h-7 w-7"
+                  style={{
+                    backgroundColor:
+                      d.verdict === "no" ? "var(--ink-2)" : "var(--brass)",
+                    mask: `url(/brand/${d.art}) center / contain no-repeat`,
+                    WebkitMask: `url(/brand/${d.art}) center / contain no-repeat`,
+                  }}
+                />
               </span>
               <span
                 className="rounded border px-2 py-0.5 text-right font-mono text-[14px] leading-tight"
@@ -390,15 +397,26 @@ export function DevicesView() {
 
       {/* ── the honest catch ───────────────────────────────────────────── */}
       <section
-        className="mt-6 rounded-lg border-l-[3px] border-y border-r p-6 md:p-10"
-        style={{ borderColor: "var(--axis)", borderLeftColor: "var(--k4)", background: "var(--surface)" }}
+        className="mt-6 rounded-lg border p-6 md:p-10"
+        style={{ borderColor: "var(--axis)", background: "var(--surface)" }}
       >
-        <h2
-          className="font-display max-w-[54ch] text-[24px] font-light leading-snug md:text-[30px]"
-          style={{ color: "var(--ink)" }}
-        >
-          One watch is, by our own measurement, the degraded configuration.
-        </h2>
+        <div className="flex flex-col-reverse gap-6 md:flex-row md:items-start md:gap-10">
+          <h2
+            className="font-display max-w-[54ch] flex-1 text-[24px] font-light leading-snug md:text-[30px]"
+            style={{ color: "var(--ink)" }}
+          >
+            One watch is, by our own measurement, the degraded configuration.
+          </h2>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/bilateral.svg"
+            alt="Two wrists linked by an arc; one wrist greyed and the arc broken."
+            width={240}
+            height={160}
+            className="shrink-0 rounded-md border"
+            style={{ borderColor: "var(--axis)" }}
+          />
+        </div>
         <p
           className="mt-4 max-w-[68ch] text-[16px] leading-relaxed"
           style={{ color: "var(--ink-2)" }}
