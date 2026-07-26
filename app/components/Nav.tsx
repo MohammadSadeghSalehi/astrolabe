@@ -7,8 +7,7 @@ import { useState } from "react";
 /** Four product routes — Home is explicit so the landing is always one tap away. */
 const LINKS = [
   { href: "/", label: "Home" },
-  { href: "/day", label: "Day" },
-  { href: "/profile", label: "Profile" },
+  { href: "/day", label: "Live demo" },
   { href: "/devices", label: "Devices" },
   { href: "/join", label: "Try it" },
   { href: "/clinician", label: "Clinician" },

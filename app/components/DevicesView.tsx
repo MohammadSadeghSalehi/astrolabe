@@ -479,11 +479,11 @@ export function DevicesView() {
           Open the timeline →
         </Link>
         <Link
-          href="/profile"
+          href="/join"
           className="rounded-md border px-6 py-3 text-[17px]"
           style={{ borderColor: "var(--axis)", color: "var(--ink)" }}
         >
-          Profile
+          Try a recording
         </Link>
       </div>
     </main>

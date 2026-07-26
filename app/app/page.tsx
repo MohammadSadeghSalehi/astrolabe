@@ -383,42 +383,59 @@ export default function Home() {
         </section>
 
         {/* ── supplement ────────────────────────────────────────────────── */}
-        <section className="mt-16 max-w-[68ch] md:mt-24">
+        <section className="mt-16 max-w-[74ch] md:mt-24">
           <h2
             className="font-display text-[24px] font-light md:text-[30px]"
             style={{ color: "var(--ink)" }}
           >
             Check the work
           </h2>
-          <p className="mt-4 text-[17px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
-            Every figure on this page is reproducible from the repository,
-            including the results that went against us and the two bugs we found
-            making our own pipeline look better than it was. If something here
-            seems too good, the workings are open.
+          <p className="mt-3 text-[17px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+            The method, the maths and the results that went against us.
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <a
-              href="https://github.com/MohammadSadeghSalehi/astrolabe/blob/main/docs/FINDINGS.md"
-              className="glass glass-lit rounded-lg px-5 py-3 text-[16px]"
+              href="/astrolabe-technical-report.pdf"
+              className="glass glass-lit flex items-center gap-4 rounded-xl px-5 py-4"
               style={{ color: "var(--ink)" }}
             >
-              What held up, and what didn&apos;t →
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden style={{ color: "var(--brass)" }}>
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/>
+                <path d="M14 2v6h6" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/>
+                <path d="M8 13h8M8 17h5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
+              </svg>
+              <span className="min-w-0">
+                <span className="block text-[17px]">Technical report</span>
+                <span className="block text-[15px]" style={{ color: "var(--ink-2)" }}>
+                  PDF · method, calibration, negative results
+                </span>
+              </span>
             </a>
+
             <a
               href="https://github.com/MohammadSadeghSalehi/astrolabe"
-              className="glass glass-lit rounded-lg px-5 py-3 text-[16px]"
+              className="glass glass-lit flex items-center gap-4 rounded-xl px-5 py-4"
               style={{ color: "var(--ink)" }}
             >
-              Source code →
+              {/* GitHub mark, drawn rather than an image so it inherits ink. */}
+              <svg width="26" height="26" viewBox="0 0 16 16" fill="currentColor" aria-hidden style={{ color: "var(--brass)" }}>
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+              </svg>
+              <span className="min-w-0">
+                <span className="block text-[17px]">Source on GitHub</span>
+                <span className="block text-[15px]" style={{ color: "var(--ink-2)" }}>
+                  Every figure regenerates from a named script
+                </span>
+              </span>
             </a>
           </div>
+
           <p className="mt-7 text-[15px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
-            Built on an open clinical study of 66 people living with
-            Parkinson&apos;s, who wore sensors on both wrists and kept an hourly
-            diary for about a week each. Two thirds of them have a deep brain
-            stimulator, so this is an advanced group rather than a newly
-            diagnosed one — and what works here may not transfer unchanged to
-            someone at the start of the condition.
+            Built on an open study of 66 people living with Parkinson&apos;s who
+            wore sensors on both wrists and kept an hourly diary for about a week.
+            Two thirds have a deep brain stimulator, so this is an advanced group
+            rather than a newly diagnosed one.
           </p>
         </section>
       </main>

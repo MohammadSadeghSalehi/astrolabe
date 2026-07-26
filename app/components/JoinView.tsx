@@ -191,10 +191,10 @@ export function JoinView() {
             style={{ color: "var(--ink-2)" }}
           >
             <span className="font-mono" style={{ color: "var(--brass)" }}>Coming soon.</span>{" "}
-            The blocker is real rather than scheduling: this needs raw
-            acceleration from both wrists, and most consumer wearables expose
-            neither. <a href="/devices" className="underline underline-offset-4" style={{ color: "var(--brass)" }}>
-              What each device can supply →
+            Apple Watch is the closest fit today — it already isolates the same
+            tremor band we use.{" "}
+            <a href="/devices" className="underline underline-offset-4" style={{ color: "var(--brass)" }}>
+              See which devices fit →
             </a>
           </p>
         </section>

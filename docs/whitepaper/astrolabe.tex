@@ -1,0 +1,344 @@
+% Astrolabe — technical report.
+% Build:  ../../.tooling/tectonic astrolabe.tex
+%
+% Every number in this document is produced by a script in ml/scripts and is
+% named at the point of use, so a reader can regenerate it rather than trust it.
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{microtype}
+
+% ── Astrolabe palette ───────────────────────────────────────────────────────
+\definecolor{brass}{HTML}{9A6F1E}
+\definecolor{ink}{HTML}{12151C}
+\definecolor{ink2}{HTML}{585F6E}
+\definecolor{truth}{HTML}{0F7F72}
+\definecolor{rule}{HTML}{CFC9BA}
+
+\hypersetup{linkcolor=brass, urlcolor=brass, citecolor=brass}
+\color{ink}
+
+\titleformat{\section}{\large\bfseries\color{brass}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.6em}{}
+\captionsetup{font=small, labelfont={bf,color=brass}}
+\setlist{itemsep=2pt, topsep=4pt}
+
+\newcommand{\astro}{\textsc{Astrolabe}}
+
+\title{\vspace{-1.4cm}\textbf{\astro}\\[0.25em]
+\large Calibrated reconstruction of a Parkinson's motor diary\\
+\large from bilateral wrist accelerometry\vspace{-0.2em}}
+\author{\normalsize Mohammad Sadegh Salehi}
+\date{\normalsize 26 July 2026 \quad$\cdot$\quad
+\href{https://astrolabe-flame.vercel.app}{astrolabe-flame.vercel.app} \quad$\cdot$\quad
+\href{https://github.com/MohammadSadeghSalehi/astrolabe}{source}}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\noindent\textcolor{rule}{\rule{\textwidth}{0.6pt}}
+
+\begin{abstract}
+\noindent
+Parkinson's symptoms fluctuate hour to hour, but the paper diary intended to
+capture that is abandoned within days: in the cohort studied here only
+$61.6\%$ of possible hours carry an entry, \emph{with} research staff
+supporting the process. We ask whether wrist accelerometry can fill the gaps,
+and — more importantly — whether a system can know when it cannot.
+
+We report two results of opposite sign. Tremor presence is recoverable across
+people (held-out $\mathrm{AUC}=0.697\pm0.075$). The seven-point subjective
+motor scale is not: nine feature sets over five participant-level folds all
+fail to beat a constant predictor, and the failure mode is a sign flip in the
+feature--state relationship between individuals rather than insufficient
+capacity. We therefore do not predict it.
+
+The contribution is the uncertainty machinery around both. Credible intervals
+are widened on held-out participants until empirical coverage matches the
+nominal level ($0.903$ against a $0.90$ target), abstention is tuned to a fixed
+\emph{error budget} rather than a fixed rate, and selective prediction is
+measured rather than asserted: accuracy rises from $0.713$ to $0.825$ as the
+answered fraction falls to a quarter. Removing one wrist forces abstention from
+$12.4\%$ to $77.3\%$ to hold the same budget --- degradation the system
+discovers rather than is told.
+\end{abstract}
+
+\noindent\textcolor{rule}{\rule{\textwidth}{0.6pt}}
+\vspace{0.4em}
+
+\section{Data}
+
+\textbf{COPS} (Continuous Observation of Parkinsonian Symptoms; Nesser et al.,
+CC-BY 4.0) provides 66 participants wearing GENEActiv accelerometers on both
+wrists at $100\,\mathrm{Hz}$, paired with hourly self-reported symptom diaries
+over roughly a week each. After excluding participants without usable paired
+data, $6{,}530$ hours across $65$ participants remain.
+
+\paragraph{The alignment convention.} A diary row stamped $T$ describes the
+window $[T-1, T)$. This is stated once in the study documentation and is easy
+to invert; doing so shifts every label by one hour and silently degrades every
+downstream result. \texttt{io\_cops.py} re-derives the window from the filename
+and raises on mismatch, so a misaligned join cannot be constructed.
+
+\paragraph{Cohort caveat.} $46$ of $66$ participants have deep brain
+stimulation. This is an advanced, device-treated population; both the movement
+signature and the fluctuation pattern differ from newly diagnosed patients, and
+nothing here should be assumed to transfer unchanged.
+
+\section{Features}
+
+Each wrist signal is band-passed into the two bands the COPS authors themselves
+use: a movement band $0.1\text{--}3\,\mathrm{Hz}$ and a tremor band
+$4\text{--}8\,\mathrm{Hz}$. Band power, spectral ratios, and bilateral
+asymmetries are computed over $10$-minute windows, giving $122$ features.
+
+Butterworth filters of order $8$ are applied as second-order sections; the
+transfer-function form is numerically unstable at this order and returns
+\texttt{NaN} silently, which is a failure that propagates invisibly to the
+model rather than crashing.
+
+\section{Method}
+
+\subsection{Ordinal emissions}
+
+The kinesia scale is ordinal with $K=7$ levels. Following Frank and Hall we
+decompose it into $K-1$ cumulative binary problems, fit a gradient-boosted
+classifier to each, and difference the results:
+\begin{equation}
+\Pr(z = k \mid x) \;=\; \Pr(z > k-1 \mid x) - \Pr(z > k \mid x),
+\end{equation}
+enforcing monotonicity of the cumulative estimates by a running minimum before
+differencing, so no negative mass can appear.
+
+\subsection{Dividing out the prior}
+
+A discriminative classifier returns $p(z \mid x)$, but the state-space model
+below requires an emission likelihood $p(x \mid z)$. By Bayes' rule, up to a
+factor constant in $z$,
+\begin{equation}
+p(x \mid z) \;\propto\; \frac{p(z \mid x)}{p(z)} .
+\end{equation}
+Omitting the division counts the class prior twice --- once in the classifier
+and once in the chain --- which biases the posterior toward the majority state
+in a way that looks like smoothing working well.
+
+\subsection{Temporal model}
+
+Motor state is persistent, so we place a hidden Markov model over the day and
+recover the posterior by forward--backward in log space. The transition matrix
+is built as a convex combination rather than a matrix root,
+\begin{equation}
+T \;=\; (1-s)\,I + s\,B ,
+\end{equation}
+with $B$ the empirical hour-to-hour transition matrix and switch rate
+$s=0.02$. A matrix root of $B$ can contain negative entries and is not a valid
+stochastic matrix at fine time steps.
+
+Likelihoods are tempered before smoothing,
+\begin{equation}
+\tilde\ell(x \mid z) \;=\; \frac{1}{\tau}\,\log p(x \mid z), \qquad \tau = 25,
+\end{equation}
+selected on a held-out fold. Without tempering the chain is over-confident and
+the entire day collapses onto a single state.
+
+\subsection{Calibrated credible intervals}
+
+For posterior $\gamma$ at a step we take the shortest contiguous interval
+carrying mass $m$,
+\begin{equation}
+[\,\ell, u\,] \;=\; \arg\min_{u-\ell} \;\Big\{\, \textstyle\sum_{k=\ell}^{u} \gamma_k \;\ge\; m \,\Big\}.
+\end{equation}
+Crucially $m$ is \emph{not} set to the nominal $0.90$. Requesting $90\%$ of
+posterior mass does not deliver $90\%$ empirical coverage, and asserting
+otherwise is precisely the unfalsifiable claim this system exists to avoid.
+Instead $m$ is swept on participants held out of \emph{both} the emission fit
+and the test fold until achieved coverage reaches the target:
+\begin{equation}
+m^{\star} \;=\; \min\Big\{ m : \tfrac{1}{n}\textstyle\sum_i \mathbf{1}\big[\, z_i \in [\ell_i(m), u_i(m)] \,\big] \;\ge\; 0.90 \Big\}.
+\end{equation}
+This yields $m^{\star}=0.72$ and achieved coverage $0.903$.
+
+\paragraph{A bug worth reporting.} Interval mass was initially fitted on the
+raw emission posterior and applied to the smoothed HMM output. The two
+distributions have entirely different sharpness, and coverage landed at
+$0.535$ against a $0.90$ target --- which the interface would have displayed as
+``90\%''. Calibration and inference now share one code path
+(\texttt{infer\_posterior}) so the two cannot diverge.
+
+\subsection{Abstention as a fixed error budget}
+
+A step is declined when the posterior is uninformative:
+\begin{equation}
+\text{abstain} \iff \max_k \gamma_k < \pi \;\;\lor\;\; (u - \ell + 1) \ge w .
+\end{equation}
+The threshold $\pi$ is \emph{not} tuned to a target abstention rate. Doing so
+guarantees that every sensor configuration declines equally often, so a
+degraded configuration cannot exhibit degradation --- the threshold simply
+absorbs it. We observed exactly this: with one wrist blanked, abstention
+\emph{fell} from $12\%$ to $46\%$ in the wrong direction, because
+gradient-boosted trees route missing features down a default branch and return
+a \emph{sharper} posterior on strictly less evidence.
+
+Instead $\pi$ holds a fixed risk on answered steps. Writing
+$\mathcal{A}(\pi)$ for the answered set and $\hat z_i = \gamma_i^\top(0,\dots,6)$,
+\begin{equation}
+\pi^{\star} \;=\; \min\Big\{ \pi : \tfrac{1}{|\mathcal{A}(\pi)|}\textstyle\sum_{i \in \mathcal{A}(\pi)} |\hat z_i - z_i| \;\le\; \beta \Big\},
+\end{equation}
+with budget $\beta$ set by the reference configuration. A worse configuration
+can only meet $\beta$ by answering less, so the abstention rate becomes a
+consequence of measured accuracy.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Configuration} & \textbf{Mass $m^\star$} & \textbf{Coverage} & \textbf{Abstains} & \textbf{MAE answered} \\
+\midrule
+Both wrists        & $0.72$ & $0.903$ & $12.4\%$ & $0.226$ \\
+Left wrist dropped & $0.89$ & $0.904$ & $\mathbf{77.3\%}$ & $0.218$ \\
+\bottomrule
+\end{tabular}
+\caption{Calibration is fitted \emph{per sensor configuration} on $6{,}838$
+hours from $11$ held-out participants. Both hold the same error budget; the
+answer rate is what moves.}
+\end{table}
+
+\section{Results}
+
+\subsection{Tremor generalises; subjective state does not}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Target} & \textbf{Metric} & \textbf{Held-out} \\
+\midrule
+Tremor present ($\mathrm{TremorScore}>0$) & AUC & $\mathbf{0.697 \pm 0.075}$ \\
+Kinesia OFF/ON, identical folds           & AUC & $0.567$ \\
+Kinesia, 7-state reconstruction           & ordinal MAE & $0.684$ \\
+\quad constant baseline (always ``Good'') & ordinal MAE & $\mathbf{0.594}$ \\
+\quad per-participant oracle              & ordinal MAE & $0.380$ \\
+\bottomrule
+\end{tabular}
+\caption{Tremor is a $4\text{--}8\,\mathrm{Hz}$ mechanical oscillation the
+accelerometer measures directly. How well an hour \emph{felt} is a judgement
+the sensor has no access to.}
+\end{table}
+
+\subsection{Why the subjective scale fails}
+
+The cumulative classifiers reveal the mechanism. Held-out AUCs for
+$\Pr(z>k)$ are $0.428$, $0.530$, $0.587$, $0.324$, $0.455$ --- three of five
+\emph{below chance}. A classifier at $0.5$ has no signal; one at $0.324$ has
+signal pointing the wrong way. The feature-to-state mapping inverts between
+individuals, and no amount of regularisation repairs a sign that flips.
+
+Personalisation does not rescue it. Given identical hours and the \emph{same}
+calibration labels, a participant's own constant scores ordinal MAE $0.400$
+while the global model plus a per-participant offset scores $0.474$. The offset
+was learning the person's mean; the global mapping it shifted added nothing.
+
+\subsection{The model was over-featured}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lc}
+\toprule
+\textbf{Feature set} & \textbf{Held-out tremor AUC} \\
+\midrule
+All $122$ features & $0.672$ \\
+minus medication timing & $0.688$ \\
+minus medication timing and environment & $0.702$ \\
+$50$ band-power features only & $\mathbf{0.722}$ \\
+\bottomrule
+\end{tabular}
+\caption{Medication-timing features alone score $\mathrm{AUC}=0.433$ ---
+\emph{below} chance. Who takes which drug on what schedule is close to a
+participant fingerprint and cannot transfer. The shipped detector reserves a
+fifth of the training participants to fit its calibrator, costing about
+$0.025$ AUC and yielding the $0.697$ quoted throughout.}
+\end{table}
+
+\subsection{Selective prediction}
+
+Abstention earns its place only if the declined hours are the ones that would
+have been wrong.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lccc}
+\toprule
+\textbf{Answered fraction} & \textbf{$n$} & \textbf{Accuracy} & \textbf{Balanced acc.} \\
+\midrule
+$1.00$ & $6{,}291$ & $0.713$ & $0.610$ \\
+$0.75$ & $4{,}916$ & $0.758$ & $0.649$ \\
+$0.50$ & $3{,}312$ & $0.785$ & $0.687$ \\
+$0.25$ & $1{,}624$ & $\mathbf{0.825}$ & $\mathbf{0.708}$ \\
+\bottomrule
+\end{tabular}
+\caption{Balanced accuracy is reported because at $30.5\%$ prevalence raw
+accuracy can be bought by predicting the majority class.}
+\end{table}
+
+\subsection{The caveat that must be stated}
+
+Pooled out-of-fold AUC is $0.681$, but the median \emph{within-participant} AUC
+is $0.550$, above chance on $25$ of $36$ scorable participants. Much of the
+pooled figure separates tremor-dominant people from everyone else rather than a
+tremulous hour from a calm one \emph{in the same person} --- and within-person
+discrimination is what a diary requires. Both figures ship in the output
+contract.
+
+\section{What the system will not claim}
+
+The seven-point motor scale is never inferred. It is displayed as reported by
+the patient, or as an explicit abstention. On the demonstration
+participant-day, the model declines all $114$ steps, its peak posterior never
+exceeding $0.549$ against a threshold of $0.58$ fixed on other participants.
+That is the system behaving correctly.
+
+No causal claim is made. Trajectory shape around recorded medication times is
+temporal alignment, not treatment response; establishing response requires a
+controlled protocol. This is not a medical device.
+
+\section{Reproducibility}
+
+Every figure above is regenerated by a named script.
+
+\begin{center}\small
+\begin{tabular}{ll}
+\toprule
+\textbf{Script} & \textbf{Establishes} \\
+\midrule
+\texttt{baselines.py} & the constant and oracle baselines \\
+\texttt{diary\_completion.py} & the $61.6\%$ completion rate \\
+\texttt{diagnose\_deep.py} & tremor versus kinesia on identical folds \\
+\texttt{diagnose\_featureset.py} & the nine-feature-set sweep \\
+\texttt{diagnose\_fair.py} & offset versus constant given equal labels \\
+\texttt{train\_tremor.py} & the shipped detector and selective curve \\
+\texttt{make\_bundles.py} & calibration, abstention, and the output contract \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{0.6em}
+\noindent\textcolor{rule}{\rule{\textwidth}{0.6pt}}\\[0.3em]
+{\small\color{ink2}
+Data: Nesser, T.\ et al., \emph{COPS --- Continuous Observation of
+Parkinsonian Symptoms}, OSF (2025), \texttt{10.17605/OSF.IO/5XVWN}, CC-BY 4.0.
+Code: MIT. Not a medical device; no diagnostic, dosing or treatment claim is
+made.}
+
+\end{document}

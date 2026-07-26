@@ -21,6 +21,13 @@ import { Separator } from "@/components/ui/separator";
 
 const PARTICIPANT = "COPS-29";
 
+/** A study accession is not how a clinician refers to a person. */
+function patientLabel(participant: string): string {
+  const n = participant.match(/(\d+)\s*$/)?.[1];
+  return n ? `Patient ${n}` : participant;
+}
+
+
 type AbstainGroup = {
   kind: string;
   count: number;
@@ -210,6 +217,11 @@ export function ClinicianView() {
 
   const m = bundle.metrics;
   const dayLabel = bundle.day != null ? `Day ${bundle.day}` : "One day";
+  // A visit covers an interval, not a date. The bundle holds one day of that
+  // interval, and saying so is more use than a bare day number nobody can place.
+  const weekLabel = `reporting period · ${
+    bundle.series[0]?.t ?? ""
+  }–${bundle.series[bundle.series.length - 1]?.t ?? ""}, day ${bundle.day ?? "?"}`;
   const abstainPct =
     m.abstain_rate != null
       ? `${(m.abstain_rate * 100).toFixed(1)}%`
@@ -231,9 +243,10 @@ export function ClinicianView() {
               className="font-display mt-1 text-[28px] font-light leading-tight md:text-[32px]"
               style={{ color: "var(--ink)" }}
             >
-              <span className="font-mono">{bundle.participant}</span>
-              {" · "}
-              {dayLabel}
+              {patientLabel(bundle.participant)}
+              <span className="ml-3 text-[19px]" style={{ color: "var(--ink-2)" }}>
+                {weekLabel}
+              </span>
             </h1>
             <p className="mt-2 max-w-xl text-[15px] leading-snug" style={{ color: "var(--ink-2)" }}>
               Motor diary reconstruction from wrist accelerometry with calibrated
@@ -607,7 +620,7 @@ export function ClinicianView() {
           className="pb-8 text-[14px] leading-snug"
           style={{ color: "var(--ink-2)" }}
         >
-          Participant {bundle.participant}
+          Study record {bundle.participant}
           {bundle.day != null ? ` · day ${bundle.day}` : ""}
           {" · "}
           resolution {bundle.resolution_min} min

@@ -69,3 +69,9 @@ scratch/
 
 # trained model artifacts (regenerate with ml/scripts/train*.py)
 data/cops/artifacts/
+
+# LaTeX intermediates (the .tex and the built .pdf are both tracked)
+docs/whitepaper/*.aux
+docs/whitepaper/*.log
+docs/whitepaper/*.out
+.tooling/
