@@ -416,3 +416,30 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .astro-hero-video { display: none; }
 }
+
+/* The handoff prints on paper and lives on screen in the product's own dark.
+   Only the print stylesheet forces white now — the earlier cream-on-screen
+   version read as a different application, which is a high price for a
+   metaphor nobody asked for. */
+@media print {
+  .glass, .glass-lit, .glass-bar {
+    background: #fff !important;
+    backdrop-filter: none !important;
+    border: 0 !important;
+  }
+  .glass-lit::before { display: none !important; }
+}
+
+/* A measured proportion, drawn. Used in the handoff where a clinician needs to
+   see a share at a glance rather than parse a percentage in a sentence. */
+.astro-meter {
+  height: 8px;
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--ink) 12%, transparent);
+  overflow: hidden;
+}
+.astro-meter > span {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+}

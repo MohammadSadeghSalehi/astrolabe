@@ -17,7 +17,7 @@ export default function ClinicianPage() {
         <Nav />
       </div>
       <div className="mx-auto w-full max-w-[980px] flex-1 px-4 py-8 md:px-6 md:py-12">
-        <div className="clinician-light clinician-sheet">
+        <div className="glass glass-lit rounded-xl">
           <ClinicianView />
         </div>
       </div>

@@ -66,6 +66,70 @@ function groupAbstentions(rows: { t: string; reason: string }[]): AbstainGroup[]
     .sort((a, b) => b.count - a.count);
 }
 
+
+/** The day as a strip: answered, declined, and where the medicines fell.
+ *  A clinician scanning this should see the shape of the day before reading a
+ *  single figure — which is the opposite of what a paragraph achieves. */
+function DayStrip({
+  series,
+  meds,
+}: {
+  series: Bundle["series"];
+  meds: { t: string }[];
+}) {
+  if (series.length === 0) return null;
+  const W = 720;
+  const h = 34;
+  const w = W / series.length;
+  const at = (t: string) => {
+    const i = series.findIndex((s) => s.t === t);
+    return i >= 0 ? (i / series.length) * W : null;
+  };
+  return (
+    <div className="min-w-0 overflow-x-auto">
+      <svg width={W} height={h + 26} viewBox={`0 0 ${W} ${h + 26}`} role="img"
+        aria-label="The day end to end: answered windows solid, declined windows hatched, reported medicines marked.">
+        <defs>
+          <pattern id="cl-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="6" stroke="var(--ink-2)" strokeWidth="1.5" opacity="0.55" />
+          </pattern>
+        </defs>
+        {series.map((s, i) => (
+          <rect
+            key={s.t + i}
+            x={i * w}
+            y={0}
+            width={Math.max(0.6, w - 0.4)}
+            height={h}
+            fill={s.abstain ? "url(#cl-hatch)" : "var(--s1-reconstructed)"}
+            opacity={s.abstain ? 1 : 0.9}
+          />
+        ))}
+        <rect x={0} y={0} width={W} height={h} fill="none" stroke="var(--axis)" strokeWidth={1} />
+        {meds.map((m, i) => {
+          const x = at(m.t);
+          return x == null ? null : (
+            <polygon key={i} points={`${x},${h + 4} ${x + 4.5},${h + 11} ${x},${h + 18} ${x - 4.5},${h + 11}`} fill="var(--ink)" />
+          );
+        })}
+        <text x={0} y={h + 24} fontSize={14} fill="var(--ink-2)">{series[0]?.t}</text>
+        <text x={W} y={h + 24} fontSize={14} fill="var(--ink-2)" textAnchor="end">
+          {series[series.length - 1]?.t}
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+/** A share, drawn. */
+function Meter({ value, tone = "var(--brass)" }: { value: number; tone?: string }) {
+  return (
+    <div className="astro-meter mt-2" role="presentation">
+      <span style={{ width: `${Math.round(value * 100)}%`, background: tone }} />
+    </div>
+  );
+}
+
 export function ClinicianView() {
   const [bundle, setBundle] = useState<Bundle | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -180,9 +244,8 @@ export function ClinicianView() {
               className="mt-2 max-w-xl text-[15px] leading-snug"
               style={{ color: "var(--ink-2)" }}
             >
-              Set light and print-first on purpose: this is the sheet that gets
-              handed across a desk under clinic lighting, not the screen the
-              patient explores.
+              Everything below is read from the day&apos;s own record. Print it
+              and it lays out on white for the appointment.
             </p>
           </div>
           <div className="no-print flex flex-col items-end gap-2 text-[15px]">
@@ -224,6 +287,15 @@ export function ClinicianView() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            <div className="mb-6">
+              <DayStrip
+                series={bundle.series}
+                meds={bundle.events.filter((e) => e.type === "medication")}
+              />
+              <p className="mt-2 text-[15px]" style={{ color: "var(--ink-2)" }}>
+                Hatched where the model declined · diamonds are reported medicines
+              </p>
+            </div>
             <div className="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
               <Stat
                 label="Ordinal MAE"
@@ -236,7 +308,10 @@ export function ClinicianView() {
                 value={m.baseline_mae.toFixed(3)}
                 hint="always-good"
               />
-              <Stat label="Abstain rate" value={abstainPct} />
+              <div>
+                <Stat label="Abstain rate" value={abstainPct} />
+                <Meter value={m.abstain_rate ?? 0} tone="var(--ink-2)" />
+              </div>
               <Stat
                 label="Mean CI width"
                 value={
