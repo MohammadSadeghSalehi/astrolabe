@@ -260,6 +260,37 @@ body {
   animation: astro-pulse-edge 1800ms ease-in-out infinite;
 }
 
+@keyframes astro-rete-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* The hero's ambient instrument graphic. 140s per revolution — closer to a
+   sundial than a clock, so it reads as atmosphere, not a loading indicator.
+   0deg and 360deg are the same transform, so the reduced-motion override
+   above (iteration-count: 1) freezes it at a frame indistinguishable from
+   the start regardless of where in the cycle it lands. */
+.astro-rete-spin {
+  animation: astro-rete-spin 140s linear infinite;
+}
+
+/* Faint graph-paper field for hero/instrument-panel backgrounds. A scientific
+   instrument's own material, not a decorative pattern — every chart on this
+   site sits on a grid, so the page it opens on may as well. Sized so it does
+   not moiré against the timeline's own gridlines when both are on screen. */
+.astro-field {
+  background-image:
+    linear-gradient(var(--axis) 1px, transparent 1px),
+    linear-gradient(90deg, var(--axis) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center;
+  opacity: 0.22;
+}
+
 /* Clinician handoff — print-friendly */
 @media print {
   html,

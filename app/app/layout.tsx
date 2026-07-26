@@ -5,6 +5,11 @@ import "./globals.css";
 const fraunces = Fraunces({
   subsets: ["latin"],
   weight: ["300", "400"],
+  // DESIGN.md §2 names italic as the deliberate emphasis treatment for the
+  // display face. Without loading the style explicitly, next/font only ships
+  // upright glyphs and the browser fakes italic by shearing them — a
+  // synthetic slant on a typeface chosen specifically for its real one.
+  style: ["normal", "italic"],
   variable: "--font-fraunces",
   display: "swap",
 });

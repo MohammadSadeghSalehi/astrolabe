@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { HeroStrip } from "@/components/HeroStrip";
+import { AstrolabeGlyph } from "@/components/AstrolabeGlyph";
 import {
   IconDegraded,
   IconFrequency,
   IconInterval,
-  IconNotClaimed,
   IconRefusal,
   IconSensor,
 } from "@/components/icons/ScienceIcons";
@@ -17,10 +17,12 @@ export const metadata = {
 /**
  * Landing page.
  *
- * Every figure here is measured and appears in docs/FINDINGS.md. Nothing on this
- * page states a capability the model does not have — no efficacy language, no
- * "predicts your symptoms", and the negative result is given the same weight as
- * the rest rather than being buried in a footnote.
+ * Every figure here is measured and appears in docs/FINDINGS.md, or is
+ * computed straight from data/cops/derived/participants.csv (the diary
+ * completion rate — see scripts/diary_completion.py). Nothing on this page
+ * states a capability the model does not have — no efficacy language, no
+ * "predicts your symptoms" — and the negative result is given the same
+ * visual weight as the rest rather than being buried in a footnote.
  */
 
 const SCIENCE = [
@@ -71,55 +73,86 @@ export default function Home() {
     <div className="flex min-h-screen flex-col" style={{ background: "var(--page)" }}>
       <Nav />
 
-      <main className="mx-auto w-full max-w-[1280px] flex-1 px-5 py-10 md:px-6 md:py-16">
-        {/* ── hero ─────────────────────────────────────────────────────── */}
-        <section className="max-w-[62ch]">
-          <p
-            className="font-mono text-[14px] uppercase tracking-[0.14em]"
-            style={{ color: "var(--brass)" }}
-          >
-            Parkinson&apos;s motor diary
-          </p>
-          <h1
-            className="font-display mt-3 text-[34px] font-light leading-[1.12] md:text-[52px]"
-            style={{ color: "var(--ink)" }}
-          >
-            Read the hours you couldn&apos;t record
-          </h1>
-          <p
-            className="mt-5 text-[17px] leading-relaxed md:text-[19px]"
-            style={{ color: "var(--ink-2)" }}
-          >
-            The paper diary gets abandoned within days, and nobody remembers last
-            Tuesday afternoon accurately. Astrolabe reconstructs those hours from
-            a pair of wrist sensors — and tells you, hour by hour, when it does
-            not know.
-          </p>
-        </section>
-
-        <div className="mt-10 md:mt-12">
-          <HeroStrip />
+      {/* ── hero ─────────────────────────────────────────────────────────
+          overflow-hidden is load-bearing: the rete bleeds off the top-right
+          corner by design, and without it that reads as horizontal scroll
+          on narrow viewports rather than an intentional crop. */}
+      <section className="relative overflow-hidden">
+        <div
+          aria-hidden
+          className="astro-field pointer-events-none absolute inset-0"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-20 -top-24 hidden opacity-90 sm:block md:-right-16 md:-top-20"
+        >
+          <AstrolabeGlyph className="h-[340px] w-[340px] md:h-[480px] md:w-[480px]" />
         </div>
 
-        <div className="mt-8 flex flex-wrap items-center gap-4">
-          <Link
-            href="/day"
-            className="rounded-md px-6 py-3 text-[17px] font-medium transition-opacity hover:opacity-90"
-            style={{ background: "var(--brass)", color: "var(--page)" }}
-          >
-            Open a real day →
-          </Link>
-          <Link
-            href="/profile"
-            className="rounded-md border px-6 py-3 text-[17px] transition-opacity hover:opacity-90"
-            style={{ borderColor: "var(--axis)", color: "var(--ink)" }}
-          >
-            Profile &amp; devices
-          </Link>
-        </div>
+        <div className="relative mx-auto w-full max-w-[1280px] px-5 pb-14 pt-10 md:px-6 md:pb-20 md:pt-16">
+          <div className="max-w-[62ch]">
+            <p
+              className="font-mono text-[14px] uppercase tracking-[0.14em]"
+              style={{ color: "var(--brass)" }}
+            >
+              Parkinson&apos;s motor diary
+            </p>
+            <h1
+              className="font-display mt-3 text-[34px] font-light leading-[1.12] md:text-[54px]"
+              style={{ color: "var(--ink)" }}
+            >
+              Read the hours <em className="italic">you couldn&apos;t record</em>
+            </h1>
+            <p
+              className="mt-5 text-[17px] leading-relaxed md:text-[19px]"
+              style={{ color: "var(--ink-2)" }}
+            >
+              The paper diary gets abandoned within days, and nobody remembers
+              last Tuesday afternoon accurately. Astrolabe reconstructs those
+              hours from a pair of wrist sensors — and tells you, hour by
+              hour, when it does not know.
+            </p>
+          </div>
 
-        {/* ── the problem ──────────────────────────────────────────────── */}
-        <section className="mt-20 max-w-[62ch] md:mt-28">
+          <div className="mt-10 md:mt-12">
+            <HeroStrip />
+          </div>
+
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <Link
+              href="/day"
+              className="rounded-md px-6 py-3 text-[17px] font-medium transition-opacity hover:opacity-90"
+              style={{ background: "var(--brass)", color: "var(--page)" }}
+            >
+              Open a real day →
+            </Link>
+            <Link
+              href="/profile"
+              className="rounded-md border px-6 py-3 text-[17px] transition-opacity hover:opacity-90"
+              style={{ borderColor: "var(--axis)", color: "var(--ink)" }}
+            >
+              Profile &amp; devices
+            </Link>
+          </div>
+
+          {/* Trust bar — provenance, not logos. What a "as seen in" row would
+              be on a page with something more relevant to show. */}
+          <div
+            className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 border-t pt-5 font-mono text-[14px]"
+            style={{ borderColor: "var(--axis)", color: "var(--ink-2)" }}
+          >
+            <span>66 participants</span>
+            <span aria-hidden style={{ color: "var(--axis)" }}>·</span>
+            <span>CC-BY 4.0 research cohort</span>
+            <span aria-hidden style={{ color: "var(--axis)" }}>·</span>
+            <span>every figure held out of training</span>
+          </div>
+        </div>
+      </section>
+
+      <main className="mx-auto w-full max-w-[1280px] flex-1 px-5 md:px-6">
+        {/* ── the problem ────────────────────────────────────────────────── */}
+        <section className="mt-4 max-w-[62ch] md:mt-8">
           <h2
             className="font-display text-[26px] font-light md:text-[32px]"
             style={{ color: "var(--ink)" }}
@@ -130,22 +163,44 @@ export default function Home() {
             className="mt-4 text-[17px] leading-relaxed"
             style={{ color: "var(--ink-2)" }}
           >
-            Parkinson&apos;s symptoms fluctuate hour to hour. The clinic visit that
-            decides medication is a snapshot of one of those hours. The diary
-            meant to fill the gap is a chore, so it stops getting filled.
+            Parkinson&apos;s symptoms fluctuate hour to hour. The clinic visit
+            that decides medication is a snapshot of one of those hours. The
+            diary meant to fill the gap is a chore, so it stops getting
+            filled.
           </p>
           <blockquote
             className="mt-6 border-l-2 pl-5 text-[17px] italic leading-relaxed"
             style={{ borderColor: "var(--brass)", color: "var(--ink)" }}
           >
-            “My meds felt off all week. My neurologist asked when it was worse and
-            I honestly couldn&apos;t tell her. I&apos;d stopped filling in the
-            diary by Wednesday.”
+            &ldquo;My meds felt off all week. My neurologist asked when it was
+            worse and I honestly couldn&apos;t tell her. I&apos;d stopped
+            filling in the diary by Wednesday.&rdquo;
           </blockquote>
+
+          {/* The pull-quote, made checkable: this is not an anecdote, it is
+              the median in the very dataset behind this product. */}
+          <p
+            className="mt-5 text-[15px] leading-relaxed"
+            style={{ color: "var(--ink-2)" }}
+          >
+            That is not an outlier. Even with research staff supporting the
+            process,{" "}
+            <span className="font-mono" style={{ color: "var(--ink)" }}>
+              61.6%
+            </span>{" "}
+            of possible hours in this study carry a diary entry with a motor score — see{" "}
+            <code
+              className="rounded px-1 py-0.5 font-mono text-[14px]"
+              style={{ background: "var(--surface)", color: "var(--brass)" }}
+            >
+              scripts/diary_completion.py
+            </code>
+            . Unsupervised, real-world completion is unlikely to be higher.
+          </p>
         </section>
 
-        {/* ── how it works ─────────────────────────────────────────────── */}
-        <section className="mt-20 md:mt-28">
+        {/* ── how it works ───────────────────────────────────────────────── */}
+        <section className="mt-16 md:mt-24">
           <h2
             className="font-display text-[26px] font-light md:text-[32px]"
             style={{ color: "var(--ink)" }}
@@ -156,8 +211,8 @@ export default function Home() {
             className="mt-3 max-w-[62ch] text-[17px] leading-relaxed"
             style={{ color: "var(--ink-2)" }}
           >
-            Every number below is measured on people the model never trained on.
-            None of them is a simulation or a target.
+            Every number below is measured on people the model never trained
+            on. None of them is a simulation or a target.
           </p>
 
           <ol className="mt-10 grid gap-x-10 gap-y-10 md:grid-cols-2">
@@ -196,7 +251,7 @@ export default function Home() {
                       >
                         {s.stat.value}
                       </span>{" "}
-                      <span className="text-[16px]" style={{ color: "var(--ink-2)" }}>
+                      <span className="text-[15px]" style={{ color: "var(--ink-2)" }}>
                         {s.stat.unit} · {s.stat.label}
                       </span>
                     </p>
@@ -207,65 +262,60 @@ export default function Home() {
           </ol>
         </section>
 
-        {/* ── the negative result, at full weight ──────────────────────── */}
+        {/* ── the negative result, at full weight ──────────────────────────
+            Left rule in --k4, the dyskinesia arm of the diverging kinesia
+            ramp — the exact colour this panel is about, not a decorative
+            accent borrowed from elsewhere. */}
         <section
-          className="mt-20 rounded-lg border p-6 md:mt-28 md:p-10"
-          style={{ borderColor: "var(--axis)", background: "var(--surface)" }}
+          className="mt-16 rounded-lg border-l-[3px] border-y border-r p-6 md:mt-24 md:p-10"
+          style={{ borderColor: "var(--axis)", borderLeftColor: "var(--k4)", background: "var(--surface)" }}
         >
-          <div className="flex items-center gap-3">
-            <span
-              className="flex h-11 w-11 items-center justify-center rounded-md border"
-              style={{ borderColor: "var(--axis)", color: "var(--brass)" }}
-              aria-hidden
-            >
-              <IconNotClaimed />
-            </span>
-            <p
-              className="font-mono text-[14px] uppercase tracking-[0.12em]"
-              style={{ color: "var(--brass)" }}
-            >
-              06 · What it will not claim
-            </p>
-          </div>
+          <p
+            className="font-mono text-[14px] uppercase tracking-[0.12em]"
+            style={{ color: "var(--brass)" }}
+          >
+            06 · What it will not claim
+          </p>
           <h2
             className="font-display mt-3 max-w-[52ch] text-[24px] font-light leading-snug md:text-[30px]"
             style={{ color: "var(--ink)" }}
           >
-            The seven-point motor scale does not generalise across people, so we
-            do not predict it.
+            The seven-point motor scale does not generalise across people, so
+            we do not predict it.
           </h2>
           <p
             className="mt-4 max-w-[62ch] text-[16px] leading-relaxed"
             style={{ color: "var(--ink-2)" }}
           >
-            How well someone feels they moved in the last hour is a judgement, and
-            the accelerometer has no access to it. Nine feature sets over five
-            participant-level folds; none beat a constant. Held-out ordinal MAE{" "}
+            How well someone feels they moved in the last hour is a judgement,
+            and the accelerometer has no access to it. Nine feature sets over
+            five participant-level folds; none beat a constant. Held-out
+            ordinal MAE{" "}
             <span className="font-mono" style={{ color: "var(--ink)" }}>0.684</span>{" "}
             against a{" "}
             <span className="font-mono" style={{ color: "var(--ink)" }}>0.594</span>{" "}
-            always-predict-Good baseline. So that row is shown as reported by the
-            patient, or abstained — never as inferred.
+            always-predict-Good baseline. So that row is shown as reported by
+            the patient, or abstained — never as inferred.
           </p>
           <p
             className="mt-4 max-w-[62ch] text-[16px] leading-relaxed"
             style={{ color: "var(--ink-2)" }}
           >
-            On the demo day the model declines every one of the 114 steps. That is
-            the product working, not failing.
+            On the demo day the model declines every one of the 114 steps.
+            That is the product working, not failing.
           </p>
         </section>
 
-        {/* ── supplement ───────────────────────────────────────────────── */}
-        <section className="mt-20 max-w-[62ch] md:mt-28">
+        {/* ── supplement ────────────────────────────────────────────────── */}
+        <section className="mt-16 max-w-[62ch] md:mt-24">
           <h2 className="text-[19px] font-medium" style={{ color: "var(--ink)" }}>
             Technical supplement
           </h2>
           <p className="mt-3 text-[16px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
-            The dataset, the full experimental record, the negative results and the
-            two bugs that made the pipeline flatter itself are all written up in
-            the repository — including what we would need to establish anything
-            causal, which this does not.
+            The dataset, the full experimental record, the negative results
+            and the two bugs that made the pipeline flatter itself are all
+            written up in the repository — including what we would need to
+            establish anything causal, which this does not.
           </p>
           <ul className="mt-4 space-y-2 text-[16px]">
             <li>
@@ -296,18 +346,16 @@ export default function Home() {
           <p className="mt-6 text-[15px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
             Built on COPS (Nesser et al., CC-BY 4.0): 66 people with
             Parkinson&apos;s, bilateral wrist accelerometry paired with hourly
-            symptom diaries. 46 of them have deep brain stimulation, so this is an
-            advanced, device-treated cohort rather than a newly diagnosed one.
+            symptom diaries. 46 of them have deep brain stimulation, so this
+            is an advanced, device-treated cohort rather than a newly
+            diagnosed one.
           </p>
         </section>
       </main>
 
-      <footer
-        className="mx-auto w-full max-w-[1280px] px-5 py-8 text-[15px] md:px-6"
-        style={{ color: "var(--ink-2)" }}
-      >
-        Not a medical device. No diagnostic, dosing or treatment claim is made ·
-        COPS data CC-BY 4.0
+      <footer className="mx-auto w-full max-w-[1280px] px-5 py-8 text-[15px] md:px-6" style={{ color: "var(--ink-2)" }}>
+        Not a medical device. No diagnostic, dosing or treatment claim is made
+        · COPS data CC-BY 4.0
       </footer>
     </div>
   );
