@@ -160,11 +160,37 @@ export function JoinView() {
           screen under the left two thirds of the page. Height mismatch is a
           layout decision, not a content problem. */}
       <div className="mt-10 grid items-start gap-6 lg:grid-cols-2">
-        {/* ── pair a device ──────────────────────────────────────────────── */}
+        {/* ── pair a device ────────────────────────────────────────────────
+            This was the one place the product promised a future and showed
+            nothing — a dashed rectangle with a mark in it. The photograph is
+            the two research bands this model was actually trained on, beside
+            the consumer watch that comes closest today, all three with their
+            sensor windows catching the same light. It says what the sentence
+            underneath says, before the sentence is read. */}
         <section
-          className="min-w-0 rounded-lg border p-6 md:p-8"
+          className="min-w-0 overflow-hidden rounded-lg border"
           style={{ borderColor: "var(--axis)", background: "var(--surface)" }}
         >
+          <div className="relative">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/device-pairing.png"
+              alt="Two research-grade accelerometer wristbands beside an Apple Watch lying face-down, sensor arrays visible."
+              className="block aspect-[3/2] w-full object-cover"
+            />
+            {/* The card's own surface rising into the bottom of the picture, so
+                the heading below it is not sitting on a hard photographic edge. */}
+            <div
+              aria-hidden
+              className="absolute inset-x-0 bottom-0 h-2/5"
+              style={{
+                background:
+                  "linear-gradient(to top, var(--surface), transparent)",
+              }}
+            />
+          </div>
+
+          <div className="p-6 pt-4 md:p-8 md:pt-5">
           <h2 className="text-[20px] font-medium" style={{ color: "var(--ink)" }}>
             Pair your own wearable
           </h2>
@@ -202,6 +228,7 @@ export function JoinView() {
               See which devices fit →
             </a>
           </p>
+          </div>
         </section>
 
         {/* ── upload ─────────────────────────────────────────────────────── */}

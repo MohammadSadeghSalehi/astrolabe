@@ -1,11 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none" aria-hidden="true">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 220 1600 420" fill="none" aria-hidden="true">
   <!--
     where-it-stops — instrument diagram (not a photograph).
     solid = measured · dashed empty = declined.
     No type: labels live in the app/film composite.
     Tokens: page #080B11 · axis #2A3244 · brass #C8963E · ink #ECE7DB · ink-2 #8D97AB
   -->
-  <rect width="1600" height="900" fill="#080B11"/>
+  <!--
+    viewBox is cropped to the content band (above). The full 1600x900 canvas put
+    a quarter of empty ground above the rails and a third below, which made the
+    panel enormously tall for two lines of information. Geometry is unchanged —
+    only the window onto it. The wordless legend that sat at y=720 falls outside
+    it: two unlabelled swatches directly beneath the two rails they described
+    explained nothing the rails did not.
+  -->
+  <rect x="0" y="220" width="1600" height="420" fill="#080B11"/>
 
   <!-- quiet plate fragment, upper right -->
   <g stroke="#2A3244" stroke-width="1.2" opacity="0.4" transform="translate(1320 140)">

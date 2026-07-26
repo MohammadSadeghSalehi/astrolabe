@@ -459,11 +459,28 @@ body {
    there is, and it is the largest thing on the page to download. The still
    carries the same composition for a hundredth of the bytes, dimmer because
    the text runs full-width underneath it rather than beside it. */
+/* A 2:1 loop can only ever show a slice of a round object, so on a phone the
+   plate reads as an arc in the corner however it is positioned. The portrait
+   cut is the whole instrument, face on — so the box changes shape with it:
+   taller than wide, anchored to the top-right, and pulled far enough off the
+   edge that the disc is cropped rather than floating. */
 @media (max-width: 639px) {
   .astro-plate {
-    top: -1.5rem;
-    right: -4rem;
-    opacity: 0.32;
+    top: -2rem;
+    right: -7rem;
+    width: min(460px, 96vw);
+    aspect-ratio: 784 / 1168;
+    opacity: 0.34;
+    mask-image: radial-gradient(
+      ellipse 74% 62% at 46% 34%,
+      #000 36%,
+      transparent 100%
+    );
+    -webkit-mask-image: radial-gradient(
+      ellipse 74% 62% at 46% 34%,
+      #000 36%,
+      transparent 100%
+    );
   }
 }
 

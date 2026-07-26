@@ -88,8 +88,18 @@ export default function Home() {
                 codec nobody supports) falls back to the picture rather than to
                 nothing. The wrapper carries the opacity, so the two never
                 compound. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/hero-plate.png" alt="" />
+            {/* Two crops of the same instrument, not two images: landscape
+                where the hero is wide, the portrait cut where it is tall. The
+                <picture> switches source at the same 640px the CSS changes the
+                box's aspect at, so the still and the box never disagree. */}
+            <picture>
+              <source
+                media="(max-width: 639px)"
+                srcSet="/brand/hero-plate-portrait.png"
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/brand/hero-plate.png" alt="" />
+            </picture>
             <video
               className="astro-hero-video absolute inset-0 hidden sm:block"
               poster="/brand/hero-plate.png"
@@ -101,6 +111,21 @@ export default function Home() {
             >
               <source src="/brand/hero-loop.webm" type="video/webm" />
               <source src="/brand/hero-loop.mp4" type="video/mp4" />
+            </video>
+            {/* The portrait loop only ever plays on a phone, so it is the one
+                place a video is worth its bytes below sm — 128 KB, and it is
+                the whole astrolabe rather than a slice of one. */}
+            <video
+              className="astro-hero-video absolute inset-0 block sm:hidden"
+              poster="/brand/hero-plate-portrait.png"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="none"
+            >
+              <source src="/brand/hero-loop-portrait.webm" type="video/webm" />
+              <source src="/brand/hero-loop-portrait.mp4" type="video/mp4" />
             </video>
           </div>
           {/* Scrim. Two axes because the text column is on the left at desktop
@@ -232,7 +257,40 @@ export default function Home() {
             Every figure here is sourced and linked. A product page making
             epidemiological claims without citations is asking to be believed
             rather than checked, which is the opposite of the argument. */}
-        <section className="mt-16 md:mt-24" data-reveal>
+        {/* This section is the emotional argument and it was three numbers on
+            flat black, which read as a table. The photograph is unpeopled on
+            purpose: the subject is the hours nobody is there to record, and a
+            picture of a patient would make it about someone else. It is bled
+            past the content gutter and scrimmed hard, so it never competes with
+            the figures sitting on it.
+
+            The bleed matches the page gutter exactly (px-5 / md:px-6) and no
+            further. Wider looked better on a large screen and pushed the
+            document 16px past the viewport at every width between 768 and 1280,
+            where main is not yet capped — horizontal scroll on the landing
+            page, bought for 16px of photograph. */}
+        <section className="relative mt-16 md:mt-24" data-reveal>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-x-5 -inset-y-8 overflow-hidden rounded-xl md:-inset-x-6 md:-inset-y-12"
+          >
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage: "url(/brand/why-now.png)",
+                opacity: 0.28,
+              }}
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(90deg, var(--page) 6%, color-mix(in oklab, var(--page) 70%, transparent) 52%, color-mix(in oklab, var(--page) 30%, transparent) 100%), linear-gradient(to bottom, var(--page), transparent 22%, transparent 76%, var(--page))",
+              }}
+            />
+          </div>
+
+          <div className="relative">
           <h2
             className="font-display text-[26px] font-light md:text-[34px]"
             style={{ color: "var(--ink)" }}
@@ -319,6 +377,7 @@ export default function Home() {
             . Adjusting for that needs an hour-by-hour record — and the paper
             diary that is supposed to provide it is the first thing to go.
           </p>
+          </div>
         </section>
 
         <PlateRule />
@@ -536,6 +595,73 @@ export default function Home() {
               less than nothing to bring to an appointment.
             </p>
           </div>
+
+          {/* The diagram ships without type — deliberately, so it can be reused
+              in the film where titles are composited. That means the labels are
+              this page's job: an unlabelled pair of rails is a decoration, and
+              the whole point of this figure is which rail is which. Labels are
+              real text rather than baked into the SVG, so they scale, translate
+              and can be read by a screen reader. */}
+          <figure className="mt-10 hidden md:block">
+            <div className="relative">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/brand/where-it-stops.svg"
+                alt=""
+                aria-hidden
+                className="block w-full"
+              />
+              {/* Labels are HTML, not SVG <text>, and that is deliberate: text
+                  inside the diagram would scale with it, so a 15px label at
+                  desktop would render at 5px on a narrow card. These hold their
+                  size. Percentages track the cropped 1600x420 viewBox — the
+                  solid rail sits at y=300 (19%), the hairline at y=430 (50%),
+                  the dashed rail at y=560 (81%).
+
+                  Below md the diagram is 90px tall and five labels cannot live
+                  in that without colliding, so it is hidden. The two paragraphs
+                  above make the argument on their own; they always did. */}
+              <figcaption className="absolute inset-0">
+                <span
+                  className="absolute font-mono text-[15px] uppercase tracking-[0.12em]"
+                  style={{ left: "17.5%", top: "10%", color: "var(--ink)" }}
+                >
+                  Tremor
+                </span>
+                <span
+                  className="absolute text-[15px]"
+                  style={{ left: "17.5%", top: "22%", color: "var(--ink-2)" }}
+                >
+                  measured
+                </span>
+                <span
+                  className="absolute text-[15px]"
+                  style={{ left: "53%", top: "43%", color: "var(--brass)" }}
+                >
+                  a wrist sensor reaches this far
+                </span>
+                <span
+                  className="absolute font-mono text-[15px] uppercase tracking-[0.12em]"
+                  style={{ left: "17.5%", top: "69%", color: "var(--ink-2)" }}
+                >
+                  How it felt
+                </span>
+                <span
+                  className="absolute text-[15px]"
+                  style={{ left: "17.5%", top: "85%", color: "var(--ink-2)" }}
+                >
+                  declined
+                </span>
+              </figcaption>
+            </div>
+            <p className="sr-only">
+              Two parallel rails on the same axis. The upper rail, tremor, is
+              solid with three measured points on it. The lower rail, how the
+              day felt, is dashed and its points are empty — the model declines
+              it. A brass line between them marks how far a wrist sensor
+              reaches.
+            </p>
+          </figure>
         </section>
 
         <PlateRule />
