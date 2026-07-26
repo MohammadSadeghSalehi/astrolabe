@@ -202,6 +202,51 @@ an afterthought, and it is why the palette was validated with headroom.
 
 ---
 
+## 5.5 The landing page — signature elements
+
+Added when the marketing surface (`/`, `/devices`, `/profile`) was built out from
+the original instrument UI. Same tokens throughout; nothing here introduces a
+new colour.
+
+**The rete.** `components/AstrolabeGlyph.tsx` — the motif named in §2 (concentric
+circles, crossed axes, one bright pointer), actually built rather than left as a
+line in this document. Renders at `--brass` 30–90% opacity depending on layer, no
+literal pixel size (the caller sizes it via `className`, since `viewBox`-based
+CSS scaling on an element with SVG `<text>` children silently shrinks the text
+below the projector floor — see the `SampleRateGauge` note in `DevicesView.tsx`
+for the specific failure this avoids). Rotates once per 140 s via
+`.astro-rete-spin`; the existing `prefers-reduced-motion` block already freezes
+it correctly, because 0° and 360° are the same transform. Decorative only —
+`aria-hidden`, no information encoded in its state.
+
+**No atmospheric texture behind the hero.** A tiled grid was tried and removed —
+see the comment left in `globals.css` and the commit that took it out. Every
+visual treatment in this product means exactly one thing (hatch is
+reconstructed, dashes are declined, a gridline is an axis), and a decorative
+grid under a headline erodes that vocabulary on the page that teaches it. The
+rete carries identity; `HeroStrip` carries real data. Neither needed a backdrop,
+and the instinct to add one anyway is worth naming so it does not return as an
+"obvious" improvement.
+
+**Chart floor rule, restated precisely.** §5 says minimum type is 14px mono /
+16px UI. The precise failure mode to design against: an SVG sized by `viewBox` +
+CSS width (`className="w-full"`) scales its whole coordinate system, including
+any `fontSize` set on a `<text>` child, to fit the container. `getComputedStyle`
+on that text node still reports the *authored* value, not the *rendered* one, so
+no automated check catches a chart that is quietly violating the floor on a
+narrow card. Every chart in this product — `Timeline`, `TremorRow`,
+`SelectivePredictionChart`, `SampleRateGauge` — measures its container with a
+`ResizeObserver` and renders at that literal pixel width instead. If a new chart
+needs to be responsive, this is the pattern to copy; `viewBox` + `w-full` is not.
+
+**Sourced-stat discipline extends to the marketing copy.** The landing page's one
+non-model number — 61.6% diary completion in the COPS cohort itself — is
+computed by `scripts/diary_completion.py` from tracked data, the same standard
+as every other figure in the product. A landing page is not exempt from the
+project's central rule just because it is trying to be persuasive.
+
+---
+
 ## 6. Motion — the reveal
 
 The reveal is the pitch, so it gets the only real animation in the product.

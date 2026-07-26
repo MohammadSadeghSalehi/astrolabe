@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { IconSensor } from "@/components/icons/ScienceIcons";
 import { IconBilateral, IconRing } from "@/components/icons/DeviceIcons";
@@ -39,7 +40,7 @@ type Verdict = "best" | "partial" | "no";
 const VERDICT_LABEL: Record<Verdict, string> = {
   best: "Most favourable",
   partial: "Partially usable",
-  no: "Not usable for this method",
+  no: "Not usable",
 };
 const VERDICT_STYLE: Record<Verdict, React.CSSProperties> = {
   best: { color: "var(--s2-truth)", borderColor: "var(--s2-truth)" },
@@ -144,13 +145,43 @@ function Chip({ fit, label }: { fit: Fit; label: string }) {
   );
 }
 
-/** The one shared, honest chart on this page: rate vs the 16 Hz floor. */
+/**
+ * The one shared, honest chart on this page: rate vs the 16 Hz floor.
+ *
+ * Measures its own container with a ResizeObserver and renders the SVG at
+ * that literal pixel width — the pattern every other chart in this app uses
+ * (Timeline, TremorRow, SelectivePredictionChart) — rather than a fixed
+ * viewBox scaled down by CSS. Two fixed-width approaches were tried first and
+ * both failed for real, screenshotted reasons: `w-full` on a viewBox shrinks
+ * the coordinate system so an authored `fontSize={14}` renders under the
+ * floor on screen while getComputedStyle still reports 14 (CSS scaling isn't
+ * reflected there); a literal 640px width with `overflow-x-auto` fixed the
+ * text but silently clipped the 100 Hz research-grade marker — the one this
+ * whole product was built on — off the right edge of a mobile card, with
+ * nothing to signal that scrolling would reveal it. Measuring the container
+ * and drawing to fit it is the only version that is both correct and honest
+ * about what a mobile viewer actually sees without scrolling.
+ */
 function SampleRateGauge() {
-  const W = 640;
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(560);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      const w = entries[0]?.contentRect.width;
+      if (w && w > 0) setWidth(w);
+    });
+    ro.observe(el);
+    setWidth(el.clientWidth || 560);
+    return () => ro.disconnect();
+  }, []);
+
   const H = 92;
   const padL = 8;
   const padR = 8;
-  const trackW = W - padL - padR;
+  const trackW = Math.max(1, width - padL - padR);
   const maxHz = 110;
   const x = (hz: number) => padL + (hz / maxHz) * trackW;
   const floor = 16;
@@ -158,19 +189,10 @@ function SampleRateGauge() {
   const marks = DEVICES.filter((d) => d.hz != null) as (Device & { hz: number })[];
 
   return (
-    // Native pixel dimensions, not viewBox + CSS width scaling. A `viewBox`
-    // plus `w-full` would let the browser shrink the whole coordinate system
-    // to fit a narrow card, and an SVG `fontSize={14}` scales down with it —
-    // getComputedStyle still reports the authored "14px" because CSS scaling
-    // isn't reflected there, so no automated check catches text that is
-    // genuinely rendering under the floor on screen. width/height as literal
-    // attributes fix the pixel grid; overflow-x-auto handles a narrow card by
-    // scrolling the real chart rather than shrinking it under the floor.
-    <div className="min-w-0 overflow-x-auto">
+    <div ref={wrapRef} className="min-w-0">
       <svg
-        width={W}
+        width={width}
         height={H}
-        viewBox={`0 0 ${W} ${H}`}
         role="img"
         aria-label="Accelerometer sampling rate by device, against the 16 Hz theoretical floor for a 4 to 8 Hz tremor band"
       >
@@ -178,7 +200,7 @@ function SampleRateGauge() {
         <line
           x1={padL}
           y1={54}
-          x2={W - padR}
+          x2={width - padR}
           y2={54}
           stroke="var(--axis)"
           strokeWidth={2}
