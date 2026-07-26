@@ -42,7 +42,9 @@
 \titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.6em}{}
 \captionsetup{font={small,color=ink2}, labelfont={bf,color=brass}}
 \setlist{itemsep=2pt, topsep=4pt}
-\arrayrulecolor{axis}
+rrayrulecolor{axis}
+\setlength{\emergencystretch}{3em}
+\hbadness=10000
 
 % Plot defaults so every figure is one system rather than four.
 \pgfplotsset{
@@ -405,10 +407,19 @@ can test it.
 
 \vspace{0.5em}
 \noindent\textcolor{axis}{\rule{\textwidth}{0.6pt}}\\[0.3em]
-{\small\color{ink2}
-Data: Nesser, T.\ et al., \emph{COPS --- Continuous Observation of Parkinsonian
-Symptoms}, OSF (2025), \texttt{10.17605/OSF.IO/5XVWN}, CC-BY 4.0.
-Code: MIT. Not a medical device; no diagnostic, dosing or treatment claim is
-made.}
+{ootnotesize\color{ink2}
+\setlength{\parskip}{2pt}
+
+aggedright
+	extbf{Data.} Nesser, T.\ et al.,
+\emph{COPS --- Continuous Observation of Parkinsonian Symptoms}, OSF (2025).
+\href{https://doi.org/10.17605/OSF.IO/5XVWN}{doi:10.17605/OSF.IO/5XVWN}, CC-BY 4.0.
+
+	extbf{Code.} MIT.
+\href{https://github.com/MohammadSadeghSalehi/astrolabe}{github.com/MohammadSadeghSalehi/astrolabe}
+
+	extbf{Status.} Not a medical device. No diagnostic, dosing or treatment claim
+is made.
+}
 
 \end{document}

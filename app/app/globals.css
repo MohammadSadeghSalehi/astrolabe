@@ -457,3 +457,49 @@ body {
   height: 100%;
   border-radius: 4px;
 }
+
+/* ── Buttons ───────────────────────────────────────────────────────────────
+   One primary treatment. The sheen is a single sweep on hover, not a loop:
+   a control that shimmers permanently reads as a loading state.
+   ────────────────────────────────────────────────────────────────────────── */
+
+.astro-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.astro-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in oklab, #fff 34%, transparent) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  transition: transform 620ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.astro-btn:hover { transform: translateY(-1px); }
+.astro-btn:hover::after { transform: translateX(120%); }
+.astro-btn:active { transform: translateY(0); }
+
+.astro-btn-primary:hover {
+  box-shadow: 0 8px 24px -10px color-mix(in oklab, var(--brass) 70%, transparent);
+}
+
+/* Arrow nudges toward where it is taking you. */
+.astro-btn .astro-arrow {
+  display: inline-block;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.astro-btn:hover .astro-arrow { transform: translateX(3px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .astro-btn, .astro-btn::after, .astro-btn .astro-arrow { transition: none; }
+  .astro-btn:hover { transform: none; }
+}

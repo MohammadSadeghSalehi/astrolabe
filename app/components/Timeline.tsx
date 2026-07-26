@@ -271,6 +271,32 @@ export function Timeline({
     return Math.min(hours * 34 + 420, 1400);
   }, [series]);
 
+  /**
+   * Hours the patient filled in after the model declined them.
+   *
+   * This does NOT re-run the model. Nothing is re-inferred, no posterior moves,
+   * and the abstention is still an abstention — saying otherwise would be the
+   * exact overclaim this product exists to avoid. What changes is the diary:
+   * an hour that was blank now has an answer in it, from the only source that
+   * had one. The chart marks it as reported and the count of unknown hours
+   * falls, because that count is about the diary rather than about the model.
+   */
+  const reportedHours = useMemo(() => {
+    const set = new Set<string>();
+    for (const e of bundle?.events ?? []) {
+      if (e.source !== "reported") continue;
+      if (e.type === "medication") continue; // a dose is not an account of the hour
+      set.add(e.t.slice(0, 2));
+    }
+    return set;
+  }, [bundle?.events]);
+
+  const filledCount = useMemo(
+    () =>
+      series.filter((p) => p.abstain && reportedHours.has(p.t.slice(0, 2))).length,
+    [series, reportedHours],
+  );
+
   const totalRefusal =
     series.length > 0 && series.every((s) => s.abstain);
   /**
@@ -442,6 +468,7 @@ export function Timeline({
                   const x = xScale(parseTime(p.t));
                   const delay = hourOrdinal * 34;
                   hourOrdinal += 1;
+                  const filled = reportedHours.has(p.t.slice(0, 2));
                   return (
                     <line
                       key={`abs-tick-${p.t}-${i}`}
@@ -451,9 +478,9 @@ export function Timeline({
                       y1={4}
                       x2={x}
                       y2={plotH - 4}
-                      stroke="var(--ink-2)"
-                      strokeWidth={1.4}
-                      strokeDasharray="5 6"
+                      stroke={filled ? "var(--s2-truth)" : "var(--ink-2)"}
+                      strokeWidth={filled ? 2.4 : 1.4}
+                      strokeDasharray={filled ? undefined : "5 6"}
                     />
                   );
                 });
@@ -709,7 +736,9 @@ export function Timeline({
                   letterSpacing: "0.06em",
                 }}
               >
-                {`DECLINED ALL ${series.length} STEPS`}
+                {filledCount > 0
+                  ? `${series.length - filledCount} OF ${series.length} STEPS STILL UNKNOWN`
+                  : `DECLINED ALL ${series.length} STEPS`}
               </text>
               <text
                 x={plotW / 2}
@@ -730,7 +759,9 @@ export function Timeline({
                 fill="var(--ink-2)"
                 style={{ fontSize: 14 }}
               >
-                No motor state is shown because none was earned.
+                {filledCount > 0
+                  ? `You filled ${filledCount} — the model still declines them, but the diary does not.`
+                  : "No motor state is shown because none was earned."}
               </text>
             </g>
           )}

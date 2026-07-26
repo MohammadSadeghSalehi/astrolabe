@@ -191,14 +191,14 @@ export default function Home() {
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
               href="/day"
-              className="rounded-md px-6 py-3 text-[17px] font-medium transition-opacity hover:opacity-90"
+              className="astro-btn astro-btn-primary rounded-md px-6 py-3 text-[17px] font-medium"
               style={{ background: "var(--brass)", color: "var(--page)" }}
             >
-              Open a real day →
+              Open a real day <span className="astro-arrow">→</span>
             </Link>
             <Link
               href="/join"
-              className="rounded-md border px-6 py-3 text-[17px] transition-opacity hover:opacity-90"
+              className="astro-btn rounded-md border px-6 py-3 text-[17px]"
               style={{ borderColor: "var(--brass)", color: "var(--brass)" }}
             >
               Try it on a recording
@@ -210,6 +210,99 @@ export default function Home() {
       </section>
 
       <main className="mx-auto w-full max-w-[1280px] flex-1 px-5 md:px-6">
+        {/* ── why this, and why now ────────────────────────────────────────
+            Every figure here is sourced and linked. A product page making
+            epidemiological claims without citations is asking to be believed
+            rather than checked, which is the opposite of the argument. */}
+        <section className="mt-16 md:mt-24">
+          <h2
+            className="font-display text-[26px] font-light md:text-[34px]"
+            style={{ color: "var(--ink)" }}
+          >
+            The fastest-growing neurological condition in the world
+          </h2>
+          <p
+            className="mt-4 max-w-[64ch] text-[17px] leading-relaxed"
+            style={{ color: "var(--ink-2)" }}
+          >
+            And the one whose day-to-day management depends most on knowing
+            <em> when</em> symptoms happen — which is exactly what nobody
+            currently records.
+          </p>
+
+          <dl className="mt-9 grid gap-x-8 gap-y-8 sm:grid-cols-3">
+            {[
+              {
+                fig: "11.8M",
+                head: "people living with Parkinson’s",
+                foot: "up 274% since 1990",
+                href: "https://www.sciencedirect.com/science/article/pii/S2666756824000941",
+                cite: "Lancet Healthy Longevity, 2024",
+              },
+              {
+                fig: "25.2M",
+                head: "projected by 2050",
+                foot: "a 112% rise on 2021",
+                href: "https://bmjgroup.com/cases-of-parkinsons-disease-set-to-reach-25-million-worldwide-by-2050/",
+                cite: "BMJ, 2025",
+              },
+              {
+                fig: "60–90%",
+                head: "develop motor fluctuations",
+                foot: "within 5–10 years of levodopa treatment",
+                href: "https://pmc.ncbi.nlm.nih.gov/articles/PMC4634347/",
+                cite: "Parkinson’s Disease and Its Management, 2015",
+              },
+            ].map((m) => (
+              <div key={m.fig} className="min-w-0">
+                <dt
+                  className="font-mono text-[32px] leading-none tabular-nums md:text-[40px]"
+                  style={{ color: "var(--brass-hi)" }}
+                >
+                  {m.fig}
+                </dt>
+                <dd className="mt-2.5">
+                  <span className="block text-[17px] leading-snug" style={{ color: "var(--ink)" }}>
+                    {m.head}
+                  </span>
+                  <span className="mt-1 block text-[15px] leading-snug" style={{ color: "var(--ink-2)" }}>
+                    {m.foot}
+                  </span>
+                  <a
+                    href={m.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-1.5 inline-block text-[14px] underline underline-offset-4"
+                    style={{ color: "var(--brass)" }}
+                  >
+                    {m.cite}
+                  </a>
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          <p
+            className="mt-9 max-w-[70ch] text-[17px] leading-relaxed"
+            style={{ color: "var(--ink-2)" }}
+          >
+            Once fluctuations begin, treatment becomes a timing problem: the same
+            dose helps at one hour and not the next. Among people who experience
+            OFF periods, roughly a quarter live with them{" "}
+            <a
+              href="https://pubmed.ncbi.nlm.nih.gov/37517986/"
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-4"
+              style={{ color: "var(--brass)" }}
+            >
+              three to six hours a day
+            </a>
+            . Adjusting for that needs an hour-by-hour record — and the paper
+            diary that is supposed to provide it is the first thing to go.
+          </p>
+        </section>
+
         {/* ── the problem ────────────────────────────────────────────────── */}
         <section className="mt-4 max-w-[62ch] md:mt-8">
           <h2

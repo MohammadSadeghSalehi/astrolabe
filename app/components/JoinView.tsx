@@ -239,7 +239,7 @@ export function JoinView() {
             <button
               type="button"
               onClick={() => fileRef.current?.click()}
-              className="mt-3 min-h-[44px] rounded-md px-5 text-[16px] font-medium"
+              className="astro-btn astro-btn-primary mt-3 min-h-[44px] rounded-md px-5 text-[16px] font-medium"
               style={{ background: "var(--brass)", color: "var(--page)" }}
             >
               Choose a file
@@ -274,11 +274,16 @@ export function JoinView() {
           )}
 
           <p className="mt-6 text-[15px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
-            No bundle to hand? The demo participant is in the repository at{" "}
-            <span className="font-mono" style={{ color: "var(--brass)" }}>
-              contract/COPS-29.json
-            </span>{" "}
-            — download it and drop it in.
+            No file to hand?{" "}
+            <a
+              href="/sample-bundle-COPS-29.json"
+              download="astrolabe-COPS-29.json"
+              className="underline underline-offset-4"
+              style={{ color: "var(--brass)" }}
+            >
+              Download a sample bundle
+            </a>{" "}
+            and drop it back in — it is the same recording the demo runs on.
           </p>
         </section>
 
@@ -391,7 +396,7 @@ export function JoinView() {
             <button
               type="submit"
               disabled={!accepted || status.k === "busy"}
-              className="min-h-[48px] rounded-md px-6 text-[17px] font-medium transition-opacity"
+              className="astro-btn astro-btn-primary min-h-[48px] rounded-md px-6 text-[17px] font-medium"
               style={{
                 background: accepted ? "var(--brass)" : "var(--grid)",
                 color: accepted ? "var(--page)" : "var(--ink-2)",
