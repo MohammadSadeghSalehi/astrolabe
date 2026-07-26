@@ -158,11 +158,19 @@ function SampleRateGauge() {
   const marks = DEVICES.filter((d) => d.hz != null) as (Device & { hz: number })[];
 
   return (
+    // Native pixel dimensions, not viewBox + CSS width scaling. A `viewBox`
+    // plus `w-full` would let the browser shrink the whole coordinate system
+    // to fit a narrow card, and an SVG `fontSize={14}` scales down with it —
+    // getComputedStyle still reports the authored "14px" because CSS scaling
+    // isn't reflected there, so no automated check catches text that is
+    // genuinely rendering under the floor on screen. width/height as literal
+    // attributes fix the pixel grid; overflow-x-auto handles a narrow card by
+    // scrolling the real chart rather than shrinking it under the floor.
     <div className="min-w-0 overflow-x-auto">
       <svg
+        width={W}
+        height={H}
         viewBox={`0 0 ${W} ${H}`}
-        className="block w-full"
-        style={{ minWidth: 420 }}
         role="img"
         aria-label="Accelerometer sampling rate by device, against the 16 Hz theoretical floor for a 4 to 8 Hz tremor band"
       >

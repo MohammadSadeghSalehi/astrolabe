@@ -278,18 +278,15 @@ body {
   animation: astro-rete-spin 140s linear infinite;
 }
 
-/* Faint graph-paper field for hero/instrument-panel backgrounds. A scientific
-   instrument's own material, not a decorative pattern — every chart on this
-   site sits on a grid, so the page it opens on may as well. Sized so it does
-   not moiré against the timeline's own gridlines when both are on screen. */
-.astro-field {
-  background-image:
-    linear-gradient(var(--axis) 1px, transparent 1px),
-    linear-gradient(90deg, var(--axis) 1px, transparent 1px);
-  background-size: 56px 56px;
-  background-position: center;
-  opacity: 0.22;
-}
+/* No decorative graph-paper field here — deliberately.
+
+   A tiled hairline grid behind a marketing hero is a generated-landing-page
+   signature, and on this site specifically it is off-thesis: every visual
+   treatment we use means something. Hatch means reconstructed, dashes mean
+   declined, a gridline means an axis a value is read against. A grid behind a
+   headline is read against nothing, so it spends the vocabulary without
+   carrying anything, and weakens the treatments that do. The hero already has
+   a real data surface in HeroStrip and the instrument glyph for identity. */
 
 /* Clinician handoff — print-friendly */
 @media print {

@@ -80,10 +80,6 @@ export default function Home() {
       <section className="relative overflow-hidden">
         <div
           aria-hidden
-          className="astro-field pointer-events-none absolute inset-0"
-        />
-        <div
-          aria-hidden
           className="pointer-events-none absolute -right-20 -top-24 hidden opacity-90 sm:block md:-right-16 md:-top-20"
         >
           <AstrolabeGlyph className="h-[340px] w-[340px] md:h-[480px] md:w-[480px]" />
