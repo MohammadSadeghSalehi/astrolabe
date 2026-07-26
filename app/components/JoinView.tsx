@@ -135,7 +135,7 @@ export function JoinView() {
         </p>
       </header>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-[1.05fr_1fr]">
+      <div className="mt-12 grid items-start gap-6 lg:grid-cols-[1.05fr_1fr]">
         {/* ── upload ─────────────────────────────────────────────────────── */}
         <section
           className="min-w-0 rounded-lg border p-6 md:p-8"
