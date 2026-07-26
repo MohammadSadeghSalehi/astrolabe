@@ -62,7 +62,7 @@ type Device = {
 const DEVICES: Device[] = [
   {
     name: "Apple Watch",
-    art: "dev-watch.svg",
+    art: "render-watch.png",
     kind: "Wrist · watchOS",
     verdict: "best",
     rawAccel: "full",
@@ -73,7 +73,7 @@ const DEVICES: Device[] = [
   },
   {
     name: "Galaxy Watch",
-    art: "dev-watch.svg",
+    art: "render-watch.png",
     kind: "Wrist · Wear OS 4+",
     verdict: "partial",
     rawAccel: "full",
@@ -84,7 +84,7 @@ const DEVICES: Device[] = [
   },
   {
     name: "Oura Ring",
-    art: "dev-ring.svg",
+    art: "render-ring.png",
     kind: "Finger · ring",
     verdict: "no",
     rawAccel: "none",
@@ -95,7 +95,7 @@ const DEVICES: Device[] = [
   },
   {
     name: "Research actigraphy",
-    art: "dev-band.svg",
+    art: "render-band.png",
     kind: "Both wrists · GENEActiv, Axivity",
     verdict: "best",
     rawAccel: "full",
@@ -328,21 +328,25 @@ export function DevicesView() {
             style={{ borderColor: "var(--axis)", background: "var(--surface)" }}
           >
             <div className="flex items-start justify-between gap-2">
-              <span
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border"
-                style={{ borderColor: "var(--axis)" }}
+              {/* A photograph of the object, not a pictogram of it. Devices
+                  that cannot supply what this needs are desaturated rather
+                  than hidden — the card still shows you what it is talking
+                  about, and the state is in the treatment. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`/brand/${d.art}`}
+                alt=""
                 aria-hidden
-              >
-                <span
-                  className="block h-7 w-7"
-                  style={{
-                    backgroundColor:
-                      d.verdict === "no" ? "var(--ink-2)" : "var(--brass)",
-                    mask: `url(/brand/${d.art}) center / contain no-repeat`,
-                    WebkitMask: `url(/brand/${d.art}) center / contain no-repeat`,
-                  }}
-                />
-              </span>
+                width={72}
+                height={72}
+                className="h-16 w-16 shrink-0 object-contain md:h-[72px] md:w-[72px]"
+                style={{
+                  filter:
+                    d.verdict === "no"
+                      ? "grayscale(1) brightness(0.72)"
+                      : "saturate(1.05)",
+                }}
+              />
               <span
                 className="rounded border px-2 py-0.5 text-right font-mono text-[14px] leading-tight"
                 style={VERDICT_STYLE[d.verdict]}
@@ -472,7 +476,7 @@ export function DevicesView() {
           className="rounded-md px-6 py-3 text-[17px] font-medium transition-opacity hover:opacity-90"
           style={{ background: "var(--brass)", color: "var(--page)" }}
         >
-          See the day →
+          Open the timeline →
         </Link>
         <Link
           href="/profile"

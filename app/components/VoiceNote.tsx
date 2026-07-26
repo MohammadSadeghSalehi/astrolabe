@@ -563,7 +563,7 @@ export function VoiceNote() {
             </label>
 
             <label className="block text-[15px]" style={{ color: "var(--ink-2)" }}>
-              Drug
+              Medicine
               <input
                 type="text"
                 value={draft.drug}

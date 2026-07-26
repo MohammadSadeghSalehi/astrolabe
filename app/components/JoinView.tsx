@@ -178,8 +178,8 @@ export function JoinView() {
               className="inline-block h-6 w-6"
               style={{
                 backgroundColor: "var(--brass)",
-                mask: "url(/brand/dev-watch.svg) center / contain no-repeat",
-                WebkitMask: "url(/brand/dev-watch.svg) center / contain no-repeat",
+                mask: "url(/brand/astrolabe-mark-v2.svg) center / contain no-repeat",
+                WebkitMask: "url(/brand/astrolabe-mark-v2.svg) center / contain no-repeat",
               }}
               aria-hidden
             />

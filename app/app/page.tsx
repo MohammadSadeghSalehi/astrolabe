@@ -69,17 +69,34 @@ export default function Home() {
           corner by design, and without it that reads as horizontal scroll
           on narrow viewports rather than an intentional crop. */}
       <section className="relative overflow-hidden">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-20 -top-24 hidden opacity-90 sm:block md:-right-16 md:-top-20"
-        >
-          <AstrolabeGlyph className="h-[340px] w-[340px] md:h-[480px] md:w-[480px]" />
+        {/* Ambient only. It sits under the headline at low opacity, is muted,
+            and is hidden from assistive tech — it carries no information. */}
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <video
+            className="astro-hero-video h-full w-full object-cover"
+            poster="/brand/hero-plate.png"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+          >
+            <source src="/brand/hero-loop.webm" type="video/webm" />
+            <source src="/brand/hero-loop.mp4" type="video/mp4" />
+          </video>
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(90deg, var(--page) 12%, color-mix(in oklab, var(--page) 72%, transparent) 46%, transparent 78%), linear-gradient(to top, var(--page) 2%, transparent 42%)",
+            }}
+          />
         </div>
 
         <div className="relative mx-auto w-full max-w-[1280px] px-5 pb-14 pt-10 md:px-6 md:pb-20 md:pt-16">
           <div className="max-w-[64ch]">
             <p
-              className="font-mono text-[14px] uppercase tracking-[0.14em]"
+              className="font-mono text-[17px] uppercase tracking-[0.22em] md:text-[20px]"
               style={{ color: "var(--brass)" }}
             >
               Parkinson&apos;s motor diary
@@ -104,40 +121,58 @@ export default function Home() {
           {/* The claim, stated as three measured facts rather than adjectives.
               Each carries its comparator, because a number without one is a
               decoration. */}
-          <dl className="mt-10 grid max-w-[68ch] gap-x-10 gap-y-7 sm:grid-cols-3">
+          <dl className="mt-11 grid gap-x-8 gap-y-8 sm:grid-cols-3">
             {[
               {
-                v: "0.903",
-                k: "Its 90% range really is 90%",
-                s: "measured on people it never trained on, not assumed",
+                head: "When it says nine times in ten, it means it",
+                fig: "90.3%",
+                foot: "of the time the truth fell inside the range it drew — aiming at 90%",
               },
               {
-                v: "6×",
-                k: "More cautious when a sensor drops",
-                s: "declines 12.4% of hours → 77.3%, same error budget",
+                head: "It gets quieter when the evidence gets thinner",
+                fig: "6×",
+                foot: "more hours declined on one wrist than two, rather than guessing on",
               },
               {
-                v: "+11 pts",
-                k: "More accurate the less it answers",
-                s: "0.713 → 0.825 as it keeps only what it is sure of",
+                head: "It is right more often when it says less",
+                fig: "+11 pts",
+                foot: "accuracy on the hours it keeps, versus answering everything",
               },
             ].map((m) => (
-              <div key={m.v} className="min-w-0">
-                <dt
-                  className="font-mono text-[32px] leading-none tabular-nums md:text-[40px]"
-                  style={{ color: "var(--brass-hi)" }}
-                >
-                  {m.v}
+              <div key={m.fig} className="min-w-0">
+                <dt className="text-[18px] font-medium leading-snug" style={{ color: "var(--ink)" }}>
+                  {m.head}
                 </dt>
-                <dd className="mt-2.5 text-[17px] leading-snug" style={{ color: "var(--ink)" }}>
-                  {m.k}
-                  <span className="mt-1 block text-[15px]" style={{ color: "var(--ink-2)" }}>
-                    {m.s}
+                <dd className="mt-3">
+                  <span
+                    className="font-mono text-[34px] leading-none tabular-nums md:text-[40px]"
+                    style={{ color: "var(--brass-hi)" }}
+                  >
+                    {m.fig}
+                  </span>
+                  <span className="mt-2 block text-[15px] leading-snug" style={{ color: "var(--ink-2)" }}>
+                    {m.foot}
                   </span>
                 </dd>
               </div>
             ))}
           </dl>
+
+          <ul className="mt-11 flex flex-wrap gap-2.5">
+            {[
+              { t: "Bayesian inference over the whole day", d: 0 },
+              { t: "Ranges checked against held-out truth", d: 110 },
+              { t: "No language model near a prediction", d: 220 },
+            ].map((c) => (
+              <li
+                key={c.t}
+                className="glass glass-lit astro-chip rounded-full px-4 py-2 text-[15px]"
+                style={{ color: "var(--ink)", animationDelay: `${c.d}ms` }}
+              >
+                {c.t}
+              </li>
+            ))}
+          </ul>
 
           <div className="mt-10 md:mt-12">
             <HeroDay />
@@ -160,18 +195,7 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Provenance, not logos. What an "as seen in" row would be on a page
-              with something more relevant to show. */}
-          <div
-            className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 border-t pt-5 font-mono text-[14px]"
-            style={{ borderColor: "var(--axis)", color: "var(--ink-2)" }}
-          >
-            <span>Bayesian state inference over the day</span>
-            <span aria-hidden style={{ color: "var(--axis)" }}>·</span>
-            <span>intervals calibrated against held-out truth</span>
-            <span aria-hidden style={{ color: "var(--axis)" }}>·</span>
-            <span>no language model anywhere near a prediction</span>
-          </div>
+
         </div>
       </section>
 
@@ -325,88 +349,76 @@ export default function Home() {
             ramp — the exact colour this panel is about, not a decorative
             accent borrowed from elsewhere. */}
         <section
-          className="mt-16 rounded-lg border-l-[3px] border-y border-r p-6 md:mt-24 md:p-10"
-          style={{ borderColor: "var(--axis)", borderLeftColor: "var(--k4)", background: "var(--surface)" }}
+          className="glass glass-lit mt-16 rounded-xl p-6 md:mt-24 md:p-12"
         >
           <p
-            className="font-mono text-[14px] uppercase tracking-[0.12em]"
+            className="font-mono text-[15px] uppercase tracking-[0.16em]"
             style={{ color: "var(--brass)" }}
           >
-            What it will not claim
+            Where it stops
           </p>
           <h2
-            className="font-display mt-3 max-w-[52ch] text-[24px] font-light leading-snug md:text-[30px]"
+            className="font-display mt-4 max-w-[26ch] text-[26px] font-light leading-[1.15] md:text-[38px]"
             style={{ color: "var(--ink)" }}
           >
-            The seven-point motor scale does not generalise across people, so
-            we do not predict it.
+            It can tell you about your tremor. It cannot tell you how your day
+            felt.
           </h2>
-          <p
-            className="mt-4 max-w-[62ch] text-[16px] leading-relaxed"
-            style={{ color: "var(--ink-2)" }}
-          >
-            How well someone feels they moved in the last hour is a judgement,
-            and the accelerometer has no access to it. Nine feature sets over
-            five participant-level folds; none beat a constant. Held-out
-            ordinal MAE{" "}
-            <span className="font-mono" style={{ color: "var(--ink)" }}>0.684</span>{" "}
-            against a{" "}
-            <span className="font-mono" style={{ color: "var(--ink)" }}>0.594</span>{" "}
-            always-predict-Good baseline. So that row is shown as reported by
-            the patient, or abstained — never as inferred.
-          </p>
-          <p
-            className="mt-4 max-w-[62ch] text-[16px] leading-relaxed"
-            style={{ color: "var(--ink-2)" }}
-          >
-            On the demo day the model declines every one of the 114 steps.
-            That is the product working, not failing.
-          </p>
+          <div className="mt-7 grid max-w-[80ch] gap-x-12 gap-y-6 md:grid-cols-2">
+            <p className="text-[17px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+              Tremor is movement, and movement is something a sensor on your
+              wrist can measure. Whether an hour felt good or bad is a judgement
+              you make — about stiffness, effort, how your body answered you —
+              and no accelerometer has access to that. We tried hard to predict
+              it anyway and could not beat simply guessing &ldquo;a good
+              hour&rdquo; every time.
+            </p>
+            <p className="text-[17px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+              So we do not predict it. That row of your diary stays yours: what
+              you reported, or an honest blank. A tool that filled it in with a
+              confident guess would be more comfortable to look at and worth
+              less than nothing to bring to an appointment.
+            </p>
+          </div>
         </section>
 
         {/* ── supplement ────────────────────────────────────────────────── */}
-        <section className="mt-16 max-w-[62ch] md:mt-24">
-          <h2 className="text-[19px] font-medium" style={{ color: "var(--ink)" }}>
-            Technical supplement
+        <section className="mt-16 max-w-[68ch] md:mt-24">
+          <h2
+            className="font-display text-[24px] font-light md:text-[30px]"
+            style={{ color: "var(--ink)" }}
+          >
+            Check the work
           </h2>
-          <p className="mt-3 text-[16px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
-            The dataset, the full experimental record, the negative results
-            and the two bugs that made the pipeline flatter itself are all
-            written up in the repository — including what we would need to
-            establish anything causal, which this does not.
+          <p className="mt-4 text-[17px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+            Every figure on this page is reproducible from the repository,
+            including the results that went against us and the two bugs we found
+            making our own pipeline look better than it was. If something here
+            seems too good, the workings are open.
           </p>
-          <ul className="mt-4 space-y-2 text-[16px]">
-            <li>
-              <a
-                href="https://github.com/MohammadSadeghSalehi/astrolabe/blob/main/docs/FINDINGS.md"
-                className="underline underline-offset-4"
-                style={{ color: "var(--brass)" }}
-              >
-                docs/FINDINGS.md
-              </a>{" "}
-              <span style={{ color: "var(--ink-2)" }}>
-                — what generalises across people, and what does not
-              </span>
-            </li>
-            <li>
-              <a
-                href="https://github.com/MohammadSadeghSalehi/astrolabe/blob/main/docs/DATA.md"
-                className="underline underline-offset-4"
-                style={{ color: "var(--brass)" }}
-              >
-                docs/DATA.md
-              </a>{" "}
-              <span style={{ color: "var(--ink-2)" }}>
-                — the COPS cohort, its quirks and its limits
-              </span>
-            </li>
-          </ul>
-          <p className="mt-6 text-[15px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
-            Built on COPS (Nesser et al., CC-BY 4.0): 66 people with
-            Parkinson&apos;s, bilateral wrist accelerometry paired with hourly
-            symptom diaries. 46 of them have deep brain stimulation, so this
-            is an advanced, device-treated cohort rather than a newly
-            diagnosed one.
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a
+              href="https://github.com/MohammadSadeghSalehi/astrolabe/blob/main/docs/FINDINGS.md"
+              className="glass glass-lit rounded-lg px-5 py-3 text-[16px]"
+              style={{ color: "var(--ink)" }}
+            >
+              What held up, and what didn&apos;t →
+            </a>
+            <a
+              href="https://github.com/MohammadSadeghSalehi/astrolabe"
+              className="glass glass-lit rounded-lg px-5 py-3 text-[16px]"
+              style={{ color: "var(--ink)" }}
+            >
+              Source code →
+            </a>
+          </div>
+          <p className="mt-7 text-[15px] leading-relaxed" style={{ color: "var(--ink-2)" }}>
+            Built on an open clinical study of 66 people living with
+            Parkinson&apos;s, who wore sensors on both wrists and kept an hourly
+            diary for about a week each. Two thirds of them have a deep brain
+            stimulator, so this is an advanced group rather than a newly
+            diagnosed one — and what works here may not transfer unchanged to
+            someone at the start of the condition.
           </p>
         </section>
       </main>

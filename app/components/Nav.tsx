@@ -28,13 +28,10 @@ export function Nav({ light = false }: { light?: boolean }) {
   const ink2 = light ? "var(--ink-2-light)" : "var(--ink-2)";
   const surface = light ? "var(--surface-light)" : "var(--surface)";
 
+
   return (
     <nav
-      className="w-full border-b"
-      style={{
-        borderColor: "var(--axis)",
-        background: surface,
-      }}
+      className={`glass-bar sticky top-0 z-50 w-full${light ? " nav-light" : ""}`}
     >
       <div className="mx-auto flex w-full max-w-[1280px] items-center justify-between gap-x-6 px-5 py-3 md:px-6">
         <Link
@@ -44,17 +41,17 @@ export function Nav({ light = false }: { light?: boolean }) {
           onClick={() => setOpen(false)}
         >
           <span
-            className="inline-block h-7 w-7 shrink-0"
+            className="inline-block h-8 w-8 shrink-0 md:h-9 md:w-9"
             style={{
               backgroundColor: "var(--brass)",
-              mask: "url(/brand/astrolabe-mark.svg) center / contain no-repeat",
+              mask: "url(/brand/astrolabe-mark-v2.svg) center / contain no-repeat",
               WebkitMask:
-                "url(/brand/astrolabe-mark.svg) center / contain no-repeat",
+                "url(/brand/astrolabe-mark-v2.svg) center / contain no-repeat",
             }}
             aria-hidden
           />
           <span
-            className="text-[14px] font-medium uppercase tracking-[0.14em]"
+            className="text-[19px] font-medium uppercase tracking-[0.2em] md:text-[22px]"
             style={{ color: "var(--brass)" }}
           >
             Astrolabe

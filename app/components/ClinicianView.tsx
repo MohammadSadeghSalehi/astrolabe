@@ -440,7 +440,7 @@ export function ClinicianView() {
                     >
                       <th className="py-2 pr-3 font-medium">Time</th>
                       <th className="py-2 pr-3 font-medium">Type</th>
-                      <th className="py-2 pr-3 font-medium">Drug</th>
+                      <th className="py-2 pr-3 font-medium">Medicine</th>
                       <th className="py-2 pr-3 font-medium">Dose (mg)</th>
                       <th className="py-2 font-medium">Source</th>
                     </tr>

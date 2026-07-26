@@ -158,6 +158,50 @@ export function RevealWipe({
     window.addEventListener("pointerup", onUp);
   };
 
+  /**
+   * Show the handle what it does, once.
+   *
+   * The reveal is the central interaction and it looks like a decorative rule
+   * until someone happens to drag it. So on first arrival it demonstrates
+   * itself: a short travel out and back, ending exactly where it started so
+   * nothing is left revealed and the visitor is not handed a changed state they
+   * did not ask for. Once per session — a hint that repeats is a nag — and
+   * never under reduced motion, where the same information is in the label.
+   */
+  const hinted = useRef(false);
+  useEffect(() => {
+    if (!valid || hinted.current) return;
+    if (typeof window === "undefined") return;
+    if (sessionStorage.getItem("astrolabe.reveal-hinted") === "1") return;
+    if (prefersReducedMotion()) return;
+    hinted.current = true;
+    sessionStorage.setItem("astrolabe.reveal-hinted", "1");
+
+    let cancelled = false;
+    const t = window.setTimeout(() => {
+      if (cancelled) return;
+      const out = animate(0, 0.28, {
+        duration: 0.9,
+        ease: [0.22, 1, 0.36, 1],
+        onUpdate: (v) => onRevealX(v),
+        onComplete: () => {
+          if (cancelled) return;
+          animate(0.28, 0, {
+            duration: 0.7,
+            ease: [0.4, 0, 0.2, 1],
+            onUpdate: (v) => onRevealX(v),
+          });
+        },
+      });
+      void out;
+    }, 1400);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(t);
+    };
+  }, [valid, onRevealX]);
+
   useEffect(() => {
     if (!valid) return;
     const onKey = (e: KeyboardEvent) => {

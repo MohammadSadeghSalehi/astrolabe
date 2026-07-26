@@ -204,7 +204,7 @@ export function ProfileView() {
                 className="mt-3 inline-flex min-h-[44px] items-center rounded-md border px-4 py-2 text-[16px]"
                 style={{ borderColor: "var(--axis)", color: "var(--ink)" }}
               >
-                Which devices could work →
+                See what could work →
               </Link>
             </div>
           </div>
@@ -325,7 +325,7 @@ export function ProfileView() {
           className="rounded-md px-6 py-3 text-[17px] font-medium transition-opacity hover:opacity-90"
           style={{ background: "var(--brass)", color: "var(--page)" }}
         >
-          See the day →
+          Open the timeline →
         </Link>
       </div>
     </main>

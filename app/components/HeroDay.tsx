@@ -82,7 +82,11 @@ export function HeroDay() {
 
   const model = useMemo(() => {
     if (!bundle) return null;
-    const hours = bundle.series.filter((s) => s.t.endsWith(":00"));
+    const idxs: number[] = [];
+    bundle.series.forEach((s, i) => {
+      if (s.t.endsWith(":00")) idxs.push(i);
+    });
+    const hours = idxs.map((i) => bundle.series[i]!);
     if (hours.length < 2) return null;
 
     const x = (i: number) => (i / (hours.length - 1)) * plotW;
@@ -108,10 +112,7 @@ export function HeroDay() {
 
     // The diary's own answer, as a rail beneath — the thing being swept in.
     const truth = bundle.tremor_truth ?? [];
-    const rail = hours.map((s, i) => {
-      const idx = bundle.series.indexOf(s);
-      return { i, v: truth[idx] ?? null, x: x(i) };
-    });
+    const rail = idxs.map((orig, i) => ({ i, v: truth[orig] ?? null, x: x(i) }));
 
     const meds = bundle.events
       .filter((e) => e.type === "medication")
@@ -195,12 +196,12 @@ export function HeroDay() {
                         x={r.x}
                         y={plotH + 10}
                         width={Math.max(2, model.step - 3)}
-                        height={9}
+                        height={11}
                         rx={2}
-                        fill={r.v === 1 ? "var(--s2-truth)" : "none"}
+                        fill={r.v === 1 ? "var(--s2-truth)" : "transparent"}
                         stroke="var(--s2-truth)"
-                        strokeWidth={1.25}
-                        opacity={r.v === 1 ? 0.95 : 0.45}
+                        strokeWidth={r.v === 1 ? 0 : 1.4}
+                        opacity={r.v === 1 ? 1 : 0.5}
                       />
                     ),
                   )}
