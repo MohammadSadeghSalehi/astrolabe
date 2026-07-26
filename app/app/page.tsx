@@ -18,7 +18,8 @@ export const metadata = {
  *
  * Every figure here is measured and appears in docs/FINDINGS.md, or is
  * computed straight from data/cops/derived/participants.csv (the diary
- * completion rate — see scripts/diary_completion.py). Nothing on this page
+ * completion rate — see scripts/diary_completion.py; that provenance belongs
+ * in this comment, not in the rendered copy). Nothing on this page
  * states a capability the model does not have — no efficacy language, no
  * "predicts your symptoms" — and the negative result is given the same
  * visual weight as the rest rather than being buried in a footnote.
@@ -349,24 +350,33 @@ export default function Home() {
           </blockquote>
 
           {/* The pull-quote, made checkable: this is not an anecdote, it is
-              the median in the very dataset behind this product. */}
+              the median in the very dataset behind this product.
+
+              Checkable, but not by filename. This used to end in a code path in
+              a <code> tag, which reads as a note one engineer left another —
+              wrong register for a page a person with Parkinson's may be reading,
+              and it makes the sentence stop on jargon rather than on the point.
+              The claim still carries its provenance; the route to verifying it
+              is the technical report, in words. */}
           <p
             className="mt-5 text-[15px] leading-relaxed"
             style={{ color: "var(--ink-2)" }}
           >
             That is not an outlier. Even with research staff supporting the
-            process,{" "}
+            process, only{" "}
             <span className="font-mono" style={{ color: "var(--ink)" }}>
               61.6%
             </span>{" "}
-            of possible hours in this study carry a diary entry with a motor score — see{" "}
-            <code
-              className="rounded px-1 py-0.5 font-mono text-[14px]"
-              style={{ background: "var(--surface)", color: "var(--brass)" }}
+            of possible hours in this study carry a diary entry with a motor
+            score. Outside a study, with nobody checking, it will not be higher.{" "}
+            <a
+              href="/astrolabe-technical-report.pdf"
+              className="underline underline-offset-4"
+              style={{ color: "var(--brass)" }}
             >
-              scripts/diary_completion.py
-            </code>
-            . Unsupervised, real-world completion is unlikely to be higher.
+              How that figure was counted
+            </a>
+            .
           </p>
           <div className="mt-8" data-reveal>
             {/* eslint-disable-next-line @next/next/no-img-element */}

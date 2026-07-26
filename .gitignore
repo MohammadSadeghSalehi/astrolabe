@@ -63,6 +63,17 @@ desktop.ini
 # its own line.
 .claude/
 
+# ── film ──────────────────────────────────────────────────────────────────────
+# Captured clips, renders and the raw voice take. The capture scripts, the scene
+# manifest and the Remotion source ARE tracked — the point is that the film
+# rebuilds from source. These are the outputs and the one input that happens to
+# be a recording of a real person's voice, which does not belong in a public
+# repo by default. Uncomment if you decide otherwise.
+film/capture/out/
+film/capture/assets/
+film/out/
+note.wav.m4a
+
 # ── scratch ───────────────────────────────────────────────────────────────────
 scratch/
 *.log
