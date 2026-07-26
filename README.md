@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="app/public/brand/astrolabe-mark-brass.svg" width="56" height="56" alt="Astrolabe mark"/>
+
 # Astrolabe
 
 **A Parkinson's motor diary that tells you when it doesn't know.**
@@ -12,6 +14,10 @@
 ![not a medical device](https://img.shields.io/badge/not%20a-medical%20device-8D97AB?style=flat-square)
 ![data](https://img.shields.io/badge/data-COPS%20CC--BY%204.0-16A897?style=flat-square)
 ![licence](https://img.shields.io/badge/code-MIT-8D97AB?style=flat-square)
+
+<br/>
+
+<img src="app/public/brand/hero-plate.png" width="720" alt="Brass astrolabe plate — product identity"/>
 
 </div>
 
@@ -27,6 +33,10 @@ refuses wherever the evidence cannot carry an answer.
 
 > *"My meds felt off all week. My neurologist asked when it was worse and I
 > honestly couldn't tell her. I'd stopped filling in the diary by Wednesday."*
+
+<p align="center">
+  <img src="app/public/brand/completion.svg" width="480" alt="24 hour slots: diary completion as filled and empty hours"/>
+</p>
 
 ## What holds up
 
@@ -69,6 +79,10 @@ representation and applied to another gave 0.535 coverage against a 0.90 target.
 Rate-tuned abstention made losing a wrist look like an improvement. Both are in
 [the report](https://astrolabe-flame.vercel.app/astrolabe-technical-report.pdf).
 
+<p align="center">
+  <img src="app/public/brand/bilateral.svg" width="280" alt="Bilateral sensors: one wrist dropped degrades the configuration"/>
+</p>
+
 ## Try it
 
 ```bash
@@ -80,7 +94,18 @@ Or use the [live demo](https://astrolabe-flame.vercel.app): pick **COPS-33**
 (answers confidently), then **COPS-29** (declines every step). Same model, same
 pipeline, opposite behaviour.
 
+| | |
+|---|---|
+| Landing | `/` |
+| Day view | `/day` |
+| Profile & devices | `/profile` |
+| Clinician handoff | `/clinician` |
+
 ## How it works
+
+<p align="center">
+  <img src="app/public/brand/pipeline.svg" width="100%" alt="Pipeline: wrists, band split, hourly probability, calibrated interval, decision with deliberate gaps"/>
+</p>
 
 ```
 both wrists ──▶ band split ──▶ ordinal ──▶ HMM ──▶ credible ──▶ answer
@@ -94,10 +119,25 @@ model over the day recovers the posterior by forward–backward in log space; th
 shortest contiguous credible interval is taken at a mass calibrated on held-out
 truth. The maths is in the [technical report](docs/whitepaper/astrolabe.tex).
 
+## Devices
+
+Generic form factors the product is designed around — **not** partnered
+consumer brands. Real COPS recordings used research-grade GENEActiv units at
+100 Hz, bilateral.
+
+<p align="center">
+  <img src="app/public/brand/render-watch.png" height="120" alt="Generic smartwatch"/>
+  &nbsp;&nbsp;
+  <img src="app/public/brand/render-band.png" height="120" alt="Research actigraphy band"/>
+  &nbsp;&nbsp;
+  <img src="app/public/brand/render-ring.png" height="120" alt="Generic smart ring"/>
+</p>
+
 ## Repository
 
 ```
 app/          Next.js 16 · the product
+  public/brand/  logo, pipeline, devices, OG image
 ml/           feature pipeline, models, calibration, bundle emission
 contract/     the frozen output contract + emitted bundles
 docs/         FINDINGS.md · DATA.md · DESIGN.md · whitepaper/
