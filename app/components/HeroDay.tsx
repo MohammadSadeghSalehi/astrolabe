@@ -20,7 +20,9 @@ import type { Bundle } from "@/lib/contract";
 export const DEMO_PARTICIPANT = "COPS-28";
 
 const H = 300;
-const PAD = { t: 26, r: 20, b: 42, l: 36 };
+// Left pad must fit "dyskinesia" / "akinesia" in mono 11px without clipping
+// against the overflow:hidden frame (textAnchor=end sits just left of the plot).
+const PAD = { t: 26, r: 20, b: 42, l: 88 };
 
 export function HeroDay() {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -270,12 +272,13 @@ export function HeroDay() {
                   />
                   {model.mode === "kinesia" && (
                     <text
-                      x={-8}
+                      x={-10}
                       y={model.y(v) + 4}
                       textAnchor="end"
-                      fontSize={11}
+                      fontSize={12}
                       fill="var(--ink-2)"
                       fontFamily="var(--font-mono)"
+                      style={{ dominantBaseline: "middle" }}
                     >
                       {model.yTickLabel(v)}
                     </text>
