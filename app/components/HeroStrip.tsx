@@ -5,9 +5,9 @@ import { getBundle } from "@/lib/source";
 import type { Bundle, SeriesPoint } from "@/lib/contract";
 
 /**
- * Landing hero from the real COPS-29 bundle.
+ * Landing strip from the real COPS-28 bundle (strongest diary swings).
  *
- * Hour blocks: dashed = declined, solid brass = not declined (rare on this day).
+ * Hour blocks: dashed = declined, solid brass = answered.
  * Violet step trace = tremor_p — the claim the model stands behind.
  * No invented UI chrome, no fabricated numbers.
  */
@@ -16,7 +16,7 @@ export function HeroStrip() {
 
   useEffect(() => {
     let live = true;
-    getBundle("COPS-29")
+    getBundle("COPS-28")
       .then(({ bundle: b }) => live && setBundle(b))
       .catch(() => {});
     return () => {

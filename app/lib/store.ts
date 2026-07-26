@@ -27,7 +27,8 @@ type Store = {
 };
 
 export const useStore = create<Store>((set) => ({
-  participant: "COPS-29",
+  /** COPS-28: diary kinesia swings 0→5→0 — strongest trends in the demo set. */
+  participant: "COPS-28",
   bundle: null,
   origin: null,
   fellBack: false,

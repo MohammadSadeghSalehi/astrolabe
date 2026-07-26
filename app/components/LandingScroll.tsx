@@ -34,10 +34,13 @@ export function LandingScroll({ children }: { children: ReactNode }) {
       const p = Math.min(1, Math.max(0, y / max));
       root.style.setProperty("--land-scroll", String(p));
       root.style.setProperty("--land-y", `${y}px`);
-      // Whisper-quiet field: a touch stronger in the hero, calmer as you read.
-      // Never high enough to fight body type (max ~0.11, min ~0.04).
-      const fieldOp = 0.11 - p * 0.07;
+      // Field stays present after the hero — peaks mid-page, never fights type.
+      // Hero ~0.09, mid ~0.16, end ~0.11.
+      const fieldOp = 0.09 + Math.sin(p * Math.PI) * 0.07 + p * 0.02;
       root.style.setProperty("--land-field-op", String(fieldOp));
+      // Mid-field (instrument grid) fades *in* as you leave the hero.
+      const midOp = Math.min(0.55, 0.08 + p * 0.7);
+      root.style.setProperty("--land-mid-op", String(midOp));
       // Hero plate parallax (capped so it never feels floaty)
       const plate = root.querySelector<HTMLElement>("[data-parallax-plate]");
       if (plate && !reduced) {
@@ -86,7 +89,7 @@ export function LandingScroll({ children }: { children: ReactNode }) {
       <div className="land-progress" aria-hidden>
         <div className="land-progress__bar" />
       </div>
-      {/* Dual ambient field — two drift rates, opacity tied to scroll depth */}
+      {/* Dual ambient field — hero plate geometry + mid-page instrument grid */}
       <div className="land-field" aria-hidden>
         <div className="land-field__layer land-field__layer--a">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -96,7 +99,13 @@ export function LandingScroll({ children }: { children: ReactNode }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/brand/hero-field.svg" alt="" />
         </div>
-        {/* Soft vignette so the field never competes with centred type */}
+        <div className="land-field__layer land-field__layer--mid">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/mid-field.svg" alt="" />
+        </div>
+        {/* Soft brass / verdigris washes so long sections never read as a void */}
+        <div className="land-field__glow land-field__glow--brass" />
+        <div className="land-field__glow land-field__glow--verd" />
         <div className="land-field__vignette" />
       </div>
       {children}
@@ -141,18 +150,45 @@ export function DeviceStrip() {
 const SPONSORS: {
   name: string;
   href: string;
-  role: string;
+  logo: string;
+  /** Logo intrinsic aspect — keeps marks from stretching in the badge. */
+  aspect: "mark" | "wide";
 }[] = [
-  { name: "Vercel", href: "https://vercel.com", role: "Deploy" },
-  { name: "Supabase", href: "https://supabase.com", role: "Data" },
-  { name: "ElevenLabs", href: "https://elevenlabs.io", role: "Voice" },
-  { name: "Anthropic", href: "https://www.anthropic.com", role: "Language" },
-  { name: "OpenAI", href: "https://openai.com", role: "Language" },
+  {
+    name: "Vercel",
+    href: "https://vercel.com",
+    logo: "/brand/sponsors/vercel.svg",
+    aspect: "mark",
+  },
+  {
+    name: "Supabase",
+    href: "https://supabase.com",
+    logo: "/brand/sponsors/supabase.svg",
+    aspect: "mark",
+  },
+  {
+    name: "ElevenLabs",
+    href: "https://elevenlabs.io",
+    logo: "/brand/sponsors/elevenlabs.svg",
+    aspect: "mark",
+  },
+  {
+    name: "Anthropic",
+    href: "https://www.anthropic.com",
+    logo: "/brand/sponsors/anthropic.svg",
+    aspect: "wide",
+  },
+  {
+    name: "OpenAI",
+    href: "https://openai.com",
+    logo: "/brand/sponsors/openai.svg",
+    aspect: "mark",
+  },
 ];
 
 /**
  * Footer-style sponsor credits. Tools used in this build — not partnerships.
- * Both Anthropic and OpenAI are listed because both appear in the app routes.
+ * Logos only (name stays in aria-label for assistive tech).
  */
 export function SponsorStrip() {
   return (
@@ -164,16 +200,26 @@ export function SponsorStrip() {
           endorsements.
         </p>
         <ul className="land-sponsors__row">
-          {SPONSORS.map((s, i) => (
-            <li key={s.name} style={{ animationDelay: `${i * 50}ms` }}>
+          {SPONSORS.map((s) => (
+            <li key={s.name}>
               <a
                 href={s.href}
                 target="_blank"
                 rel="noreferrer"
                 className="land-sponsor-badge"
+                aria-label={s.name}
+                title={s.name}
               >
-                <span className="land-sponsor-badge__name">{s.name}</span>
-                <span className="land-sponsor-badge__role">{s.role}</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={s.logo}
+                  alt=""
+                  className={
+                    s.aspect === "wide"
+                      ? "land-sponsor-badge__logo land-sponsor-badge__logo--wide"
+                      : "land-sponsor-badge__logo"
+                  }
+                />
               </a>
             </li>
           ))}

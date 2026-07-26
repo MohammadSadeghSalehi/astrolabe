@@ -67,7 +67,7 @@ const RESULTS: {
 export default function Home() {
   return (
     <LandingScroll>
-    <div className="flex min-h-screen flex-col" style={{ background: "var(--page)" }}>
+    <div className="land-page flex min-h-screen flex-col">
       <Nav />
 
       {/* ── hero ─────────────────────────────────────────────────────────

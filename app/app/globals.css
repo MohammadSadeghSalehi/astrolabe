@@ -580,9 +580,13 @@ body {
   transition: width 60ms linear;
 }
 
-/* Ambient instrument field — dual drift, opacity falls as you read */
+/* Ambient instrument field — stays present past the hero so long sections
+   never read as a flat void. Opacity peaks mid-scroll via --land-field-op. */
 .landing-scroll {
-  --land-field-op: 0.1;
+  --land-field-op: 0.12;
+  --land-mid-op: 0.2;
+  /* Transparent shell: the fixed field is the true page backdrop. */
+  background: transparent;
 }
 .land-field {
   position: fixed;
@@ -590,8 +594,13 @@ body {
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  opacity: var(--land-field-op, 0.1);
-  transition: opacity 120ms linear;
+  opacity: var(--land-field-op, 0.12);
+  transition: opacity 140ms linear;
+  /* Base wash so field isn't pure black under transparent content */
+  background:
+    radial-gradient(ellipse 90% 70% at 70% 8%, color-mix(in oklab, var(--brass) 9%, transparent), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 12% 70%, color-mix(in oklab, var(--verdigris) 7%, transparent), transparent 50%),
+    var(--page);
 }
 .land-field__layer {
   position: absolute;
@@ -608,24 +617,73 @@ body {
 /* Two rates so the field feels dimensional without noise */
 .land-field__layer--a {
   transform: translate3d(0, calc(var(--land-y) * -0.035), 0) scale(1.05);
-  opacity: 0.85;
+  opacity: 0.9;
 }
 .land-field__layer--b {
   transform: translate3d(4%, calc(var(--land-y) * -0.055), 0) scale(1.12);
-  opacity: 0.45;
+  opacity: 0.5;
   filter: blur(0.3px);
 }
+/* Mid-page instrument grid — fades in as you leave the hero */
+.land-field__layer--mid {
+  inset: -5% -10%;
+  transform: translate3d(0, calc(var(--land-y) * -0.08), 0);
+  opacity: var(--land-mid-op, 0.2);
+  transition: opacity 160ms linear;
+}
+.land-field__layer--mid img {
+  object-fit: cover;
+  object-position: center top;
+}
+/* Soft moving colour washes */
+.land-field__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(48px);
+  will-change: transform;
+}
+.land-field__glow--brass {
+  width: min(62vw, 720px);
+  height: min(62vw, 720px);
+  top: 18%;
+  right: -8%;
+  background: color-mix(in oklab, var(--brass) 28%, transparent);
+  opacity: 0.35;
+  transform: translate3d(
+    calc(var(--land-scroll) * -40px),
+    calc(var(--land-y) * -0.04),
+    0
+  );
+}
+.land-field__glow--verd {
+  width: min(50vw, 560px);
+  height: min(50vw, 560px);
+  bottom: 8%;
+  left: -10%;
+  background: color-mix(in oklab, var(--verdigris) 24%, transparent);
+  opacity: 0.28;
+  transform: translate3d(
+    calc(var(--land-scroll) * 30px),
+    calc(var(--land-y) * -0.06),
+    0
+  );
+}
+/* Light centre vignette — keeps type legible without killing the field */
 .land-field__vignette {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 60% at 50% 40%, transparent 20%, var(--page) 78%),
-    linear-gradient(to bottom, transparent 0%, color-mix(in oklab, var(--page) 55%, transparent) 100%);
+    radial-gradient(ellipse 55% 45% at 50% 36%, transparent 10%, color-mix(in oklab, var(--page) 55%, transparent) 88%),
+    linear-gradient(to bottom, transparent 0%, color-mix(in oklab, var(--page) 25%, transparent) 100%);
 }
 
 .landing-scroll > *:not(.land-progress):not(.land-field) {
   position: relative;
   z-index: 1;
+}
+/* Landing content sits on the ambient field — no opaque page paint */
+.landing-scroll .land-page {
+  background: transparent;
 }
 
 /* Parallax hook on the hero plate object */
@@ -694,7 +752,7 @@ body {
   transform: translateY(-4px);
 }
 
-/* Sponsor credits strip */
+/* Sponsor credits strip — logo marks only */
 .land-sponsors {
   margin-top: 3rem;
   padding: 2.5rem 0 1rem;
@@ -725,54 +783,62 @@ body {
   padding: 0;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.65rem;
 }
 .land-sponsor-badge {
   display: inline-flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  min-height: 44px;
-  min-width: 7.5rem;
-  padding: 0.55rem 0.95rem;
+  min-height: 48px;
+  min-width: 48px;
+  padding: 0.65rem 0.95rem;
   border-radius: 0.375rem;
   border: 1px solid var(--axis);
-  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  background: color-mix(in oklab, var(--surface) 78%, transparent);
+  color: var(--ink);
   text-decoration: none;
   transition:
     border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
     background 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 200ms cubic-bezier(0.22, 1, 0.36, 1),
     transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .land-sponsor-badge:hover {
   border-color: color-mix(in oklab, var(--brass) 55%, var(--axis));
-  background: color-mix(in oklab, var(--surface) 100%, var(--brass) 6%);
+  background: color-mix(in oklab, var(--surface) 100%, var(--brass) 8%);
+  color: var(--brass-hi);
   transform: translateY(-1px);
 }
-.land-sponsor-badge__name {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--ink);
-  letter-spacing: 0.02em;
+.land-sponsor-badge__logo {
+  display: block;
+  height: 22px;
+  width: auto;
+  /* SVGs use currentColor — invert via CSS filter so marks read on dark */
+  filter: brightness(0) invert(0.9);
+  opacity: 0.88;
+  transition: opacity 200ms cubic-bezier(0.22, 1, 0.36, 1), filter 200ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-.land-sponsor-badge__role {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--ink-2);
-  margin-top: 0.15rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+.land-sponsor-badge__logo--wide {
+  height: 18px;
+}
+.land-sponsor-badge:hover .land-sponsor-badge__logo {
+  opacity: 1;
+  filter: brightness(0) invert(0.82) sepia(0.55) saturate(2.2) hue-rotate(5deg);
 }
 
 @media (max-width: 639px) {
   .land-devices__row img { height: 96px; }
-  .landing-scroll { --land-field-op: 0.07; }
-  .land-field__layer--b { opacity: 0.3; }
+  .landing-scroll { --land-field-op: 0.1; }
+  .land-field__layer--b { opacity: 0.35; }
+  .land-field__glow { filter: blur(36px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .land-progress__bar { transition: none; }
   .land-field { transition: none; }
-  .land-field__layer { transform: none !important; }
+  .land-field__layer,
+  .land-field__glow { transform: none !important; }
   [data-parallax-plate] { transform: none !important; transition: none; }
   [data-reveal] {
     opacity: 1 !important;

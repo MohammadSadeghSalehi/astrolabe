@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
-const PARTICIPANT = "COPS-29";
+const PARTICIPANT = "COPS-28";
 
 /** A study accession is not how a clinician refers to a person. */
 function patientLabel(participant: string): string {

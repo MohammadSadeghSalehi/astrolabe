@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+  <!-- Anthropic-style asterisk mark -->
+  <path d="M13.827 3.52h3.603L24 20.48h-3.603l-1.728-4.466h-7.377L9.562 20.48H5.96l6.867-16.96Zm.265 4.39-2.4 6.214h4.763l-2.363-6.214Z"/>
+  <path d="M6.4 3.52 0 20.48h3.68l1.38-3.56h.02L6.4 3.52Z" opacity=".55"/>
+</svg>
