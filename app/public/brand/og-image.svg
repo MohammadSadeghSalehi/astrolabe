@@ -1,57 +1,61 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none" role="img" aria-label="Astrolabe Open Graph image">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none" role="img" aria-label="Astrolabe — Read the hours you couldn't record">
   <rect width="1200" height="630" fill="#080B11"/>
   <rect x="40" y="40" width="1120" height="550" rx="8" fill="#10151F" stroke="#2A3244" stroke-width="1"/>
+
   <!-- mark -->
-  <g transform="translate(88 90) scale(3.2)" stroke="#C8963E" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none">
+  <g transform="translate(80 72) scale(2.4)" stroke="#C8963E" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" fill="none">
     <path d="M6.5 20.5 A9.5 9.5 0 1 1 22.5 23.2"/>
     <path d="M10.2 18.8 A5.8 5.8 0 1 1 19.5 20.6"/>
     <line x1="7.2" y1="22.8" x2="24.8" y2="9.2"/>
     <circle cx="16" cy="16" r="1.1" fill="#C8963E" stroke="none"/>
   </g>
   <text
-    x="220"
-    y="145"
+    x="180"
+    y="118"
     fill="#ECE7DB"
     font-family="IBM Plex Sans, system-ui, sans-serif"
-    font-size="42"
+    font-size="36"
     font-weight="500"
     letter-spacing="0.14em"
   >ASTROLABE</text>
   <text
-    x="220"
-    y="195"
+    x="180"
+    y="158"
     fill="#8D97AB"
     font-family="Fraunces, Georgia, serif"
-    font-size="28"
+    font-size="24"
     font-weight="300"
     font-style="italic"
   >Read the hours you couldn’t record</text>
 
-  <!-- claim numbers -->
-  <g font-family="IBM Plex Mono, ui-monospace, monospace">
-    <text x="88" y="340" fill="#8D97AB" font-size="18" letter-spacing="0.08em">HELD-OUT COVERAGE</text>
-    <text x="88" y="400" fill="#16A897" font-size="72" font-weight="500">0.904</text>
-    <text x="88" y="445" fill="#8D97AB" font-size="20">90% interval, achieved</text>
-
-    <text x="520" y="340" fill="#8D97AB" font-size="18" letter-spacing="0.08em">ONE WRIST DROPPED</text>
-    <text x="520" y="400" fill="#A86ED1" font-size="72" font-weight="500">77.3%</text>
-    <text x="520" y="445" fill="#8D97AB" font-size="20">declines to keep the same error</text>
+  <!-- Stage-5 moment: trajectory that stops at a dashed hole -->
+  <g transform="translate(100 220)">
+    <text x="0" y="0" fill="#8D97AB" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="15">
+      When the interval is too wide, the answer stops
+    </text>
+    <!-- y rail -->
+    <line x1="20" y1="40" x2="20" y2="260" stroke="#2A3244" stroke-width="1"/>
+    <!-- calibrated band under solid segment -->
+    <path d="M40 140 L100 110 L160 120 L220 100 L280 115 L320 130
+             L320 175 L280 170 L220 160 L160 175 L100 165 L40 185 Z"
+          fill="#16A897" fill-opacity="0.15"/>
+    <!-- solid trajectory while confident -->
+    <path d="M40 160 H100 V130 H160 V145 H220 V120 H280 V140 H320"
+          stroke="#A86ED1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- dashed hole — abstention -->
+    <rect x="340" y="80" width="200" height="140" rx="4"
+          fill="none" stroke="#8D97AB" stroke-width="2" stroke-dasharray="8 6"/>
+    <!-- faint resume after gap (optional, low opacity) -->
+    <path d="M560 155 H620 V140 H680"
+          stroke="#A86ED1" stroke-width="2.5" stroke-linecap="round" opacity="0.35" fill="none"/>
+    <text x="440" y="250" text-anchor="middle" fill="#8D97AB"
+          font-family="IBM Plex Mono, ui-monospace, monospace" font-size="14">
+      declined
+    </text>
   </g>
 
-  <line x1="88" y1="500" x2="1112" y2="500" stroke="#2A3244" stroke-width="1"/>
-  <text
-    x="88"
-    y="545"
-    fill="#ECE7DB"
-    font-family="IBM Plex Sans, system-ui, sans-serif"
-    font-size="22"
-  >Parkinson’s diary reconstruction with calibrated uncertainty</text>
-  <text
-    x="1112"
-    y="545"
-    text-anchor="end"
-    fill="#C8963E"
-    font-family="IBM Plex Mono, ui-monospace, monospace"
-    font-size="18"
-  >github.com/MohammadSadeghSalehi/astrolabe</text>
+  <line x1="80" y1="520" x2="1120" y2="520" stroke="#2A3244" stroke-width="1"/>
+  <text x="80" y="555" fill="#8D97AB" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="16">
+    Parkinson’s motor diary · calibrated uncertainty · refuses when evidence is weak
+  </text>
 </svg>

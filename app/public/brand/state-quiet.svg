@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240" fill="none" role="img" aria-label="Quiet loading state">
+  <rect width="360" height="240" fill="#080B11"/>
+  <!-- Astrolabe mark ~15% opacity, one arc missing -->
+  <g
+    transform="translate(148 88) scale(2)"
+    stroke="#ECE7DB"
+    stroke-width="1.75"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    opacity="0.15"
+    fill="none"
+  >
+    <!-- outer arc present -->
+    <path d="M6.5 20.5 A9.5 9.5 0 1 1 22.5 23.2"/>
+    <!-- inner arc intentionally incomplete — one arc missing -->
+    <path d="M10.2 18.8 A5.8 5.8 0 0 1 16 10.2"/>
+    <line x1="7.2" y1="22.8" x2="24.8" y2="9.2"/>
+    <circle cx="16" cy="16" r="1.1" fill="#ECE7DB" stroke="none"/>
+  </g>
+</svg>

@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 360" fill="none" role="img" aria-label="Signal pipeline: wrists, band split, hourly probability, calibrated interval, decision with deliberate gaps">
+  <rect width="1400" height="360" fill="#080B11"/>
+
+  <!-- stage columns -->
+  <!-- 1 Two wrists -->
+  <g transform="translate(40 48)">
+    <text x="100" y="0" text-anchor="middle" fill="#8D97AB" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="13">Two wrists</text>
+    <!-- left waveform -->
+    <path d="M20 70 L40 55 L60 80 L80 50 L100 75 L120 58 L140 72 L160 60 L180 68"
+          stroke="#ECE7DB" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- right waveform -->
+    <path d="M20 140 L40 150 L60 128 L80 155 L100 130 L120 148 L140 135 L160 152 L180 140"
+          stroke="#ECE7DB" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+    <text x="20" y="48" fill="#8D97AB" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">L</text>
+    <text x="20" y="118" fill="#8D97AB" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">R</text>
+  </g>
+
+  <path d="M250 160 H290" stroke="#2A3244" stroke-width="1.5" stroke-linecap="round" marker-end="url(#arrow)"/>
+
+  <!-- 2 Band split -->
+  <g transform="translate(310 48)">
+    <text x="110" y="0" text-anchor="middle" fill="#8D97AB" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="13">Band split</text>
+    <!-- slow movement band -->
+    <path d="M20 75 C50 75 50 50 80 50 C110 50 110 95 140 95 C170 95 170 70 200 70"
+          stroke="#8D97AB" stroke-width="1.75" stroke-linecap="round"/>
+    <text x="20" y="48" fill="#8D97AB" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">0.1–3 Hz</text>
+    <!-- fast tremor band — the one that matters -->
+    <path d="M20 150 L35 130 L50 165 L65 125 L80 168 L95 122 L110 170 L125 128 L140 165 L155 130 L170 160 L185 135 L200 155"
+          stroke="#C8963E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="20" y="118" fill="#C8963E" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">4–8 Hz</text>
+  </g>
+
+  <path d="M540 160 H580" stroke="#2A3244" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- 3 Hourly probability -->
+  <g transform="translate(600 48)">
+    <text x="90" y="0" text-anchor="middle" fill="#8D97AB" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="13">Hourly probability</text>
+    <!-- 0–1 rail -->
+    <line x1="16" y1="50" x2="16" y2="180" stroke="#2A3244" stroke-width="1"/>
+    <text x="8" y="54" text-anchor="end" fill="#8D97AB" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">1</text>
+    <text x="8" y="184" text-anchor="end" fill="#8D97AB" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11">0</text>
+    <!-- step function from fast band -->
+    <path d="M24 150 H48 V90 H72 V110 H96 V70 H120 V130 H144 V85 H168 V100 H192"
+          stroke="#A86ED1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+
+  <path d="M820 160 H860" stroke="#2A3244" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- 4 Calibrated interval -->
+  <g transform="translate(880 48)">
+    <text x="90" y="0" text-anchor="middle" fill="#8D97AB" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="13">Calibrated interval</text>
+    <text x="90" y="18" text-anchor="middle" fill="#16A897" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">90%</text>
+    <!-- widening band -->
+    <path d="M24 120 L48 100 L72 105 L96 85 L120 95 L144 110 L168 100 L192 115
+             L192 145 L168 140 L144 155 L120 145 L96 140 L72 150 L48 145 L24 155 Z"
+          fill="#16A897" fill-opacity="0.18" stroke="none"/>
+    <path d="M24 135 H48 V110 H72 V120 H96 V100 H120 V118 H144 V128 H168 V122 H192"
+          stroke="#A86ED1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+
+  <path d="M1100 160 H1135" stroke="#2A3244" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- 5 The decision — payload: solid answers, then dashed hole -->
+  <g transform="translate(1150 48)">
+    <text x="100" y="0" text-anchor="middle" fill="#8D97AB" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="13">The decision</text>
+    <!-- narrow region: solid answer -->
+    <path d="M16 130 H48 V100 H80 V115 H100"
+          stroke="#A86ED1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- wide region: line stops, dashed hole -->
+    <rect x="108" y="70" width="72" height="90" rx="3"
+          fill="none" stroke="#8D97AB" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.85"/>
+    <!-- faint resume after hole (optional) -->
+    <path d="M188 125 H210"
+          stroke="#A86ED1" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+    <text x="144" y="200" text-anchor="middle" fill="#8D97AB" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="12">declined</text>
+  </g>
+
+  <!-- bottom stage rail -->
+  <line x1="40" y1="300" x2="1360" y2="300" stroke="#2A3244" stroke-width="1"/>
+  <circle cx="140" cy="300" r="3" fill="#C8963E"/>
+  <circle cx="420" cy="300" r="3" fill="#C8963E"/>
+  <circle cx="700" cy="300" r="3" fill="#C8963E"/>
+  <circle cx="980" cy="300" r="3" fill="#C8963E"/>
+  <circle cx="1260" cy="300" r="3" fill="#C8963E"/>
+
+  <defs>
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6" fill="none" stroke="#2A3244" stroke-width="1"/>
+    </marker>
+  </defs>
+</svg>

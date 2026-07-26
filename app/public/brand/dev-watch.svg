@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="Generic wrist watch">
+  <!-- Monoline, currentColor, optical weight matched to ring/band -->
+  <g stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M24 14 C24 10 28 8 32 8 C36 8 40 10 40 14 V20 H24 Z"/>
+    <path d="M24 44 H40 V50 C40 54 36 56 32 56 C28 56 24 54 24 50 Z"/>
+    <rect x="20" y="18" width="24" height="28" rx="6"/>
+    <circle cx="32" cy="32" r="7"/>
+    <line x1="32" y1="32" x2="32" y2="27"/>
+    <line x1="32" y1="32" x2="36" y2="34"/>
+  </g>
+</svg>

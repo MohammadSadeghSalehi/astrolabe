@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="Generic research wrist band">
+  <g stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <!-- strap -->
+    <path d="M14 22 H50 C53 22 54 24 54 27 V37 C54 40 53 42 50 42 H14 C11 42 10 40 10 37 V27 C10 24 11 22 14 22 Z"/>
+    <!-- visible sensor block -->
+    <rect x="24" y="26" width="16" height="12" rx="2"/>
+    <circle cx="32" cy="32" r="2.5" fill="currentColor" stroke="none"/>
+  </g>
+</svg>

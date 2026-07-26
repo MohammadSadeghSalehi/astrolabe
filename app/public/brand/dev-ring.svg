@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="Generic smart ring">
+  <g stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <!-- band torus -->
+    <ellipse cx="32" cy="34" rx="16" ry="18"/>
+    <ellipse cx="32" cy="34" rx="10" ry="12"/>
+    <!-- small sensor node on top arc -->
+    <rect x="28" y="12" width="8" height="6" rx="2"/>
+  </g>
+</svg>

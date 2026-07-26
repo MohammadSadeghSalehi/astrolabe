@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" role="img" aria-label="Bilateral sensors: one wrist removed degrades the configuration">
+  <rect width="240" height="160" fill="#080B11"/>
+  <!-- left wrist — active -->
+  <g transform="translate(28 40)" stroke="#ECE7DB" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 8 C18 2 26 0 34 0 C42 0 50 2 50 8 V18 H18 Z"/>
+    <path d="M18 52 H50 V62 C50 68 42 70 34 70 C26 70 18 68 18 62 Z"/>
+    <rect x="14" y="16" width="40" height="38" rx="8"/>
+    <rect x="22" y="24" width="24" height="22" rx="4"/>
+  </g>
+  <!-- connecting arc — broken toward the right -->
+  <path d="M88 72 C110 48 130 48 148 60"
+        stroke="#C8963E" stroke-width="1.75" stroke-linecap="round" fill="none"/>
+  <path d="M162 66 C170 72 176 78 182 86"
+        stroke="#2A3244" stroke-width="1.75" stroke-linecap="round" stroke-dasharray="4 3" fill="none"/>
+  <!-- right wrist — greyed / degraded -->
+  <g transform="translate(148 40)" stroke="#8D97AB" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" opacity="0.4">
+    <path d="M18 8 C18 2 26 0 34 0 C42 0 50 2 50 8 V18 H18 Z"/>
+    <path d="M18 52 H50 V62 C50 68 42 70 34 70 C26 70 18 68 18 62 Z"/>
+    <rect x="14" y="16" width="40" height="38" rx="8"/>
+    <rect x="22" y="24" width="24" height="22" rx="4"/>
+  </g>
+  <text x="48" y="140" fill="#8D97AB" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="12">both</text>
+  <text x="168" y="140" fill="#8D97AB" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="12">one dropped</text>
+</svg>

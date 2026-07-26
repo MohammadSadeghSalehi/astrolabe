@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 12" fill="none" aria-hidden="true">
+  <!-- Instrument edge: hairline + two ticks + one brass node -->
+  <line x1="0" y1="6" x2="1400" y2="6" stroke="#2A3244" stroke-width="1"/>
+  <line x1="0" y1="2" x2="0" y2="10" stroke="#2A3244" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="1400" y1="2" x2="1400" y2="10" stroke="#2A3244" stroke-width="1.5" stroke-linecap="round"/>
+  <circle cx="700" cy="6" r="2.5" fill="#C8963E"/>
+</svg>

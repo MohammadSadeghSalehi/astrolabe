@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" fill="none" role="img" aria-label="Diary completion: about 15 of 24 hours filled, 9 empty">
+  <!--
+    61.6% diary completion as shape: 24 hour slots, ~15 solid, ~9 empty.
+    Not a donut. Empty slots are absence (outline only), not a second colour claim.
+  -->
+  <rect width="480" height="120" fill="#080B11"/>
+  <!-- 15 filled (solid = recorded), 9 empty — pattern: fill,fill,empty,... -->
+  <!-- Filled indices: 0,1,2,4,5,6,8,9,11,12,13,15,16,18,20  = 15 -->
+  <!-- Empty: 3,7,10,14,17,19,21,22,23 = 9 -->
+  <g transform="translate(16 28)">
+    <!-- row of 24 -->
+    <g id="slots">
+      <!-- 0 filled -->
+      <rect x="0" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="19" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="38" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="57" y="0" width="16" height="40" rx="2" fill="none" stroke="#8D97AB" stroke-width="1.4" opacity="0.55"/>
+      <rect x="76" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="95" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="114" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="133" y="0" width="16" height="40" rx="2" fill="none" stroke="#8D97AB" stroke-width="1.4" opacity="0.55"/>
+      <rect x="152" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="171" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="190" y="0" width="16" height="40" rx="2" fill="none" stroke="#8D97AB" stroke-width="1.4" opacity="0.55"/>
+      <rect x="209" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="228" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="247" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="266" y="0" width="16" height="40" rx="2" fill="none" stroke="#8D97AB" stroke-width="1.4" opacity="0.55"/>
+      <rect x="285" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="304" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="323" y="0" width="16" height="40" rx="2" fill="none" stroke="#8D97AB" stroke-width="1.4" opacity="0.55"/>
+      <rect x="342" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="361" y="0" width="16" height="40" rx="2" fill="none" stroke="#8D97AB" stroke-width="1.4" opacity="0.55"/>
+      <rect x="380" y="0" width="16" height="40" rx="2" fill="#C8963E" opacity="0.85"/>
+      <rect x="399" y="0" width="16" height="40" rx="2" fill="none" stroke="#8D97AB" stroke-width="1.4" opacity="0.55"/>
+      <rect x="418" y="0" width="16" height="40" rx="2" fill="none" stroke="#8D97AB" stroke-width="1.4" opacity="0.55"/>
+      <rect x="437" y="0" width="16" height="40" rx="2" fill="none" stroke="#8D97AB" stroke-width="1.4" opacity="0.55"/>
+    </g>
+  </g>
+  <text x="16" y="100" fill="#8D97AB" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="13">24 hours · paper diary completion</text>
+</svg>

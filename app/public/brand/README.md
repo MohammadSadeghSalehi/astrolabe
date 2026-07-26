@@ -1,37 +1,35 @@
-# Brand & video assets
+# Brand & visual assets
 
-## Logo / mark
+Palette (fixed): page `#080B11` · surface `#10151F` · ink `#ECE7DB` · ink-2 `#8D97AB` ·
+axis `#2A3244` · brass `#C8963E` · brass-hi `#EFD39B` · truth `#16A897` · violet `#A86ED1`.
 
-| File | Use |
-|------|-----|
-| `astrolabe-mark.svg` | Monoline mark, `currentColor` — header, inline UI |
-| `astrolabe-mark-brass.svg` | Fixed brass `#C8963E` — favicon, title cards |
-| `astrolabe-wordmark.svg` | `ASTROLABE` letterspaced 0.14em |
+Encoding: solid = observed · diamond = reported · hatch = inferred · **dashed empty = abstained**.
+Dashes and hatch are never decorative.
 
-Geometry: 2 concentric arcs + one sight line + centre pivot. Reads at 24px.
-
-## Cards (SVG — exact text, project palette)
+## From VISUAL-ASSETS.md
 
 | File | Spec |
 |------|------|
-| `title-card.svg` | 1920×1080, `#080B11`, mark + wordmark + tagline — video first 2s |
-| `end-card.svg` | 1920×1080, claim + coverage 0.904 / 77.3% + repo URL — video last 3s |
-| `og-image.svg` | 1200×630 link preview |
+| `hero-field.svg` | 1600×900 astrolabe plate field, sparse arcs |
+| `pipeline.svg` | 1400×360 five-stage method figure (stage 5 = dashed hole) |
+| `dev-watch.svg` | 64×64 generic watch, `currentColor` |
+| `dev-ring.svg` | 64×64 generic ring |
+| `dev-band.svg` | 64×64 research band + sensor block |
+| `bilateral.svg` | 240×160 both wrists / one dropped |
+| `completion.svg` | 24 hour slots · ~15 filled · 9 empty |
+| `rule-plate.svg` | Instrument hairline + brass node |
+| `state-quiet.svg` | 360×240 quiet mark (one arc missing) |
+| `og-image.svg` | 1200×630 stage-5 moment + wordmark |
 
-Palette: page `#080b11`, surface `#10151f`, ink `#ece7db`, brass `#c8963e`, teal `#16a897`, violet `#a86ed1`.
+## Logo / cards (earlier)
+
+| File | Use |
+|------|-----|
+| `astrolabe-mark.svg` | Monoline mark, `currentColor` |
+| `astrolabe-mark-brass.svg` | Fixed brass |
+| `astrolabe-wordmark.svg` | Letterspaced ASTROLABE |
+| `title-card.svg` / `end-card.svg` | Video cards |
 
 ## B-roll
 
-| File | Beat |
-|------|------|
-| `../video/diary-still.jpg` | Paper diary, hand paused over unfilled row |
-| `../video/wrist-still.jpg` | Wrist + watch-style band at rest |
-
-**Video generation** for 3–6s clips was blocked in this environment (ZDR requires `upload_url`). Animate the stills locally, e.g.:
-
-```bash
-# Ken Burns / subtle push with ffmpeg
-ffmpeg -loop 1 -i diary-still.jpg -t 3 -vf "scale=1920:1080,zoompan=z='min(zoom+0.0008,1.08)':d=75:s=1920x1080" -c:v libx264 -pix_fmt yuv420p diary-broll.mp4
-```
-
-Or use any image-to-video tool with the stills as frame 1.
+See `../video/` for diary and wrist stills (and local mp4s if generated).
