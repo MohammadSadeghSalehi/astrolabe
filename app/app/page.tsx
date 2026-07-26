@@ -72,8 +72,18 @@ export default function Home() {
         {/* Ambient only. It sits under the headline at low opacity, is muted,
             and is hidden from assistive tech — it carries no information. */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
+          {/* Mobile gets the still only — same atmosphere, none of the bytes. */}
+          <div
+            className="absolute inset-0 sm:hidden"
+            style={{
+              backgroundImage: "url(/brand/hero-plate.png)",
+              backgroundSize: "cover",
+              backgroundPosition: "70% 30%",
+              opacity: 0.22,
+            }}
+          />
           <video
-            className="astro-hero-video h-full w-full object-cover"
+            className="astro-hero-video hidden h-full w-full object-cover sm:block"
             poster="/brand/hero-plate.png"
             autoPlay
             muted

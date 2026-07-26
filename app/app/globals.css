@@ -412,6 +412,20 @@ body {
 .astro-hero-video {
   opacity: 0.34;
   filter: saturate(0.85) contrast(1.05);
+  /* The plate's interest is upper-right, where the headline is not. Anchoring
+     there keeps the crop meaningful as the viewport narrows instead of centring
+     on empty darkness. */
+  object-position: 78% 22%;
+}
+
+/* On a phone the loop is decoration competing with the only column of text
+   there is, and it is the largest thing on the page to download. The still
+   plate carries the same atmosphere for a hundredth of the bytes. */
+@media (max-width: 767px) {
+  .astro-hero-video {
+    opacity: 0.22;
+    object-position: 70% 30%;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .astro-hero-video { display: none; }
