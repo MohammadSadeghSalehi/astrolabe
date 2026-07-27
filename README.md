@@ -6,10 +6,13 @@
 
 **A Parkinson's motor diary that tells you when it doesn't know.**
 
-[**Live demo**](https://astrolabe-flame.vercel.app) ·
-[**Watch (2 min)**](https://astrolabe-flame.vercel.app/astrolabe-demo.mp4) ·
-[**Technical report (PDF)**](https://astrolabe-flame.vercel.app/astrolabe-technical-report.pdf) ·
+[**Watch the demo (2 min)**](app/public/astrolabe-demo.mp4) ·
+[**Technical report (PDF)**](app/public/astrolabe-technical-report.pdf) ·
+[**Pitch deck**](app/public/astrolabe-deck.pdf) ·
 [**Findings**](docs/FINDINGS.md)
+
+*The hosted demo has been taken down now the event is over. Everything runs
+locally — see [Try it](#try-it) — and every artifact above is in this repo.*
 
 ![status](https://img.shields.io/badge/status-hackathon%20prototype-C8963E?style=flat-square)
 ![not a medical device](https://img.shields.io/badge/not%20a-medical%20device-8D97AB?style=flat-square)
@@ -78,7 +81,7 @@ worse configuration can only comply by answering less.
 **We report the bugs that flattered us.** Calibration fitted on one
 representation and applied to another gave 0.535 coverage against a 0.90 target.
 Rate-tuned abstention made losing a wrist look like an improvement. Both are in
-[the report](https://astrolabe-flame.vercel.app/astrolabe-technical-report.pdf).
+[the report](app/public/astrolabe-technical-report.pdf).
 
 <p align="center">
   <img src="app/public/brand/bilateral.svg" width="280" alt="Bilateral sensors: one wrist dropped degrades the configuration"/>
@@ -91,9 +94,17 @@ git clone https://github.com/MohammadSadeghSalehi/astrolabe
 cd astrolabe/app && npm install && npm run build && npm start
 ```
 
-Or use the [live demo](https://astrolabe-flame.vercel.app): pick **COPS-33**
-(answers confidently), then **COPS-29** (declines every step). Same model, same
-pipeline, opposite behaviour.
+Then open `localhost:3000`. **No environment file, no keys, no database** — the
+bundles are committed under `app/public/bundles/`, so it runs the whole pipeline
+offline out of the box.
+
+On **Try it**, pick **COPS-33** (answers confidently), then **COPS-29** (declines
+every step). Same model, same pipeline, opposite behaviour — that contrast is
+the product.
+
+The voice note falls back to a recorded fixture without API keys. Wire up your
+own OpenAI and ElevenLabs keys in `app/.env.local` (see `.env.example`) to run
+that path live.
 
 | | |
 |---|---|

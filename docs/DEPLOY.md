@@ -1,8 +1,14 @@
 # Deploying the demo
 
-**Live: https://astrolabe-flame.vercel.app**
+> **Retired.** The hosted deployment and its Supabase project were deleted after
+> the event, and the paid API keys revoked. This file is kept as a record of how
+> it was hosted, not as instructions to follow — nothing in the product needs it.
+>
+> **Astrolabe runs entirely locally.** `cd app && npm install && npm run build &&
+> npm start`, no environment file, no keys, no database: the bundles are
+> committed and `NEXT_PUBLIC_DEMO_MODE` defaults to offline.
 
-A public URL so judges can open the product without cloning anything.
+A public URL so judges could open the product without cloning anything.
 
 ## Vercel, via the CLI
 
