@@ -87,3 +87,19 @@ docs/whitepaper/*.aux
 docs/whitepaper/*.log
 docs/whitepaper/*.out
 .tooling/
+
+# Never. Recovery codes, key exports, anything a password manager hands you.
+# This directory is a public repo and `git add -A` does not ask twice.
+recovery-codes.txt
+*recovery*codes*
+*.key
+*.pem
+secrets*.txt
+
+# Stray drops at the repo root. Raw generator output and duplicated exports
+# landed here and were swept in by `git add -A`; the shipped copies live under
+# app/public/ and film/remotion/public/. Root-anchored so app assets are safe.
+/*.mp4
+/*.wav
+/*.m4a
+/*.pdf
